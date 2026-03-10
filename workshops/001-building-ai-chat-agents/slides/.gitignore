@@ -1,0 +1,10 @@
+node_modules/
+dist/
+exports/
+slides-export/
+*.pdf
+.slidev/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
