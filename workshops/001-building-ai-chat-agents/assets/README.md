@@ -1,4 +1,4 @@
-# Assets
+# 🎨 Assets
 
 This folder contains workshop diagrams, screenshots, and other media used in the session material.
 

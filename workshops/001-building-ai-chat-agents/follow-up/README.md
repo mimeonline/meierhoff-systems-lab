@@ -1,4 +1,4 @@
-# Follow-Up
+# 🧭 Follow-Up
 
 This folder is reserved for workshop notes, improvements, participant questions, future extensions, and material that may later become blog posts or follow-up documentation.
 

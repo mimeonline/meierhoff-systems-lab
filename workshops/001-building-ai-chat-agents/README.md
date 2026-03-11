@@ -1,12 +1,12 @@
-# 001 Building AI Chat Agents
+# 🤖 001 Building AI Chat Agents
 
 This workshop teaches what an AI agent is by extending a simple chat application in four small phases. Participants make one architectural change at a time and observe how system behavior changes.
 
-## Workshop Goal
+## 🎯 Workshop Goal
 
 The goal is to make the evolution from plain chat to a minimal agent visible and understandable. The examples stay intentionally small and reproducible.
 
-## Learning Goals
+## 📚 Learning Goals
 
 - Understand what an AI agent is in practical architectural terms
 - See how memory changes model behavior across turns
@@ -14,22 +14,30 @@ The goal is to make the evolution from plain chat to a minimal agent visible and
 - Understand where MCP fits as a standardized tool interface
 - Reinforce the mental model `Agent = LLM + Tools + Reasoning Loop`
 
-## Duration
+## ⏱️ Duration
 
 60 minutes
 
-## Audience
+## 👥 Audience
 
 This session is aimed at developers, architects, and technically curious practitioners who want a practical first model for AI agents.
 
-## Prerequisites
+## 🧰 Prerequisites
 
 - Basic Python familiarity
-- Python 3.11 or newer
+- Python 3.13 installed and available as `python3.13`
 - A GitHub account with access to GitHub Models
 - A GitHub token available as `GITHUB_TOKEN`
 
-## Workshop Flow
+Before the workshop, verify the Python runtime:
+
+```bash
+python3.13 --version
+```
+
+If this command fails, install Python 3.13 first and only then continue with the workshop setup.
+
+## 🗺️ Workshop Flow
 
 - 0-10 min: what an AI agent is and how the workshop is structured
 - 10-20 min: phase 1, plain chat
@@ -38,7 +46,7 @@ This session is aimed at developers, architects, and technically curious practit
 - 45-55 min: phase 4, connect the tool through MCP
 - 55-60 min: recap and discussion
 
-## Phases
+## 🧩 Phases
 
 - `phase-1-chat`: a plain chat app with no memory and no tools
 - `phase-2-memory`: the same app with conversation history
@@ -51,7 +59,7 @@ Together these phases reinforce the mental model:
 
 Memory helps the system stay coherent across turns. Tools let the model act on information outside its built-in context. MCP shows how tools can be provided through a standardized protocol boundary.
 
-## What Participants Should Feel Across The Phases
+## 👀 What Participants Should Feel Across The Phases
 
 - Plain chat feels stateless. Each turn stands alone.
 - Memory-aware chat feels continuous. The model can follow the conversation.
@@ -60,7 +68,7 @@ Memory helps the system stay coherent across turns. Tools let the model act on i
 
 This progression is deliberate. The workshop is designed to make the behavioral and architectural differences noticeable rather than merely described.
 
-## Architecture Overview
+## 🏗️ Architecture Overview
 
 The workshop keeps the request flow intentionally visible:
 
@@ -70,7 +78,7 @@ In phase 4, MCP sits between the application and the capability provider:
 
 `LLM application -> MCP client -> MCP server -> knowledge search capability`
 
-## What Participants Will Build
+## 🛠️ What Participants Will Build
 
 Participants will build and run four small versions of the same chat application:
 
@@ -81,7 +89,7 @@ Participants will build and run four small versions of the same chat application
 
 The tool demonstration uses a small local Markdown knowledge base rather than an external API so the example stays reproducible and easy to inspect.
 
-## Folder Structure
+## 📁 Folder Structure
 
 ```text
 workshops/001-building-ai-chat-agents/
@@ -100,22 +108,25 @@ workshops/001-building-ai-chat-agents/
     └── README.md
 ```
 
-## How To Run Each Phase
+## 🚀 How To Run Each Phase
 
 Each phase is self-contained. From the phase directory you want to run:
 
 ```bash
-python -m venv .venv
+python3.13 --version
+python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
 export GITHUB_TOKEN=your_github_token
-chainlit run app.py -w
+env -u DEBUG chainlit run app.py -w
 ```
 
-If you want a different model, also export `GITHUB_MODEL` or set it in `.env`. Each phase README includes notes about what to look for.
+Create `.venv` once per phase directory. In later terminal sessions, reactivate it with `source .venv/bin/activate`.
 
-## Discussion Prompts
+If you want a different model, also export `GITHUB_MODEL` or set it in `.env`. Each phase README includes notes about what to look for in the chat and what behavior to compare.
+
+## 💬 Discussion Prompts
 
 - At what point does a chat app become agent-like?
 - What does memory add, and what does it not add?
@@ -123,6 +134,6 @@ If you want a different model, also export `GITHUB_MODEL` or set it in `.env`. E
 - What is the difference between a direct tool integration and an MCP-based one?
 - Which parts of these examples are architectural, and which are just implementation details?
 
-## Note
+## 📝 Note
 
 The workshop examples are deliberately minimal and educational. They are designed to make behavior and architecture visible rather than to model production systems.
