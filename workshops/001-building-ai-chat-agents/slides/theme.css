@@ -162,7 +162,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
 
 .cover-glow {
@@ -188,11 +188,12 @@
 }
 
 .subtitle {
-  color: var(--msl-text-secondary);
+  color: var(--msl-text);
   font-size: 0.95rem;
   letter-spacing: 0.14em;
   font-weight: 400;
   text-transform: uppercase;
+  opacity: 0.7;
 }
 
 .cover-meta {
@@ -204,11 +205,11 @@
 .meta-item {
   background: var(--msl-surface);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--msl-border);
+  border: 1px solid var(--msl-accent);
   border-radius: 10px;
   padding: 0.55rem 1.3rem;
   font-size: 0.85rem;
-  color: var(--msl-text-secondary);
+  color: var(--msl-text);
   transition: border-color 250ms ease, color 250ms ease;
 }
 
@@ -223,7 +224,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--msl-accent);
+  color: var(--msl-accent-warm);
 }
 
 /* ── Section heading ── */
