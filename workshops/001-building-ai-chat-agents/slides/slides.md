@@ -23,8 +23,8 @@ fonts:
 <p class="subtitle">LangChain &middot; Chainlit &middot; GitHub Models &middot; Tools &middot; MCP</p>
 
 <div class="cover-meta">
-<div class="meta-item">60 minutes</div>
-<div class="meta-item">Four phases</div>
+<div class="meta-item">75 minutes</div>
+<div class="meta-item">Five phases</div>
 <div class="meta-item">Local knowledge search</div>
 </div>
 
@@ -49,22 +49,26 @@ layoutClass: gap-8
 ::right::
 
 <div class="svg-container">
-<svg class="phase-progress-svg" viewBox="0 0 110 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg class="phase-progress-svg" viewBox="0 0 135 90" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Step 1 -->
   <rect x="5" y="70" width="22" height="15" rx="3" fill="#162132" stroke="#388bd2" stroke-width="0.6"/>
   <text x="16" y="79.5" text-anchor="middle" fill="#7cc4f5" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">Chat</text>
 
   <!-- Step 2 -->
-  <rect x="30" y="52" width="22" height="33" rx="3" fill="#162132" stroke="#388bd2" stroke-width="0.6"/>
-  <text x="41" y="62" text-anchor="middle" fill="#7cc4f5" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">Memory</text>
+  <rect x="30" y="55" width="22" height="30" rx="3" fill="#162132" stroke="#388bd2" stroke-width="0.6"/>
+  <text x="41" y="65" text-anchor="middle" fill="#7cc4f5" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">Memory</text>
 
   <!-- Step 3 -->
-  <rect x="55" y="35" width="22" height="50" rx="3" fill="#162132" stroke="#e8914f" stroke-width="0.6"/>
-  <text x="66" y="45" text-anchor="middle" fill="#e8914f" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">Tools</text>
+  <rect x="55" y="40" width="22" height="45" rx="3" fill="#162132" stroke="#e8914f" stroke-width="0.6"/>
+  <text x="66" y="50" text-anchor="middle" fill="#e8914f" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">Tools</text>
 
   <!-- Step 4 -->
-  <rect x="80" y="17" width="22" height="68" rx="3" fill="#162132" stroke="#e8914f" stroke-width="0.6"/>
-  <text x="91" y="27" text-anchor="middle" fill="#e8914f" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">MCP</text>
+  <rect x="80" y="25" width="22" height="60" rx="3" fill="#162132" stroke="#e8914f" stroke-width="0.6"/>
+  <text x="91" y="35" text-anchor="middle" fill="#e8914f" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">MCP</text>
+
+  <!-- Step 5 -->
+  <rect x="105" y="12" width="22" height="73" rx="3" fill="#162132" stroke="#e8914f" stroke-width="0.6"/>
+  <text x="116" y="22" text-anchor="middle" fill="#e8914f" font-size="2.8" font-weight="600" font-family="Inter, sans-serif">Compare</text>
 
   <!-- Gradient for arrow -->
   <defs>
@@ -74,9 +78,9 @@ layoutClass: gap-8
     </linearGradient>
   </defs>
   <!-- Curved arrow with offset from bars -->
-  <path d="M10 64 C22 52, 32 44, 38 40 C46 34, 54 28, 62 23 C70 18, 78 13, 88 6" stroke="url(#arrow-grad)" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+  <path d="M10 64 C22 52, 32 44, 44 38 C56 30, 68 22, 80 16 C90 11, 100 7, 112 3" stroke="url(#arrow-grad)" stroke-width="0.8" stroke-linecap="round" fill="none"/>
   <!-- Arrowhead -->
-  <polygon points="90,4 83,8 85,13" fill="#7cc4f5" opacity="0.5"/>
+  <polygon points="114,1 107,5 109,10" fill="#7cc4f5" opacity="0.5"/>
 </svg>
 </div>
 
@@ -125,7 +129,7 @@ class: text-center
 
 <div class="section-heading">
 
-# The Four Phases
+# The Five Phases
 
 <p class="section-heading-sub">Each phase adds exactly one architectural change</p>
 
@@ -137,6 +141,8 @@ class: text-center
   <span class="pill">Tools</span>
   <span class="pill-arrow">&rarr;</span>
   <span class="pill">MCP</span>
+  <span class="pill-arrow">&rarr;</span>
+  <span class="pill">Compare</span>
 </div>
 
 </div>
@@ -344,8 +350,8 @@ Show where the tool is registered and where the loop executes it.
 
 <div class="col-heading">What was added</div>
 
-- MCP tool exposure
-- MCP discovery and invocation
+- MCP server exposes the knowledge search
+- Agent loads tools via MCP adapter
 
 </div>
 <div>
@@ -354,7 +360,7 @@ Show where the tool is registered and where the loop executes it.
 
 - Same knowledge capability
 - Same user-facing task
-- Same general tool-augmented interaction
+- Same agent loop pattern
 
 </div>
 </div>
@@ -364,18 +370,18 @@ Show where the tool is registered and where the loop executes it.
 
 <div class="col-heading">What behavior changed</div>
 
-- User-facing answers may look similar
-- Tool access becomes more standardized
-- The integration boundary becomes cleaner
+- Answers look similar to Phase 3
+- Tool access goes through a protocol boundary
+- The tool is discovered, not hardcoded
 
 </div>
 <div>
 
 <div class="col-heading col-heading-warm">Why it matters</div>
 
-- Participants can separate capability from protocol
+- Capability and transport are separate concerns
 - MCP matters for architecture and interoperability
-- The same capability can be exposed through a cleaner interface boundary
+- Same capability, cleaner interface boundary
 
 </div>
 </div>
@@ -397,9 +403,70 @@ Show where the tool is registered and where the loop executes it.
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 <!--
-Use this phase to distinguish capability from integration pattern.
-The behavior may look similar, but the architecture is different.
+Compare Phase 3 and Phase 4 with the same question.
+The answers are similar, but the architecture is different.
 -->
+
+---
+
+## Phase 5 &mdash; Compare
+
+<div class="phase-badge badge-warm">Phase 5</div>
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+
+<div class="col-heading">What was added</div>
+
+- Both direct and MCP tools in the same agent
+- User can choose which path to use
+
+</div>
+<div>
+
+<div class="col-heading col-heading-warm">What stayed the same</div>
+
+- Same knowledge capability
+- Same agent loop
+- Same chat UI
+
+</div>
+</div>
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+
+<div class="col-heading">What behavior changed</div>
+
+- Asking for "direct" or "MCP" uses different paths
+- Asking to "compare" uses both
+- Chainlit UI shows which tool name was called
+
+</div>
+<div>
+
+<div class="col-heading col-heading-warm">Why it matters</div>
+
+- The architectural difference becomes tangible
+- Same result, different plumbing
+- Participants decide when standardization is worth it
+
+</div>
+</div>
+
+<div class="flow">
+  <span class="flow-node">User</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-accent">LLM</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-warm">Direct or MCP</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-accent">LLM</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node">Answer</span>
+</div>
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 layout: center
@@ -409,7 +476,7 @@ layout: center
 
 <div class="agent-formula">
 
-`Chat -> Chat + Memory -> Chat + Tool -> Chat + Tool + MCP`
+`Chat -> Memory -> Tool -> MCP -> Compare`
 
 </div>
 
@@ -436,7 +503,13 @@ layout: center
 <div class="recap-card">
   <div class="recap-number">04</div>
   <div class="recap-title">MCP</div>
-  <div class="recap-desc">Tool access becomes standardized</div>
+  <div class="recap-desc">Tool access via standard protocol</div>
+</div>
+
+<div class="recap-card">
+  <div class="recap-number">05</div>
+  <div class="recap-title">Compare</div>
+  <div class="recap-desc">Direct vs MCP side by side</div>
 </div>
 
 </div>
@@ -447,10 +520,10 @@ layout: center
 
 ## Discussion
 
-- When do you actually need an **agent** instead of plain chat?
-- When is a **workflow** enough without tool choice?
-- Where does **MCP** help in real systems?
-- What's the minimal architecture for **your** use case?
+- Your company has an **FAQ system** &mdash; do you need an agent, or does RAG suffice?
+- You want to **summarize emails** &mdash; plain chat, agent, or fixed workflow?
+- A team builds internal **developer tools** &mdash; when does MCP help?
+- What's the **minimal architecture** for your use case?
 <div class="discussion-cta">
 
 **The right amount of complexity is the minimum needed for the current task.**
