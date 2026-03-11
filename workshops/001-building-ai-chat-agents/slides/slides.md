@@ -3,40 +3,34 @@ theme: default
 title: Building AI Chat Agents with LangChain, Chainlit, GitHub Models, Tools, and MCP
 info: |
   A technical workshop deck for understanding AI agents through incremental implementation phases.
-class: text-left
+layout: cover
+class: text-center
 transition: slide-left
 mdc: true
+fonts:
+  sans: Inter
+  mono: JetBrains Mono
 ---
 
 <style src="./theme.css"></style>
 
----
-layout: cover
-class: text-center
----
-
 <div class="cover-content">
+
+<div class="cover-glow"></div>
 
 # Building AI Chat Agents
 
 <p class="subtitle">LangChain &middot; Chainlit &middot; GitHub Models &middot; Tools &middot; MCP</p>
 
 <div class="cover-meta">
-
 <div v-click class="meta-item">60 minutes</div>
-<div v-click class="meta-item">Four runnable phases</div>
+<div v-click class="meta-item">Four phases</div>
 <div v-click class="meta-item">Local knowledge search</div>
-
 </div>
 
 <p v-click class="cover-footer">Meierhoff Systems Lab</p>
 
 </div>
-
-::: notes
-Frame the session as architectural comparison, not feature building.
-Participants should feel the difference between each phase, not just hear about it.
-:::
 
 ---
 transition: fade-out
@@ -53,10 +47,7 @@ transition: fade-out
 
 </v-clicks>
 
-::: notes
-Emphasize that the workshop is intentionally local and small.
-The point is to make architecture inspectable.
-:::
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 layout: two-cols
@@ -84,46 +75,43 @@ layoutClass: gap-8
 
 <div v-click class="diagram-container">
 
-```mermaid
-flowchart TD
-  U[User] --> UI[Chainlit UI]
-  UI --> LLM[LLM]
-  LLM --> M[Memory]
-  LLM --> D{Need a tool?}
-  D -->|yes| T[Tool / MCP]
+```mermaid {theme: 'base', scale: 0.7}
+flowchart LR
+  U[User] --> LLM
+  LLM --> D{Tool?}
+  D -->|yes| T[Tool]
   T --> LLM
   D -->|no| A[Answer]
 ```
 
 </div>
 
-::: notes
-Keep the definition practical.
-Memory is optional support. Tools and the loop are what make the architecture feel agent-like.
-:::
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 layout: center
 class: text-center
 ---
 
-<div class="phase-divider">
+<div class="section-heading">
 
 # The Four Phases
 
-<p class="phase-divider-sub">Each phase adds exactly one architectural change</p>
+<p class="section-heading-sub">Each phase adds exactly one architectural change</p>
 
 <div class="phase-pills" v-click>
-  <span class="pill pill-1">Chat</span>
+  <span class="pill pill-active">Chat</span>
   <span class="pill-arrow">&rarr;</span>
-  <span class="pill pill-2">Memory</span>
+  <span class="pill">Memory</span>
   <span class="pill-arrow">&rarr;</span>
-  <span class="pill pill-3">Tools</span>
+  <span class="pill">Tools</span>
   <span class="pill-arrow">&rarr;</span>
-  <span class="pill pill-4">MCP</span>
+  <span class="pill">MCP</span>
 </div>
 
 </div>
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 
@@ -131,10 +119,10 @@ class: text-center
 
 <div class="phase-badge">Phase 1</div>
 
-<div class="grid grid-cols-2 gap-8 mt-4">
+<div class="grid grid-cols-2 gap-10 mt-6">
 <div>
 
-**What changed**
+<div class="col-heading">What changed</div>
 
 <v-clicks>
 
@@ -147,7 +135,7 @@ class: text-center
 </div>
 <div>
 
-**What to notice**
+<div class="col-heading col-heading-warm">What to notice</div>
 
 <v-clicks>
 
@@ -160,18 +148,15 @@ class: text-center
 </div>
 </div>
 
-<div v-click class="phase-code-hint">
-
-```
-User  →  LLM  →  Answer
-```
-
+<div v-click class="flow">
+  <span class="flow-node">User</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-accent">LLM</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node">Answer</span>
 </div>
 
-::: notes
-Ask for a follow-up question like "now summarize that in one sentence."
-The loss of context should be noticeable.
-:::
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 
@@ -179,10 +164,10 @@ The loss of context should be noticeable.
 
 <div class="phase-badge">Phase 2</div>
 
-<div class="grid grid-cols-2 gap-8 mt-4">
+<div class="grid grid-cols-2 gap-10 mt-6">
 <div>
 
-**What changed**
+<div class="col-heading">What changed</div>
 
 <v-clicks>
 
@@ -195,7 +180,7 @@ The loss of context should be noticeable.
 </div>
 <div>
 
-**What to notice**
+<div class="col-heading col-heading-warm">What to notice</div>
 
 <v-clicks>
 
@@ -208,29 +193,26 @@ The loss of context should be noticeable.
 </div>
 </div>
 
-<div v-click class="phase-code-hint">
-
-```
-User  →  LLM + History  →  Answer
-```
-
+<div v-click class="flow">
+  <span class="flow-node">User</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-accent">LLM + History</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node">Answer</span>
 </div>
 
-::: notes
-Be explicit that memory is not yet a tool.
-It improves continuity, but it does not let the system inspect the world.
-:::
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 
 ## Phase 3 &mdash; Tools
 
-<div class="phase-badge">Phase 3</div>
+<div class="phase-badge badge-warm">Phase 3</div>
 
-<div class="grid grid-cols-2 gap-8 mt-4">
+<div class="grid grid-cols-2 gap-10 mt-6">
 <div>
 
-**What changed**
+<div class="col-heading">What changed</div>
 
 <v-clicks>
 
@@ -243,7 +225,7 @@ It improves continuity, but it does not let the system inspect the world.
 </div>
 <div>
 
-**What to notice**
+<div class="col-heading col-heading-warm">What to notice</div>
 
 <v-clicks>
 
@@ -256,29 +238,30 @@ It improves continuity, but it does not let the system inspect the world.
 </div>
 </div>
 
-<div v-click class="phase-code-hint">
-
-```
-User  →  LLM  →  Tool Decision  →  Tool Exec  →  LLM  →  Answer
-```
-
+<div v-click class="flow">
+  <span class="flow-node">User</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-accent">LLM</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-warm">Tool</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-accent">LLM</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node">Answer</span>
 </div>
 
-::: notes
-This is the strongest behavioral shift in the workshop.
-Participants should feel that the system is no longer "just chatting."
-:::
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 
 ## Phase 4 &mdash; MCP
 
-<div class="phase-badge">Phase 4</div>
+<div class="phase-badge badge-warm">Phase 4</div>
 
-<div class="grid grid-cols-2 gap-8 mt-4">
+<div class="grid grid-cols-2 gap-10 mt-6">
 <div>
 
-**What changed**
+<div class="col-heading">What changed</div>
 
 <v-clicks>
 
@@ -291,7 +274,7 @@ Participants should feel that the system is no longer "just chatting."
 </div>
 <div>
 
-**What to notice**
+<div class="col-heading col-heading-warm">What to notice</div>
 
 <v-clicks>
 
@@ -304,18 +287,21 @@ Participants should feel that the system is no longer "just chatting."
 </div>
 </div>
 
-<div v-click class="phase-code-hint">
-
-```
-User  →  LLM  →  MCP Client  →  MCP Server  →  Tool  →  LLM  →  Answer
-```
-
+<div v-click class="flow">
+  <span class="flow-node">User</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-accent">LLM</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node">MCP Client</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-warm">MCP Server</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node flow-node-accent">LLM</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node">Answer</span>
 </div>
 
-::: notes
-Make the contrast explicit: phase 3 changes capability, phase 4 changes interface and architecture.
-That distinction is important.
-:::
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 layout: center
@@ -326,30 +312,32 @@ layout: center
 <div class="recap-grid">
 
 <div v-click class="recap-card">
-  <div class="recap-label">Phase 1</div>
+  <div class="recap-number">01</div>
   <div class="recap-title">Plain Chat</div>
   <div class="recap-desc">Response from the current prompt</div>
 </div>
 
 <div v-click class="recap-card">
-  <div class="recap-label">Phase 2</div>
+  <div class="recap-number">02</div>
   <div class="recap-title">Memory</div>
   <div class="recap-desc">Response shaped by prior turns</div>
 </div>
 
 <div v-click class="recap-card">
-  <div class="recap-label">Phase 3</div>
+  <div class="recap-number">03</div>
   <div class="recap-title">Tools</div>
   <div class="recap-desc">Response can use external capability</div>
 </div>
 
 <div v-click class="recap-card">
-  <div class="recap-label">Phase 4</div>
+  <div class="recap-number">04</div>
   <div class="recap-title">MCP</div>
   <div class="recap-desc">Tool access becomes standardized</div>
 </div>
 
 </div>
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
 
@@ -370,7 +358,4 @@ layout: center
 
 </div>
 
-::: notes
-End by separating behavioral complexity from architectural complexity.
-Not every useful system needs the full stack shown here.
-:::
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
