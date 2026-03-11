@@ -13,7 +13,12 @@ from langchain_openai import ChatOpenAI
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-load_dotenv()
+WORKSHOP_ROOT = Path(__file__).resolve().parents[2]
+PHASE_DIR = Path(__file__).resolve().parent
+
+# Load shared workshop settings first, then let a phase-local `.env` override them.
+load_dotenv(WORKSHOP_ROOT / ".env")
+load_dotenv(PHASE_DIR / ".env", override=True)
 
 MCP_SERVER_PATH = Path(__file__).resolve().parent / "mcp_server.py"
 

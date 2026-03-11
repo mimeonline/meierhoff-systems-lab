@@ -67,11 +67,18 @@ Each phase is self-contained. From the phase directory:
 python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
 env -u DEBUG chainlit run app.py -w
 ```
 
 Create `.venv` once per phase directory. In later sessions, reactivate with `source .venv/bin/activate`.
+
+Create one shared workshop env once in `workshops/001-building-ai-chat-agents/.env`:
+
+```bash
+cp .env.example .env
+```
+
+All phases load that shared `.env` automatically. If needed, a phase-local `.env` can still be added to override the shared values for that phase only.
 
 Optionally set `GITHUB_MODEL` in `.env` to override the default model.
 

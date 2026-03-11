@@ -1,11 +1,17 @@
 """Shared setup – not part of the learning content."""
 
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-load_dotenv()
+WORKSHOP_ROOT = Path(__file__).resolve().parents[2]
+PHASE_DIR = Path(__file__).resolve().parent
+
+# Load shared workshop settings first, then let a phase-local `.env` override them.
+load_dotenv(WORKSHOP_ROOT / ".env")
+load_dotenv(PHASE_DIR / ".env", override=True)
 
 
 def build_model() -> ChatOpenAI:
