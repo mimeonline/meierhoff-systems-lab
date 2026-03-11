@@ -424,6 +424,27 @@
   padding-top: 1rem;
 }
 
+/* ── SVG container ── */
+
+.svg-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem 0;
+}
+
+.svg-container svg {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  opacity: 0.9;
+}
+
+.phase-progress-svg text {
+  font-size: 3.2px;
+}
+
 /* ── Column subheading ── */
 
 .col-heading {

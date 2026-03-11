@@ -34,6 +34,8 @@ fonts:
 
 ---
 transition: fade-out
+layout: two-cols
+layoutClass: gap-8
 ---
 
 ## Why This Workshop Exists
@@ -43,6 +45,32 @@ transition: fade-out
 - This workshop adds one capability at a time
 - We alternate between short explanation and live coding
 - Participants compare code, behavior, and architecture after every phase
+
+::right::
+
+<div class="svg-container">
+<svg class="phase-progress-svg" viewBox="0 0 110 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Step 1 -->
+  <rect x="5" y="70" width="22" height="15" rx="3" fill="#162132" stroke="#388bd2" stroke-width="0.6"/>
+  <text x="16" y="79.5" text-anchor="middle" fill="#7cc4f5" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">Chat</text>
+
+  <!-- Step 2 -->
+  <rect x="30" y="52" width="22" height="33" rx="3" fill="#162132" stroke="#388bd2" stroke-width="0.6"/>
+  <text x="41" y="62" text-anchor="middle" fill="#7cc4f5" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">Memory</text>
+
+  <!-- Step 3 -->
+  <rect x="55" y="35" width="22" height="50" rx="3" fill="#162132" stroke="#e8914f" stroke-width="0.6"/>
+  <text x="66" y="45" text-anchor="middle" fill="#e8914f" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">Tools</text>
+
+  <!-- Step 4 -->
+  <rect x="80" y="17" width="22" height="68" rx="3" fill="#162132" stroke="#e8914f" stroke-width="0.6"/>
+  <text x="91" y="27" text-anchor="middle" fill="#e8914f" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">MCP</text>
+
+  <!-- Arrow line -->
+  <path d="M16 69 C30 58, 48 45, 64 33 S84 18, 92 12" stroke="#388bd2" stroke-width="0.7" stroke-dasharray="2.5 2" stroke-linecap="round" fill="none" opacity="0.45"/>
+  <polygon points="96,9 89,12 93,18" fill="#388bd2" opacity="0.45"/>
+</svg>
+</div>
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
