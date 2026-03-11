@@ -50,7 +50,6 @@ python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-export GITHUB_TOKEN=your_github_token
 env -u DEBUG chainlit run app.py -w
 ```
 
@@ -68,3 +67,5 @@ After the app starts, enter:
 - `Summarize it in one sentence.`
 
 Observe that the model may choose to use the local knowledge tool before answering. The visible behavior is still chat, but the internal flow can now include tool calls.
+
+Also observe the visible tool step in the Chainlit UI. It shows the tool input and output so participants can see when the model uses an external capability.

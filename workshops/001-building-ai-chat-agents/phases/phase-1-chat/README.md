@@ -40,7 +40,6 @@ python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-export GITHUB_TOKEN=your_github_token
 env -u DEBUG chainlit run app.py -w
 ```
 
@@ -61,12 +60,12 @@ Observe that the second answer does not reliably remember the first message beca
 
 ## 📦 Dependency Baseline
 
-This phase is pinned to the latest package versions verified on March 11, 2026:
+This phase is pinned to published package versions verified on March 11, 2026:
 
-- `chainlit==2.10.0`
-- `langchain==1.2.11`
-- `langchain-openai==1.1.11`
-- `python-dotenv==1.2.2`
+- `chainlit==2.9.6`
+- `langchain==1.2.10`
+- `langchain-openai==1.1.9`
+- `python-dotenv==1.2.1`
 
 ## 🐍 Python Version
 

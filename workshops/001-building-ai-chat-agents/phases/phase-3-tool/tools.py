@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import logging
 import re
 from pathlib import Path
 
 KNOWLEDGE_DIR = Path(__file__).resolve().parent / "knowledge"
+logger = logging.getLogger(__name__)
 
 
 def search_knowledge(query: str) -> str:
@@ -14,10 +16,14 @@ def search_knowledge(query: str) -> str:
     """
 
     query = query.strip()
+    logger.info("search_knowledge called with query=%r", query)
+
     if not query:
+        logger.info("search_knowledge received an empty query")
         return "Please provide a query."
 
     terms = [term for term in re.findall(r"[a-zA-Z0-9-]+", query.lower()) if len(term) > 1]
+    logger.info("search_knowledge extracted terms=%s", terms)
     matches: list[tuple[int, Path, str]] = []
 
     for path in sorted(KNOWLEDGE_DIR.glob("*.md")):
@@ -26,14 +32,21 @@ def search_knowledge(query: str) -> str:
         score = sum(lowered.count(term) for term in terms)
         if score:
             matches.append((score, path, excerpt_from(text, terms)))
+            logger.info("search_knowledge match file=%s score=%s", path.name, score)
 
     if not matches:
         available = ", ".join(path.stem for path in sorted(KNOWLEDGE_DIR.glob("*.md")))
+        logger.info("search_knowledge found no strong match; available=%s", available)
         return f"No strong match found. Available notes: {available}."
 
     matches.sort(key=lambda item: (-item[0], item[1].name))
     top = matches[:2]
-    return "\n\n".join(f"{path.stem} (score: {score})\n{excerpt}" for score, path, excerpt in top)
+    result = "\n\n".join(f"{path.stem} (score: {score})\n{excerpt}" for score, path, excerpt in top)
+    logger.info(
+        "search_knowledge returning top_matches=%s",
+        [f"{path.name}:{score}" for score, path, _ in top],
+    )
+    return result
 
 
 def excerpt_from(text: str, terms: list[str]) -> str:

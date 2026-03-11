@@ -118,7 +118,6 @@ python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-export GITHUB_TOKEN=your_github_token
 env -u DEBUG chainlit run app.py -w
 ```
 
