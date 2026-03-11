@@ -25,3 +25,7 @@ A workshop folder should usually contain:
 - a local `README.md`
 - any required examples or exercise material
 - only the assets needed for that workshop
+
+## Current Workshops
+
+- `001-building-ai-chat-agents`: an incremental workshop that explains AI agents through five small phases, moving from plain chat to memory, tools, MCP, and direct-vs-MCP comparison.
