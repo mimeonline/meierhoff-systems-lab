@@ -29,7 +29,7 @@ Developers, architects, and technically curious practitioners who want a practic
 - A GitHub account with access to GitHub Models
 - A GitHub token available as `GITHUB_TOKEN`
 
-Create a GitHub token before the workshop and add it to the shared workshop `.env` file. The applications use that token to authenticate against GitHub Models.
+Create a GitHub token before the workshop at <https://github.com/settings/tokens> and add it to the shared workshop `.env` file. The applications use that token to authenticate against GitHub Models.
 
 Verify before the workshop:
 

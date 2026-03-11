@@ -520,10 +520,12 @@ layout: center
 
 ## Discussion
 
-- Your company has an **FAQ system** &mdash; do you need an agent, or does RAG suffice?
-- You want to **summarize emails** &mdash; plain chat, agent, or fixed workflow?
-- A team builds internal **developer tools** &mdash; when does MCP help?
-- What's the **minimal architecture** for your use case?
+Now we can discuss:
+
+- what felt clearly useful
+- what felt like unnecessary complexity
+- where you would draw the line between chat, workflow, and agent
+- what this means for your own use case
 <div class="discussion-cta">
 
 **The right amount of complexity is the minimum needed for the current task.**
