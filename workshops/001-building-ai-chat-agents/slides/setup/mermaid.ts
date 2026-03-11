@@ -22,7 +22,7 @@ export default defineMermaidSetup(() => {
       clusterBorder: '#1e3a5f',
       edgeLabelBackground: '#0f172a',
       fontFamily: 'Inter, sans-serif',
-      fontSize: '14px',
+      fontSize: '12px',
       noteBkgColor: '#162132',
       noteTextColor: '#f1f5f9',
       noteBorderColor: '#1e3a5f',

@@ -43,6 +43,7 @@ transition: fade-out
 - LLM chat is often labeled an **"agent"** too early
 - The useful question is: **what changed in the system?**
 - This workshop adds one capability at a time
+- We alternate between short explanation and live coding
 - Participants compare code, behavior, and architecture after every phase
 
 </v-clicks>
@@ -75,10 +76,12 @@ layoutClass: gap-8
 
 <div v-click class="diagram-container">
 
-```mermaid {theme: 'base', scale: 0.7}
-flowchart LR
-  U[User] --> LLM
-  LLM --> D{Tool?}
+```mermaid {theme: 'base', scale: 0.65}
+flowchart TD
+  U[User] --> UI[Chainlit UI]
+  UI --> LLM[LLM]
+  LLM --> M[Optional Memory]
+  LLM --> D{Need a tool?}
   D -->|yes| T[Tool]
   T --> LLM
   D -->|no| A[Answer]
@@ -122,26 +125,54 @@ class: text-center
 <div class="grid grid-cols-2 gap-10 mt-6">
 <div>
 
-<div class="col-heading">What changed</div>
+<div class="col-heading">What was added</div>
 
 <v-clicks>
 
-- Baseline Chainlit chat and one model call
-- No memory, no tools, one response step
-- This is the **reference point** for every later comparison
+- Baseline Chainlit chat
+- One model call per user message
 
 </v-clicks>
 
 </div>
 <div>
 
-<div class="col-heading col-heading-warm">What to notice</div>
+<div class="col-heading col-heading-warm">What stayed the same</div>
 
 <v-clicks>
 
+- No memory
+- No tools
+- One response step only
+
+</v-clicks>
+
+</div>
+</div>
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+
+<div class="col-heading">What behavior changed</div>
+
+<v-clicks>
+
+- None yet
+- This is plain chat only
 - Each turn stands alone
-- Follow-up questions **lose context**
-- Ask: *"now summarize that in one sentence"*
+
+</v-clicks>
+
+</div>
+<div>
+
+<div class="col-heading col-heading-warm">Why it matters</div>
+
+<v-clicks>
+
+- This is the reference point for the workshop
+- Participants can feel what the system cannot yet do
+- Good moment to switch into the first live-coding step
 
 </v-clicks>
 
@@ -167,26 +198,54 @@ class: text-center
 <div class="grid grid-cols-2 gap-10 mt-6">
 <div>
 
-<div class="col-heading">What changed</div>
+<div class="col-heading">What was added</div>
 
 <v-clicks>
 
 - Conversation state in the current session
-- Same UI, same model, still no tool use
-- Prior turns now **influence** the next answer
+- Previous messages are replayed to the model
 
 </v-clicks>
 
 </div>
 <div>
 
-<div class="col-heading col-heading-warm">What to notice</div>
+<div class="col-heading col-heading-warm">What stayed the same</div>
 
 <v-clicks>
 
-- Follow-up questions become **coherent**
-- The chat feels less stateless
-- State changes behavior even before new capabilities
+- Same UI
+- Same model
+- Still no tool use
+
+</v-clicks>
+
+</div>
+</div>
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+
+<div class="col-heading">What behavior changed</div>
+
+<v-clicks>
+
+- Prior turns now influence the next answer
+- Follow-up questions become more coherent
+- The system feels less stateless
+
+</v-clicks>
+
+</div>
+<div>
+
+<div class="col-heading col-heading-warm">Why it matters</div>
+
+<v-clicks>
+
+- Participants can feel that state changes behavior
+- Memory improves continuity before any tool is introduced
+- Good moment to compare Phase 1 and Phase 2 live
 
 </v-clicks>
 
@@ -212,26 +271,54 @@ class: text-center
 <div class="grid grid-cols-2 gap-10 mt-6">
 <div>
 
-<div class="col-heading">What changed</div>
+<div class="col-heading">What was added</div>
 
 <v-clicks>
 
-- `search_knowledge(query)` plus tool binding
-- Same chat UI, same model, same memory
-- The model can **retrieve local knowledge** before answering
+- `search_knowledge(query)`
+- Tool binding and tool execution loop
 
 </v-clicks>
 
 </div>
 <div>
 
-<div class="col-heading col-heading-warm">What to notice</div>
+<div class="col-heading col-heading-warm">What stayed the same</div>
 
 <v-clicks>
 
-- Some questions **trigger tool use**
-- The response loop is now **multi-step**
-- The system is no longer "just chatting"
+- Same chat UI
+- Same model
+- Same memory pattern
+
+</v-clicks>
+
+</div>
+</div>
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+
+<div class="col-heading">What behavior changed</div>
+
+<v-clicks>
+
+- The model can retrieve local knowledge before answering
+- Some questions now trigger tool use
+- The response loop becomes multi-step
+
+</v-clicks>
+
+</div>
+<div>
+
+<div class="col-heading col-heading-warm">Why it matters</div>
+
+<v-clicks>
+
+- This is where the system starts to feel agent-like
+- The model is no longer limited to prompt plus memory
+- Good moment to switch from explanation to code inspection
 
 </v-clicks>
 
@@ -261,26 +348,54 @@ class: text-center
 <div class="grid grid-cols-2 gap-10 mt-6">
 <div>
 
-<div class="col-heading">What changed</div>
+<div class="col-heading">What was added</div>
 
 <v-clicks>
 
-- MCP tool exposure, discovery, and invocation
-- Same knowledge capability, same user-facing task
-- Tool access becomes **standardized** and extensible
+- MCP tool exposure
+- MCP discovery and invocation
 
 </v-clicks>
 
 </div>
 <div>
 
-<div class="col-heading col-heading-warm">What to notice</div>
+<div class="col-heading col-heading-warm">What stayed the same</div>
 
 <v-clicks>
 
-- User-facing behavior may look **similar**
-- The integration boundary is **cleaner**
-- Architecture improves even when capability stays the same
+- Same knowledge capability
+- Same user-facing task
+- Same general tool-augmented interaction
+
+</v-clicks>
+
+</div>
+</div>
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+
+<div class="col-heading">What behavior changed</div>
+
+<v-clicks>
+
+- User-facing answers may look similar
+- Tool access becomes more standardized
+- The integration boundary becomes cleaner
+
+</v-clicks>
+
+</div>
+<div>
+
+<div class="col-heading col-heading-warm">Why it matters</div>
+
+<v-clicks>
+
+- Participants can separate capability from protocol
+- MCP matters for architecture and interoperability
+- Good final comparison point before recap and discussion
 
 </v-clicks>
 
@@ -308,6 +423,12 @@ layout: center
 ---
 
 ## Recap
+
+<div class="agent-formula">
+
+`Chat -> Chat + Memory -> Chat + Tool -> Chat + Tool + MCP`
+
+</div>
 
 <div class="recap-grid">
 
