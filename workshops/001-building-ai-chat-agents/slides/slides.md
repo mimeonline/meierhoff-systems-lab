@@ -4,21 +4,34 @@ title: Building AI Chat Agents with LangChain, Chainlit, GitHub Models, Tools, a
 info: |
   A technical workshop deck for understanding AI agents through incremental implementation phases.
 class: text-left
+transition: slide-left
+mdc: true
 ---
 
 <style src="./theme.css"></style>
 
+---
+layout: cover
+class: text-center
+---
+
+<div class="cover-content">
+
 # Building AI Chat Agents
 
-With LangChain, Chainlit, GitHub Models, Tools, and MCP
+<p class="subtitle">LangChain &middot; Chainlit &middot; GitHub Models &middot; Tools &middot; MCP</p>
 
-Technical workshop on how a chat system becomes agent-like through small architectural steps.
+<div class="cover-meta">
 
-- 60 minutes
-- Four runnable phases
-- Local knowledge search
-- Public, minimal, reproducible example
-- Meierhoff Systems Lab
+<div v-click class="meta-item">60 minutes</div>
+<div v-click class="meta-item">Four runnable phases</div>
+<div v-click class="meta-item">Local knowledge search</div>
+
+</div>
+
+<p v-click class="cover-footer">Meierhoff Systems Lab</p>
+
+</div>
 
 ::: notes
 Frame the session as architectural comparison, not feature building.
@@ -26,13 +39,19 @@ Participants should feel the difference between each phase, not just hear about 
 :::
 
 ---
+transition: fade-out
+---
 
 ## Why This Workshop Exists
 
-- LLM chat is often labeled an "agent" too early
-- The useful question is: what changed in the system?
+<v-clicks>
+
+- LLM chat is often labeled an **"agent"** too early
+- The useful question is: **what changed in the system?**
 - This workshop adds one capability at a time
 - Participants compare code, behavior, and architecture after every phase
+
+</v-clicks>
 
 ::: notes
 Emphasize that the workshop is intentionally local and small.
@@ -40,27 +59,43 @@ The point is to make architecture inspectable.
 :::
 
 ---
+layout: two-cols
+layoutClass: gap-8
+---
 
 ## What Is An AI Agent?
 
-- A model alone is not the whole system
+<v-clicks>
+
+- A model alone is **not** the whole system
 - Memory can preserve conversational state
 - Tools extend capability beyond generation
-- The key shift is a loop: decide, act, observe, respond
+- The key shift is a **loop**: decide, act, observe, respond
+
+</v-clicks>
+
+<div v-click class="agent-formula">
 
 `Agent = LLM + Tools + Reasoning Loop`
 
+</div>
+
+::right::
+
+<div v-click class="diagram-container">
+
 ```mermaid
-flowchart LR
+flowchart TD
   U[User] --> UI[Chainlit UI]
   UI --> LLM[LLM]
-  LLM --> M[Optional Memory]
+  LLM --> M[Memory]
   LLM --> D{Need a tool?}
-  D -->|yes| T[Tool or MCP Tool]
+  D -->|yes| T[Tool / MCP]
   T --> LLM
   D -->|no| A[Answer]
-  LLM --> A
 ```
+
+</div>
 
 ::: notes
 Keep the definition practical.
@@ -68,21 +103,70 @@ Memory is optional support. Tools and the loop are what make the architecture fe
 :::
 
 ---
+layout: center
+class: text-center
+---
 
-## Phase 1 Plain Chat
+<div class="phase-divider">
 
-- What was added: baseline Chainlit chat and one model call
-- What stayed the same: no memory, no tools, one response step
-- What behavior changed: none yet, this is plain chat only
-- Why it matters: this is the reference point for every later comparison
+# The Four Phases
 
-What the code does:
-- Sends the current message to the model
-- Returns the model response directly
+<p class="phase-divider-sub">Each phase adds exactly one architectural change</p>
 
-What participants should notice:
+<div class="phase-pills" v-click>
+  <span class="pill pill-1">Chat</span>
+  <span class="pill-arrow">&rarr;</span>
+  <span class="pill pill-2">Memory</span>
+  <span class="pill-arrow">&rarr;</span>
+  <span class="pill pill-3">Tools</span>
+  <span class="pill-arrow">&rarr;</span>
+  <span class="pill pill-4">MCP</span>
+</div>
+
+</div>
+
+---
+
+## Phase 1 &mdash; Plain Chat
+
+<div class="phase-badge">Phase 1</div>
+
+<div class="grid grid-cols-2 gap-8 mt-4">
+<div>
+
+**What changed**
+
+<v-clicks>
+
+- Baseline Chainlit chat and one model call
+- No memory, no tools, one response step
+- This is the **reference point** for every later comparison
+
+</v-clicks>
+
+</div>
+<div>
+
+**What to notice**
+
+<v-clicks>
+
 - Each turn stands alone
-- Follow-up questions lose context
+- Follow-up questions **lose context**
+- Ask: *"now summarize that in one sentence"*
+
+</v-clicks>
+
+</div>
+</div>
+
+<div v-click class="phase-code-hint">
+
+```
+User  →  LLM  →  Answer
+```
+
+</div>
 
 ::: notes
 Ask for a follow-up question like "now summarize that in one sentence."
@@ -91,20 +175,46 @@ The loss of context should be noticeable.
 
 ---
 
-## Phase 2 Memory
+## Phase 2 &mdash; Memory
 
-- What was added: conversation state in the current session
-- What stayed the same: same UI, same model, still no tool use
-- What behavior changed: prior turns now influence the next answer
-- Why it matters: state changes behavior even before new capabilities are added
+<div class="phase-badge">Phase 2</div>
 
-What the code does:
-- Stores user and assistant messages
-- Replays them on each model call
+<div class="grid grid-cols-2 gap-8 mt-4">
+<div>
 
-What participants should notice:
-- Follow-up questions become coherent
+**What changed**
+
+<v-clicks>
+
+- Conversation state in the current session
+- Same UI, same model, still no tool use
+- Prior turns now **influence** the next answer
+
+</v-clicks>
+
+</div>
+<div>
+
+**What to notice**
+
+<v-clicks>
+
+- Follow-up questions become **coherent**
 - The chat feels less stateless
+- State changes behavior even before new capabilities
+
+</v-clicks>
+
+</div>
+</div>
+
+<div v-click class="phase-code-hint">
+
+```
+User  →  LLM + History  →  Answer
+```
+
+</div>
 
 ::: notes
 Be explicit that memory is not yet a tool.
@@ -113,22 +223,46 @@ It improves continuity, but it does not let the system inspect the world.
 
 ---
 
-## Phase 3 Tools
+## Phase 3 &mdash; Tools
 
-- What was added: `search_knowledge(query)` plus tool binding and execution
-- What stayed the same: same chat UI, same model, same memory pattern
-- What behavior changed: the model can retrieve local knowledge before answering
-- Why it matters: the system now uses an external capability, not only generation
+<div class="phase-badge">Phase 3</div>
 
-`User -> UI -> LLM -> Tool Decision -> Tool Execution -> LLM -> Answer`
+<div class="grid grid-cols-2 gap-8 mt-4">
+<div>
 
-What the code does:
-- Registers a local knowledge-search tool
-- Executes tool calls and returns the result to the model
+**What changed**
 
-What participants should notice:
-- Some questions trigger tool use
-- The response loop is now multi-step
+<v-clicks>
+
+- `search_knowledge(query)` plus tool binding
+- Same chat UI, same model, same memory
+- The model can **retrieve local knowledge** before answering
+
+</v-clicks>
+
+</div>
+<div>
+
+**What to notice**
+
+<v-clicks>
+
+- Some questions **trigger tool use**
+- The response loop is now **multi-step**
+- The system is no longer "just chatting"
+
+</v-clicks>
+
+</div>
+</div>
+
+<div v-click class="phase-code-hint">
+
+```
+User  →  LLM  →  Tool Decision  →  Tool Exec  →  LLM  →  Answer
+```
+
+</div>
 
 ::: notes
 This is the strongest behavioral shift in the workshop.
@@ -137,20 +271,46 @@ Participants should feel that the system is no longer "just chatting."
 
 ---
 
-## Phase 4 MCP
+## Phase 4 &mdash; MCP
 
-- What was added: MCP tool exposure, discovery, and invocation
-- What stayed the same: same knowledge capability and same user-facing task
-- What behavior changed: tool access becomes standardized and more extensible
-- Why it matters: architecture can improve even when the capability stays the same
+<div class="phase-badge">Phase 4</div>
 
-What the code does:
-- Exposes the knowledge search through a tiny MCP server
-- Connects through an MCP client instead of a direct function call
+<div class="grid grid-cols-2 gap-8 mt-4">
+<div>
 
-What participants should notice:
-- User-facing behavior may look similar
-- The integration boundary is cleaner and more interoperable
+**What changed**
+
+<v-clicks>
+
+- MCP tool exposure, discovery, and invocation
+- Same knowledge capability, same user-facing task
+- Tool access becomes **standardized** and extensible
+
+</v-clicks>
+
+</div>
+<div>
+
+**What to notice**
+
+<v-clicks>
+
+- User-facing behavior may look **similar**
+- The integration boundary is **cleaner**
+- Architecture improves even when capability stays the same
+
+</v-clicks>
+
+</div>
+</div>
+
+<div v-click class="phase-code-hint">
+
+```
+User  →  LLM  →  MCP Client  →  MCP Server  →  Tool  →  LLM  →  Answer
+```
+
+</div>
 
 ::: notes
 Make the contrast explicit: phase 3 changes capability, phase 4 changes interface and architecture.
@@ -158,24 +318,57 @@ That distinction is important.
 :::
 
 ---
+layout: center
+---
 
-## Recap And Discussion
+## Recap
 
-Progression:
+<div class="recap-grid">
 
-- `Chat -> Chat + Memory -> Chat + Tool -> Chat + Tool + MCP`
-- Plain chat: response from the current prompt
-- Memory: response shaped by prior turns
-- Tools: response can use external capability
-- MCP: tool access becomes standardized and easier to extend
+<div v-click class="recap-card">
+  <div class="recap-label">Phase 1</div>
+  <div class="recap-title">Plain Chat</div>
+  <div class="recap-desc">Response from the current prompt</div>
+</div>
 
-`chat -> memory -> tool use -> standardized tool access`
+<div v-click class="recap-card">
+  <div class="recap-label">Phase 2</div>
+  <div class="recap-title">Memory</div>
+  <div class="recap-desc">Response shaped by prior turns</div>
+</div>
 
-Discussion prompts:
+<div v-click class="recap-card">
+  <div class="recap-label">Phase 3</div>
+  <div class="recap-title">Tools</div>
+  <div class="recap-desc">Response can use external capability</div>
+</div>
 
-- When do you actually need an agent instead of plain chat?
-- When is a workflow enough without tool choice?
-- Where does MCP help in real systems?
+<div v-click class="recap-card">
+  <div class="recap-label">Phase 4</div>
+  <div class="recap-title">MCP</div>
+  <div class="recap-desc">Tool access becomes standardized</div>
+</div>
+
+</div>
+
+---
+
+## Discussion
+
+<v-clicks>
+
+- When do you actually need an **agent** instead of plain chat?
+- When is a **workflow** enough without tool choice?
+- Where does **MCP** help in real systems?
+- What's the minimal architecture for **your** use case?
+
+</v-clicks>
+
+<div v-click class="discussion-cta">
+
+**The right amount of complexity is the minimum needed for the current task.**
+
+</div>
 
 ::: notes
 End by separating behavioral complexity from architectural complexity.

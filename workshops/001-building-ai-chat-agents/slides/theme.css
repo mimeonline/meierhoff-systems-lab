@@ -7,7 +7,13 @@
   --msl-muted: #98a9bf;
   --msl-accent: #4c88bf;
   --msl-accent-strong: #78aad7;
+  --msl-phase-1: #4c88bf;
+  --msl-phase-2: #6b8fbf;
+  --msl-phase-3: #bf8c4c;
+  --msl-phase-4: #8c6bbf;
 }
+
+/* ── Base ── */
 
 .slidev-layout {
   background: var(--msl-bg);
@@ -102,4 +108,213 @@
 .slidev-layout strong {
   color: var(--msl-accent-strong);
   font-weight: 600;
+}
+
+/* ── v-click animations ── */
+
+.slidev-vclick-target {
+  transition: all 400ms ease;
+}
+
+.slidev-vclick-hidden {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* ── Cover slide ── */
+
+.cover-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.cover-content h1 {
+  border-left: none;
+  padding-left: 0;
+  font-size: 2.8rem;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--msl-text), var(--msl-accent-strong));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: var(--msl-muted);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  margin-top: -0.5rem;
+}
+
+.cover-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.meta-item {
+  background: var(--msl-surface);
+  border: 1px solid var(--msl-border);
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.9rem;
+  color: var(--msl-muted);
+}
+
+.cover-footer {
+  margin-top: 1.5rem;
+  color: var(--msl-accent);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* ── Phase badge ── */
+
+.phase-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  background: var(--msl-surface);
+  border: 1px solid var(--msl-border);
+  border-radius: 6px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--msl-accent);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* ── Phase code hint ── */
+
+.phase-code-hint {
+  margin-top: 1.5rem;
+}
+
+.phase-code-hint pre {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--msl-accent-strong);
+}
+
+/* ── Phase divider slide ── */
+
+.phase-divider h1 {
+  border-left: none;
+  padding-left: 0;
+  font-size: 2.2rem;
+}
+
+.phase-divider-sub {
+  color: var(--msl-muted);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.phase-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.pill {
+  background: var(--msl-surface);
+  border: 1px solid var(--msl-border);
+  border-radius: 999px;
+  padding: 0.5rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--msl-text);
+}
+
+.pill-1 { border-color: var(--msl-phase-1); color: var(--msl-phase-1); }
+.pill-2 { border-color: var(--msl-phase-2); color: var(--msl-phase-2); }
+.pill-3 { border-color: var(--msl-phase-3); color: var(--msl-phase-3); }
+.pill-4 { border-color: var(--msl-phase-4); color: var(--msl-phase-4); }
+
+.pill-arrow {
+  color: var(--msl-muted);
+  font-size: 1.2rem;
+}
+
+/* ── Recap cards ── */
+
+.recap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.recap-card {
+  background: var(--msl-surface);
+  border: 1px solid var(--msl-border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  text-align: center;
+  transition: border-color 300ms ease;
+}
+
+.recap-card:hover {
+  border-color: var(--msl-accent);
+}
+
+.recap-label {
+  font-size: 0.75rem;
+  color: var(--msl-accent);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.recap-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--msl-text);
+  margin-bottom: 0.4rem;
+}
+
+.recap-desc {
+  font-size: 0.85rem;
+  color: var(--msl-muted);
+  line-height: 1.4;
+}
+
+/* ── Discussion CTA ── */
+
+.discussion-cta {
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
+  background: var(--msl-surface);
+  border: 1px solid var(--msl-accent);
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* ── Diagram container ── */
+
+.diagram-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+/* ── Agent formula ── */
+
+.agent-formula {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.agent-formula code {
+  font-size: 1.05rem;
+  padding: 0.3rem 0.8rem;
 }
