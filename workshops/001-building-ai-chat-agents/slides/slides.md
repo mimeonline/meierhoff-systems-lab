@@ -43,7 +43,7 @@ layoutClass: gap-8
 - LLM chat is often labeled an **"agent"** too early
 - The useful question is: **what changed in the system?**
 - This workshop adds one capability at a time
-- We alternate between short explanation and live coding
+- Each phase makes one architectural change visible
 - Participants compare code, behavior, and architecture after every phase
 
 ::right::
@@ -66,9 +66,17 @@ layoutClass: gap-8
   <rect x="80" y="17" width="22" height="68" rx="3" fill="#162132" stroke="#e8914f" stroke-width="0.6"/>
   <text x="91" y="27" text-anchor="middle" fill="#e8914f" font-size="3.2" font-weight="600" font-family="Inter, sans-serif">MCP</text>
 
-  <!-- Arrow line -->
-  <path d="M16 69 C30 58, 48 45, 64 33 S84 18, 92 12" stroke="#388bd2" stroke-width="0.7" stroke-dasharray="2.5 2" stroke-linecap="round" fill="none" opacity="0.45"/>
-  <polygon points="96,9 89,12 93,18" fill="#388bd2" opacity="0.45"/>
+  <!-- Gradient for arrow -->
+  <defs>
+    <linearGradient id="arrow-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#388bd2" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#7cc4f5" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+  <!-- Curved arrow with offset from bars -->
+  <path d="M10 64 C22 52, 32 44, 38 40 C46 34, 54 28, 62 23 C70 18, 78 13, 88 6" stroke="url(#arrow-grad)" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+  <!-- Arrowhead -->
+  <polygon points="90,4 83,8 85,13" fill="#7cc4f5" opacity="0.5"/>
 </svg>
 </div>
 
