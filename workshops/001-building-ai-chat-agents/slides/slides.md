@@ -99,7 +99,7 @@ layoutClass: gap-8
 - The key shift is a **loop**: decide, act, observe, respond
 <div class="agent-formula">
 
-`Agent = LLM + Tools + Reasoning Loop`
+`Agent = LLM + Memory + Tools + Reasoning Loop`
 
 </div>
 

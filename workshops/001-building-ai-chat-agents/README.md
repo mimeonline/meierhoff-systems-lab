@@ -1,33 +1,35 @@
-# 001 Building AI Chat Agents
+# 🤖 001 Building AI Chat Agents
 
 This workshop teaches what an AI agent is by extending a simple chat application in five small phases. Participants make one architectural change at a time and observe how system behavior changes.
 
-## Workshop Goal
+## 🎯 Workshop Goal
 
 Make the evolution from plain chat to a minimal agent visible and understandable. The examples stay intentionally small and reproducible.
 
-## Learning Goals
+## 📚 Learning Goals
 
 - Understand what an AI agent is in practical architectural terms
 - See how memory changes model behavior across turns
 - See how tool calling changes model behavior and capability
 - Understand where MCP fits as a standardized tool interface
-- Reinforce the mental model `Agent = LLM + Tools + Reasoning Loop`
+- Reinforce the mental model `Agent = LLM + Memory + Tools + Reasoning Loop`
 
-## Duration
+## ⏱️ Duration
 
 75 minutes
 
-## Audience
+## 👥 Audience
 
 Developers, architects, and technically curious practitioners who want a practical first model for AI agents.
 
-## Prerequisites
+## 🧰 Prerequisites
 
 - Basic Python familiarity
 - Python 3.13 installed and available as `python3.13`
 - A GitHub account with access to GitHub Models
 - A GitHub token available as `GITHUB_TOKEN`
+
+Create a GitHub token before the workshop and add it to the shared workshop `.env` file. The applications use that token to authenticate against GitHub Models.
 
 Verify before the workshop:
 
@@ -35,7 +37,7 @@ Verify before the workshop:
 python3.13 --version
 ```
 
-## Workshop Flow
+## 🗺️ Workshop Flow
 
 | Time | Phase | Focus |
 |------|-------|-------|
@@ -47,7 +49,7 @@ python3.13 --version
 | 55-65 min | Phase 5 | Compare direct vs MCP side by side |
 | 65-75 min | Recap | Discussion |
 
-## Phases
+## 🧩 Phases
 
 | Phase | Directory | What changes |
 |-------|-----------|-------------|
@@ -57,11 +59,19 @@ python3.13 --version
 | 4 | `phase-4-mcp` | Same tool, reached through MCP |
 | 5 | `phase-5-compare` | Both paths in one agent |
 
-Together these phases reinforce: `Agent = LLM + Tools + Reasoning Loop`
+Together these phases reinforce: `Agent = LLM + Memory + Tools + Reasoning Loop`
 
-## How To Run Each Phase
+## 🚀 How To Run Each Phase
 
-Each phase is self-contained. From the phase directory:
+First create one shared workshop env in `workshops/001-building-ai-chat-agents/.env`:
+
+```bash
+cp .env.example .env
+```
+
+Open that `.env` file and replace `your_github_token_here` with a real GitHub token that has access to GitHub Models.
+
+After that, from the phase directory:
 
 ```bash
 python3.13 -m venv .venv
@@ -72,25 +82,19 @@ env -u DEBUG chainlit run app.py -w
 
 Create `.venv` once per phase directory. In later sessions, reactivate with `source .venv/bin/activate`.
 
-Create one shared workshop env once in `workshops/001-building-ai-chat-agents/.env`:
-
-```bash
-cp .env.example .env
-```
-
 All phases load that shared `.env` automatically. If needed, a phase-local `.env` can still be added to override the shared values for that phase only.
 
 Optionally set `GITHUB_MODEL` in `.env` to override the default model.
 
-### Shell Note
+### 🛟 Shell Note
 
 If your shell exports `DEBUG=release`, Chainlit can fail at startup. The `env -u DEBUG` prefix avoids that.
 
-### Python Version
+### 🐍 Python Version
 
 Use Python 3.13. The current stack can have issues on Python 3.14.
 
-## Folder Structure
+## 📁 Folder Structure
 
 ```text
 workshops/001-building-ai-chat-agents/
@@ -114,7 +118,7 @@ workshops/001-building-ai-chat-agents/
     └── README.md
 ```
 
-## Discussion Prompts
+## 💬 Discussion Prompts
 
 - Your company has an FAQ system – do you need an agent or does RAG suffice?
 - You want to summarize emails – chat, agent, or workflow?

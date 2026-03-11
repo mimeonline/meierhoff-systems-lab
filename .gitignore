@@ -62,4 +62,4 @@ coverage/
 *.tgz
 *.gz
 
-.chainlit/*
+**/.chainlit/
