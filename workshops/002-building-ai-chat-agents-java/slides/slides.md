@@ -103,7 +103,7 @@ chapter: Introduction
 
 LLM capabilities are no longer optional for most product teams. The question is no longer _if_, but _how_.
 
-- Enterprise systems are Java — most teams do not want to rewrite in Python
+- LLM features are moving into real business applications
 - Models are capable enough today for real production use cases
 - Tooling has matured: memory, tools, RAG, and MCP are stable building blocks
 - The cost of "wait and see" is growing
@@ -114,9 +114,9 @@ LLM capabilities are no longer optional for most product teams. The question is 
 
 ### The Java AI question
 
-Most Java shops now face the same problem:
+Many organizations with existing Java systems now face the same challenge:
 
-> "We need to add LLM features to our existing system. What do we actually use?"
+> "How do we bring LLM capabilities into the current stack?"
 
 LangChain4j and Spring AI are the two realistic answers for the JVM today.
 
