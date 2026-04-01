@@ -4,6 +4,8 @@ This workshop shows how to build an AI agent in plain Java with LangChain4j, wit
 
 Participants can move through a small sequence of phases and see how the system changes when we add memory, tools, MCP, and retrieval.
 
+This repository can also be used for self-study. If you are not following a live presenter, the phase guides in `phases/` are the step-by-step path through the workshop.
+
 ## Workshop Goal
 
 Build a locally runnable workshop project that makes this progression understandable:
@@ -35,6 +37,31 @@ These files contain the learning-relevant LangChain4j code:
 Participants can safely ignore most files in `backend/internal/`. Those files mainly exist so the workshop can run locally without distracting from the core concepts.
 
 If you want a quick orientation for the hidden glue layer, see `backend/internal/README.md`.
+
+## Self-Study Mode
+
+This workshop is designed so you can work through it on your own.
+
+If there is no presenter guiding you, use the phase guides in [`phases/`](./phases/) as the primary workshop script. They are not secondary notes. They are the guided learning path for self-study.
+
+Recommended self-study flow:
+
+1. complete the setup and start the application locally
+2. open the UI and keep the debug panel visible
+3. start with [`phases/phase-1-chat/README.md`](./phases/phase-1-chat/README.md)
+4. work through each phase in order up to [`phases/phase-6-compare/README.md`](./phases/phase-6-compare/README.md)
+5. for each phase:
+   read the phase README first
+   run the suggested prompts in the UI
+   inspect `/debug` output in the frontend
+   open the linked source files and compare the code with the previous phase
+
+What the phase READMEs are for:
+
+- they explain what changes in the phase
+- they point to the exact source files worth reading
+- they show the relevant code snippet
+- they help you "play through" the workshop without needing a live explanation
 
 ## Audience
 
@@ -252,6 +279,8 @@ Each phase folder contains:
 - which source files participants should read
 - a small code excerpt with explanation
 
+If you are doing this as self-study, these phase folders are the main workshop path.
+
 ## Didactic Design
 
 The important teaching split is:
@@ -308,3 +337,5 @@ Slides live in [slides/slides.md](/Users/michaelmeierhoff/Code/projects/msys/mei
 - 10 min phase 4
 - 15 min phase 5
 - 10 min comparison and discussion
+
+For self-study, follow the same order, but use the phase READMEs as your facilitator.
