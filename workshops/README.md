@@ -29,3 +29,4 @@ A workshop folder should usually contain:
 ## Current Workshops
 
 - `001-building-ai-chat-agents`: an incremental workshop that explains AI agents through five small phases, moving from plain chat to memory, tools, MCP, and direct-vs-MCP comparison.
+- `002-building-ai-chat-agents-java`: a plain-Java LangChain4j workshop with a visible frontend debug panel, local RAG knowledge base, REST API, and a didactic split between `workshop` and `internal` code.

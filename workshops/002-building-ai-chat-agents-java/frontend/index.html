@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LangChain4j Java Workshop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./public/styles.css" />
+  </head>
+  <body class="min-h-screen bg-canvas font-body text-ink">
+    <div class="relative overflow-hidden">
+      <div class="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top_left,_rgba(199,107,79,0.24),_transparent_40%),radial-gradient(circle_at_top_right,_rgba(53,84,74,0.22),_transparent_34%)]"></div>
+      <main class="relative mx-auto flex min-h-screen max-w-7xl flex-col gap-6 px-4 py-6 lg:px-8">
+        <header class="animate-rise rounded-[2rem] border border-black/5 bg-panel/80 p-6 shadow-soft backdrop-blur">
+          <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div class="max-w-3xl">
+              <p class="font-mono text-xs uppercase tracking-[0.35em] text-moss">Plain Java Agent Lab</p>
+              <h1 class="mt-3 font-display text-4xl leading-tight text-ink md:text-5xl">
+                Build a LangChain4j agent and watch every layer become visible.
+              </h1>
+              <p class="mt-4 max-w-2xl text-base leading-7 text-ink/75">
+                This workshop surface keeps the learning concepts in front and the glue code in the background.
+                Chat, memory, tools, MCP, and RAG all show their footprint in the debug inspector.
+              </p>
+            </div>
+            <div class="grid gap-3 text-sm text-ink/75">
+              <div class="rounded-2xl border border-black/5 bg-white/70 px-4 py-3">
+                <p class="font-mono text-xs uppercase tracking-[0.28em] text-ember">Visual thesis</p>
+                <p class="mt-2">Calm workshop lab with warm paper tones, dense debug signals, and restrained motion.</p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <section class="grid flex-1 gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.9fr)]">
+          <div class="flex min-h-[70vh] flex-col rounded-[2rem] border border-black/5 bg-panel p-5 shadow-soft">
+            <div class="flex flex-col gap-4 border-b border-black/5 pb-5">
+              <div class="grid gap-4 md:grid-cols-[1.2fr_1fr_auto]">
+                <label class="grid gap-2">
+                  <span class="font-mono text-xs uppercase tracking-[0.28em] text-moss">Phase</span>
+                  <select id="phase" class="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-moss">
+                    <option value="phase-1-chat">Phase 1 - Chat</option>
+                    <option value="phase-2-memory">Phase 2 - Memory</option>
+                    <option value="phase-3-tool">Phase 3 - Tool</option>
+                    <option value="phase-4-mcp">Phase 4 - MCP</option>
+                    <option value="phase-5-rag">Phase 5 - RAG</option>
+                    <option value="phase-6-compare">Phase 6 - Compare</option>
+                  </select>
+                </label>
+                <label class="grid gap-2">
+                  <span class="font-mono text-xs uppercase tracking-[0.28em] text-moss">Session</span>
+                  <input id="sessionId" class="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none transition focus:border-moss" />
+                </label>
+                <button id="newSession" class="mt-auto rounded-2xl bg-ink px-4 py-3 text-sm font-medium text-white transition hover:bg-moss">
+                  New Session
+                </button>
+              </div>
+              <div class="flex flex-wrap gap-2" id="suggestions"></div>
+            </div>
+
+            <div id="chatLog" class="flex-1 space-y-4 overflow-y-auto py-5"></div>
+
+            <form id="chatForm" class="border-t border-black/5 pt-5">
+              <div class="grid gap-3">
+                <textarea
+                  id="message"
+                  rows="4"
+                  placeholder="Ask something that makes the current phase visible..."
+                  class="w-full rounded-[1.6rem] border border-black/10 bg-white px-4 py-4 text-sm leading-6 outline-none transition focus:border-moss"
+                ></textarea>
+                <div class="flex items-center justify-between gap-4">
+                  <p class="font-mono text-xs uppercase tracking-[0.28em] text-ink/45">Prompt, answer, inspect, compare</p>
+                  <button id="send" class="rounded-full bg-ember px-6 py-3 text-sm font-semibold text-white transition hover:translate-y-[-1px] hover:bg-[#b85f45]">
+                    Send
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <aside class="rounded-[2rem] border border-black/5 bg-[#18312b] p-5 text-white shadow-soft">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-mono text-xs uppercase tracking-[0.35em] text-sand">Debug Inspector</p>
+                <h2 class="mt-2 font-display text-2xl">What the agent used</h2>
+              </div>
+              <div class="h-12 w-12 rounded-full border border-white/10 bg-white/5 p-3">
+                <div class="h-full w-full rounded-full bg-[conic-gradient(from_180deg,_#e7d6b5,_#c76b4f,_#e7d6b5)] animate-pulseLine"></div>
+              </div>
+            </div>
+
+            <div class="mt-6 space-y-4" id="debugPanel"></div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./public/main.js"></script>
+  </body>
+</html>

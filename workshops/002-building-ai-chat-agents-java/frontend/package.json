@@ -1,0 +1,18 @@
+{
+  "name": "langchain4j-java-workshop-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:css && npm run build:ts",
+    "build:css": "tailwindcss -i ./src/styles.css -o ./public/styles.css --minify",
+    "build:ts": "tsc -p ./tsconfig.json",
+    "watch:css": "tailwindcss -i ./src/styles.css -o ./public/styles.css --watch",
+    "watch:ts": "tsc -p ./tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.2"
+  }
+}
