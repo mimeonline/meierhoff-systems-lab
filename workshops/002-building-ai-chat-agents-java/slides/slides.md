@@ -269,7 +269,7 @@ LangChain4j is strongest when teams understand both layers and choose deliberate
 
 ## How RAG Works
 
-```mermaid {scale: 0.75}
+```mermaid {scale: 0.62}
 flowchart LR
   DOC[Documents] --> CHUNK[Chunking]
   CHUNK --> EMB[Embedding Model]
@@ -279,8 +279,6 @@ flowchart LR
   QEMB --> RET[Retrieval]
   VS --> RET
   RET --> AUG[Augmented Prompt]
-  AUG --> LLM[Chat Model]
-  LLM --> ANS[Answer]
 ```
 
 <div class="note-panel mt-4">
