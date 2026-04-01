@@ -14,6 +14,28 @@ plain chat -> memory -> tool usage -> MCP -> RAG -> comparison
 
 The visible learning layer stays in the `workshop` package. Infrastructure, model wiring, JSON, MCP setup, and retrieval indexing stay in `internal`.
 
+## What Participants Should Read
+
+Workshop participants do not need to understand the whole backend. The intended reading path is:
+
+1. [`LangChain4jWorkshopAgentService.java`](./backend/src/main/java/dev/meierhoff/agents/workshop/core/LangChain4jWorkshopAgentService.java)
+2. [`WorkshopAssistants.java`](./backend/src/main/java/dev/meierhoff/agents/workshop/core/WorkshopAssistants.java)
+3. [`WorkshopPrompts.java`](./backend/src/main/java/dev/meierhoff/agents/workshop/core/WorkshopPrompts.java)
+4. [`WorkshopTools.java`](./backend/src/main/java/dev/meierhoff/agents/workshop/core/WorkshopTools.java)
+5. the phase guides in [`phases/`](./phases/)
+
+These files contain the learning-relevant LangChain4j code:
+
+- how AI services are defined
+- how memory changes the assistant
+- how tools are exposed
+- how MCP replaces direct tool wiring
+- how RAG augments the prompt
+
+Participants can safely ignore most files in `backend/internal/`. Those files mainly exist so the workshop can run locally without distracting from the core concepts.
+
+If you want a quick orientation for the hidden glue layer, see `backend/internal/README.md`.
+
 ## Audience
 
 - Java developers
@@ -76,17 +98,19 @@ workshops/002-building-ai-chat-agents-java/
 │   └─ GET /debug                                                        │
 │                                                                       │
 │ workshop package                                                       │
-│   ├─ WorkshopPhase                                                     │
-│   ├─ WorkshopAgentService                                              │
+│   ├─ LangChain4jWorkshopAgentService                                   │
+│   ├─ WorkshopAssistants                                                │
+│   ├─ WorkshopPrompts                                                   │
+│   ├─ WorkshopTools                                                     │
 │   └─ DTOs for chat and debug                                           │
 │                                                                       │
 │ internal package                                                       │
+│   ├─ HTTP server                                                       │
+│   ├─ environment loading                                               │
 │   ├─ model factory                                                     │
-│   ├─ memory store                                                      │
-│   ├─ local tools                                                       │
 │   ├─ MCP client setup                                                  │
-│   ├─ knowledge embeddings + retrieval                                  │
-│   └─ debug capture                                                     │
+│   ├─ retrieval index                                                   │
+│   └─ debug/runtime plumbing                                            │
 └───────────────────────────────┬───────────────────────────────────────┘
                                 │
               ┌─────────────────┼─────────────────┐
@@ -222,24 +246,39 @@ Uses local workshop notes in `knowledge/` with embeddings and retrieval. This ph
 
 Runs several variants side by side so participants can compare what changed.
 
+Each phase folder contains:
+
+- what changes conceptually
+- which source files participants should read
+- a small code excerpt with explanation
+
 ## Didactic Design
 
 The important teaching split is:
 
 ### Visible
 
+- `LangChain4jWorkshopAgentService`
+- `WorkshopAssistants`
+- `WorkshopPrompts`
+- `WorkshopTools`
 - `WorkshopPhase`
-- `WorkshopAgentService`
 - request and debug DTOs
-- the conceptual phase progression
+- the phase documentation in `phases/`
 
 ### Hidden
 
+- environment loading
 - model provider setup
 - HTTP server and JSON mapping
 - MCP transport wiring
-- prompt capture
-- embedding model and in-memory vector store
+- retrieval index implementation
+- debug/runtime plumbing
+
+Rule of thumb:
+
+- if a file teaches how LangChain4j changes the system, it belongs in `workshop`
+- if a file mainly helps the application boot, connect, parse, or store, it belongs in `internal`
 
 ## RAG Design Notes
 
