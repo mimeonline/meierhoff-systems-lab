@@ -182,7 +182,7 @@ class WeatherService {
 }
 ```
 
-<div class="note-panel mt-6">
+<div class="note-panel mt-3">
 Tools are just annotated Java methods. LangChain4j handles schema generation and dispatch automatically — no manual JSON specification needed.
 </div>
 
@@ -406,7 +406,7 @@ layoutClass: gap-8
 
 ---
 layout: two-cols
-layoutClass: gap-8
+layoutClass: gap-8 both-heads
 ---
 
 ## Production Reality Check
@@ -431,7 +431,6 @@ The main risk is usually not "Java vs Python". The main risk is underestimating 
 - Keep a separate evaluation harness for prompt quality
 
 ```java
-// Stub the model for deterministic tests
 ChatLanguageModel stub = (request) ->
     ChatResponse.builder()
         .aiMessage(AiMessage.from("stub response"))
@@ -539,12 +538,12 @@ Short version: Spring AI is usually the more Spring-native choice. LangChain4j i
 
 ## How To Choose
 
-```mermaid {scale: 0.85}
-flowchart TD
-  A{Using Spring Boot?} -->|Yes| B{AI is just one feature\nin a broader Spring app?}
+```mermaid {scale: 0.75}
+flowchart LR
+  A{Using\nSpring Boot?} -->|Yes| B{AI is just one\nfeature in Spring?}
   A -->|No / Plain Java| C[LangChain4j]
   B -->|Yes| E[Spring AI]
-  B -->|No, AI is the core| D{Want interface-driven\nAI abstractions?}
+  B -->|No, AI is the core| D{Interface-driven\nabstractions?}
   D -->|Yes| C
   D -->|No| E
 ```
@@ -620,6 +619,10 @@ Python currently has the more unified agent ecosystem. Java has strong libraries
 - you want readable, typed application code
 - you value pragmatic integration over chasing the newest agent trend
 
+<div class="note-panel mt-8">
+Teams that benefit most are those already operating Java in production who want to extend with AI features without a language switch or major architectural overhaul.
+</div>
+
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
@@ -630,6 +633,10 @@ Python currently has the more unified agent ecosystem. Java has strong libraries
 - you want the largest ecosystem of examples and experiments
 - your team is already fully invested in Python for AI engineering
 - you need the newest agent patterns the moment they appear
+
+<div class="note-panel mt-8">
+These are not disqualifiers — just honest conditions where LangGraph or a Python-native stack would have a clearer advantage. The choice is about fit, not quality.
+</div>
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 

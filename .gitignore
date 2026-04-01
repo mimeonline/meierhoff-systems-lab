@@ -55,6 +55,7 @@ coverage/
 .next/
 .nuxt/
 .parcel-cache/
+.playwright-mcp/
 
 # Archives and generated artifacts
 *.zip

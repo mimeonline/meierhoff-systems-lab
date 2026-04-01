@@ -16,9 +16,11 @@
 /* ── Base ── */
 
 .slidev-layout {
-  background:
-    radial-gradient(ellipse at 70% 0%, rgba(56, 139, 210, 0.07) 0%, transparent 60%),
-    radial-gradient(ellipse at 20% 100%, rgba(232, 145, 79, 0.04) 0%, transparent 50%);
+  background-image:
+    radial-gradient(ellipse at 70% 0%, rgba(56, 139, 210, 0.09) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 100%, rgba(232, 145, 79, 0.05) 0%, transparent 50%),
+    radial-gradient(rgba(56, 139, 210, 0.035) 1px, transparent 1px);
+  background-size: auto, auto, 28px 28px;
   background-color: var(--msl-bg);
   color: var(--msl-text);
   font-size: 1.05rem;
@@ -32,17 +34,49 @@
 }
 
 .slidev-layout h2 {
+  position: relative;
   font-size: 1.65rem;
   font-weight: 700;
   border: none;
-  padding-left: 0;
-  margin-bottom: 2rem;
+  padding-left: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.slidev-layout h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  bottom: 0.1em;
+  width: 3px;
+  background: var(--msl-gradient);
+  border-radius: 3px;
+}
+
+.slidev-layout h3 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--msl-accent);
+  margin-top: 0;
+  margin-bottom: 0.65rem;
+  border: none;
 }
 
 .slidev-layout p,
 .slidev-layout li {
   color: var(--msl-text);
   line-height: 1.6;
+}
+
+.slidev-layout li {
+  margin-bottom: 0.4rem;
+}
+
+.slidev-layout ul,
+.slidev-layout ol {
+  padding-left: 1.3rem;
 }
 
 .slidev-layout a {
@@ -65,13 +99,30 @@
   color: var(--msl-text-secondary);
   padding: 0.75rem 1rem;
   border-radius: 0 8px 8px 0;
+  font-style: italic;
+  font-size: 0.95rem;
 }
 
+/* ── Code blocks ── */
+
 .slidev-layout pre {
+  position: relative;
   background: var(--msl-surface-solid) !important;
   border: 1px solid var(--msl-border);
   border-radius: 10px;
-  padding: 0.9rem 1rem !important;
+  padding: 1.9rem 1rem 0.75rem !important;
+}
+
+.slidev-layout pre::before {
+  content: '';
+  position: absolute;
+  top: 0.75rem;
+  left: 0.9rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 14px 0 0 #febc2e, 28px 0 0 #28c840;
 }
 
 .slidev-layout pre code {
@@ -79,6 +130,7 @@
   border: 0;
   color: var(--msl-text);
   padding: 0;
+  font-size: 0.87em;
 }
 
 .slidev-layout ul li::marker {
@@ -103,7 +155,7 @@
 
 .slidev-progress {
   background: var(--msl-gradient) !important;
-  height: 2px !important;
+  height: 3px !important;
 }
 
 /* ── v-click animations ── */
@@ -120,7 +172,7 @@
 /* ── Mermaid ── */
 
 .slidev-layout .mermaid {
-  background: var(--msl-surface);
+  background: rgba(15, 23, 42, 0.6);
   border: 1px solid var(--msl-border);
   border-radius: 12px;
   padding: 1rem;
@@ -129,7 +181,10 @@
 
 .slidev-layout .mermaid svg {
   max-width: 100%;
+  max-height: 100%;
   height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 /* ── Branding footer ── */
@@ -167,10 +222,10 @@
 
 .cover-glow {
   position: absolute;
-  top: -80px;
-  width: 500px;
-  height: 250px;
-  background: radial-gradient(ellipse, rgba(56, 139, 210, 0.12) 0%, transparent 70%);
+  top: -100px;
+  width: 700px;
+  height: 350px;
+  background: radial-gradient(ellipse, rgba(56, 139, 210, 0.18) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -229,6 +284,16 @@
 
 /* ── Section heading ── */
 
+.slidev-layout.center {
+  background-image:
+    radial-gradient(ellipse at 50% 45%, rgba(56, 139, 210, 0.13) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 0%, rgba(56, 139, 210, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 100%, rgba(232, 145, 79, 0.04) 0%, transparent 50%),
+    radial-gradient(rgba(56, 139, 210, 0.035) 1px, transparent 1px);
+  background-size: auto, auto, auto, 28px 28px;
+  background-color: var(--msl-bg);
+}
+
 .section-heading {
   display: flex;
   flex-direction: column;
@@ -239,6 +304,10 @@
 .section-heading h1 {
   font-size: 2.4rem;
   font-weight: 800;
+  background: linear-gradient(135deg, #f1f5f9 20%, #7cc4f5 60%, #388bd2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .section-heading-sub {
@@ -268,6 +337,8 @@
 .pill-active {
   color: var(--msl-text);
   border-color: rgba(56, 139, 210, 0.7);
+  background: rgba(56, 139, 210, 0.1);
+  box-shadow: 0 0 14px rgba(56, 139, 210, 0.22);
 }
 
 .pill-arrow {
@@ -282,14 +353,47 @@
   padding-top: 4.35rem;
 }
 
+.slidev-layout.two-columns h2 {
+  margin-bottom: 1rem;
+}
+
+.slidev-layout.two-columns pre code {
+  font-size: 0.78em;
+}
+
+/* Right column has its own h2 — no extra top offset needed */
+.slidev-layout.two-columns.both-heads .col-right,
+.slidev-layout.two-columns.both-heads > div:last-child {
+  padding-top: 0.5rem;
+}
+
 /* ── Small UI building blocks ── */
 
-.stack-card,
-.note-panel {
+.stack-card {
+  position: relative;
+  overflow: hidden;
   background: var(--msl-surface);
   border: 1px solid var(--msl-border);
   border-radius: 14px;
   padding: 1rem 1.1rem;
+}
+
+.stack-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--msl-gradient);
+}
+
+.note-panel {
+  background: rgba(232, 145, 79, 0.05);
+  border: 1px solid rgba(232, 145, 79, 0.25);
+  border-left: 3px solid var(--msl-accent-warm);
+  border-radius: 0 10px 10px 0;
+  padding: 0.85rem 1.1rem;
 }
 
 .stack-card h3,
