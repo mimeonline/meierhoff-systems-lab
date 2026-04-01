@@ -38,6 +38,37 @@ layout: two-cols
 layoutClass: gap-8
 ---
 
+## Why Now?
+
+LLM capabilities are no longer optional for most product teams. The question is no longer _if_, but _how_.
+
+- Enterprise systems are Java — most teams do not want to rewrite in Python
+- Models are capable enough today for real production use cases
+- Tooling has matured: memory, tools, RAG, and MCP are stable building blocks
+- The cost of "wait and see" is growing
+
+::right::
+
+<div class="stack-card">
+
+### The Java AI question
+
+Most Java shops now face the same problem:
+
+> "We need to add LLM features to our existing system. What do we actually use?"
+
+LangChain4j and Spring AI are the two realistic answers for the JVM today.
+
+</div>
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
+
+---
+transition: fade-out
+layout: two-cols
+layoutClass: gap-8
+---
+
 ## What Is LangChain4j?
 
 - A Java-first library for building LLM-powered applications
@@ -109,14 +140,17 @@ layoutClass: gap-8
 
 ## Also Worth Mentioning
 
-- broad provider support
+- broad provider support (OpenAI, Anthropic, Gemini, Ollama, …)
 - in-process local embeddings
-- observability support
+- observability via Langfuse and OpenTelemetry
 - framework integrations for Spring, Quarkus, CDI
 - low-level and high-level APIs side by side
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
+---
+layout: two-cols
+layoutClass: gap-8
 ---
 
 ## The Most Important Idea: AI Services
@@ -127,12 +161,77 @@ layoutClass: gap-8
 
 ```java
 interface Assistant {
-    String chat(@MemoryId String sessionId, @UserMessage String message);
+    String chat(@MemoryId String sessionId,
+                @UserMessage String message);
+}
+```
+
+::right::
+
+### Tool calling with `@Tool`
+
+Any plain Java method can become a model-accessible tool:
+
+```java
+class WeatherService {
+
+    @Tool("Get the current temperature for a city")
+    public String getTemperature(String city) {
+        return weatherApi.fetch(city);
+    }
 }
 ```
 
 <div class="note-panel mt-6">
-This makes LangChain4j feel less like "prompt plumbing" and more like regular Java application code.
+Tools are just annotated Java methods. LangChain4j handles schema generation and dispatch automatically — no manual JSON specification needed.
+</div>
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
+
+---
+layout: two-cols
+layoutClass: gap-8
+---
+
+## Getting Started
+
+Add to your `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>dev.langchain4j</groupId>
+  <artifactId>langchain4j</artifactId>
+  <version>1.0.0-beta3</version>
+</dependency>
+
+<!-- provider of your choice -->
+<dependency>
+  <groupId>dev.langchain4j</groupId>
+  <artifactId>langchain4j-open-ai</artifactId>
+  <version>1.0.0-beta3</version>
+</dependency>
+```
+
+::right::
+
+### Wire it up
+
+```java
+OpenAiChatModel model = OpenAiChatModel.builder()
+    .apiKey(System.getenv("OPENAI_API_KEY"))
+    .modelName("gpt-4o-mini")
+    .build();
+
+Assistant assistant = AiServices.builder(Assistant.class)
+    .chatLanguageModel(model)
+    .chatMemoryProvider(id ->
+        MessageWindowChatMemory.withMaxMessages(10))
+    .tools(new WeatherService())
+    .build();
+```
+
+<div class="note-panel mt-4">
+Use `langchain4j-bom` for consistent version management across multiple modules.
 </div>
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
@@ -163,6 +262,63 @@ layoutClass: gap-8
 <blockquote>
 LangChain4j is strongest when teams understand both layers and choose deliberately.
 </blockquote>
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
+
+---
+
+## How RAG Works
+
+```mermaid {scale: 0.75}
+flowchart LR
+  DOC[Documents] --> CHUNK[Chunking]
+  CHUNK --> EMB[Embedding Model]
+  EMB --> VS[(Vector Store)]
+
+  Q[User Question] --> QEMB[Embedding Model]
+  QEMB --> RET[Retrieval]
+  VS --> RET
+  RET --> AUG[Augmented Prompt]
+  AUG --> LLM[Chat Model]
+  LLM --> ANS[Answer]
+```
+
+<div class="note-panel mt-4">
+RAG quality is not just a library problem. Chunking strategy, embedding model choice, retrieval parameters, and source quality all shape the final answer.
+</div>
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
+
+---
+
+## What Is MCP?
+
+**Model Context Protocol** — an open standard for connecting models to external tools and data sources.
+
+<div class="grid grid-cols-2 gap-8 mt-4">
+<div>
+
+### Without MCP
+
+- each integration is custom-built per application
+- tools are hardcoded and not reusable across models
+- no standard for capability discovery or declaration
+
+</div>
+<div>
+
+### With MCP
+
+- models connect to any MCP-compatible server
+- tools are declared and discovered at runtime
+- works across providers and frameworks
+
+</div>
+</div>
+
+<div class="note-panel mt-6">
+LangChain4j supports MCP clients out of the box. Your AI Service can consume any MCP server — local or remote — without writing custom integration code.
+</div>
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
@@ -249,6 +405,9 @@ layoutClass: gap-8
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
+layout: two-cols
+layoutClass: gap-8
+---
 
 ## Production Reality Check
 
@@ -260,6 +419,62 @@ layoutClass: gap-8
 
 <div class="note-panel mt-6">
 The main risk is usually not "Java vs Python". The main risk is underestimating the application architecture around the model.
+</div>
+
+::right::
+
+## Testing Your AI Services
+
+- Test tool methods in isolation — they are just Java methods
+- Use a stub model to make integration tests deterministic
+- Validate structured output deserialization explicitly
+- Keep a separate evaluation harness for prompt quality
+
+```java
+// Stub the model for deterministic tests
+ChatLanguageModel stub = (request) ->
+    ChatResponse.builder()
+        .aiMessage(AiMessage.from("stub response"))
+        .build();
+
+Assistant assistant = AiServices.builder(Assistant.class)
+    .chatLanguageModel(stub)
+    .build();
+```
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
+
+---
+
+## Observability
+
+Knowing what your model does in production is not optional.
+
+<div class="grid grid-cols-2 gap-8 mt-4">
+<div>
+
+### What to capture
+
+- input and output tokens per request
+- latency per model call
+- tool invocations and their results
+- memory state at each turn
+- rendered prompts and system messages
+
+</div>
+<div>
+
+### Options in the Java ecosystem
+
+- **Langfuse** — open-source LLM observability, LangChain4j integration available
+- **OpenTelemetry** — trace spans via `ChatModelListener`
+- **Custom listeners** — `ChatModelListener` interface for low-level hooks
+
+</div>
+</div>
+
+<div class="note-panel mt-4">
+Instrument from day one. Debugging a prompt regression without traces is significantly harder than with them.
 </div>
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
@@ -321,27 +536,22 @@ Short version: Spring AI is usually the more Spring-native choice. LangChain4j i
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
-layout: two-cols
-layoutClass: gap-8
----
 
-## The Practical Difference
+## How To Choose
 
-### LangChain4j
+```mermaid {scale: 0.85}
+flowchart TD
+  A{Using Spring Boot?} -->|Yes| B{AI is just one feature\nin a broader Spring app?}
+  A -->|No / Plain Java| C[LangChain4j]
+  B -->|Yes| E[Spring AI]
+  B -->|No, AI is the core| D{Want interface-driven\nAI abstractions?}
+  D -->|Yes| C
+  D -->|No| E
+```
 
-- Java-library-first mental model
-- strong for plain Java and readable service abstractions
-- especially attractive when you want minimal framework assumptions
-- clearer as a dedicated JVM LLM toolkit
-
-::right::
-
-### Spring AI
-
-- Spring-first mental model
-- stronger when auto-configuration and Spring Boot starters are a feature, not a burden
-- better fit when your architecture already depends on Spring idioms
-- often chosen for consistency with an existing Spring platform
+<div class="note-panel mt-4">
+Neither is wrong. The decision is mostly about where AI fits in your existing architecture, not about which library is objectively better.
+</div>
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
@@ -389,7 +599,7 @@ flowchart LR
   subgraph JAVA[Java]
     LC4J[LangChain4j]
     SAI[Spring AI]
-    OBS[Langfuse or other observability]
+    OBS[Langfuse / OpenTelemetry]
     APP[Application-specific orchestration]
   end
 ```
@@ -409,17 +619,6 @@ Python currently has the more unified agent ecosystem. Java has strong libraries
 - you need chat, tools, memory, RAG, or MCP without switching languages
 - you want readable, typed application code
 - you value pragmatic integration over chasing the newest agent trend
-
-<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
-
----
-
-## How To Choose Between Them
-
-- existing Spring Boot platform: Spring AI is often the more natural fit
-- plain Java or framework-light architecture: LangChain4j is often the cleaner fit
-- want interface-driven AI abstractions: LangChain4j stands out
-- want Spring-native starters, beans, config, and advisors: Spring AI stands out
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
