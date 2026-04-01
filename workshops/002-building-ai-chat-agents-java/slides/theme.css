@@ -463,3 +463,46 @@
 .flow-arrow {
   color: var(--msl-text-secondary);
 }
+
+/* ── Table of Contents ── */
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 2.5rem;
+  margin-top: 1.5rem;
+}
+
+.toc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.toc-num {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--msl-accent);
+  opacity: 0.4;
+  font-variant-numeric: tabular-nums;
+  min-width: 1.8rem;
+  line-height: 1.3;
+}
+
+.toc-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.toc-chapter {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--msl-text);
+}
+
+.toc-desc {
+  font-size: 0.78rem;
+  color: var(--msl-text-secondary);
+  line-height: 1.4;
+}

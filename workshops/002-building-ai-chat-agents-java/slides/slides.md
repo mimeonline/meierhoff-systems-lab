@@ -33,9 +33,70 @@ fonts:
 </div>
 
 ---
+layout: default
+---
+
+## Agenda
+
+<div class="toc-grid">
+  <div class="toc-item">
+    <span class="toc-num">01</span>
+    <div class="toc-item-content">
+      <span class="toc-chapter">Introduction</span>
+      <span class="toc-desc">Why now, what is LangChain4j</span>
+    </div>
+  </div>
+  <div class="toc-item">
+    <span class="toc-num">02</span>
+    <div class="toc-item-content">
+      <span class="toc-chapter">What Can It Do</span>
+      <span class="toc-desc">Core functions, AI Services, getting started</span>
+    </div>
+  </div>
+  <div class="toc-item">
+    <span class="toc-num">03</span>
+    <div class="toc-item-content">
+      <span class="toc-chapter">RAG & MCP</span>
+      <span class="toc-desc">Retrieval patterns, Model Context Protocol</span>
+    </div>
+  </div>
+  <div class="toc-item">
+    <span class="toc-num">04</span>
+    <div class="toc-item-content">
+      <span class="toc-chapter">Capabilities & Limits</span>
+      <span class="toc-desc">Strengths, limitations, scope</span>
+    </div>
+  </div>
+  <div class="toc-item">
+    <span class="toc-num">05</span>
+    <div class="toc-item-content">
+      <span class="toc-chapter">Production</span>
+      <span class="toc-desc">Maturity, testing, observability</span>
+    </div>
+  </div>
+  <div class="toc-item">
+    <span class="toc-num">06</span>
+    <div class="toc-item-content">
+      <span class="toc-chapter">Ecosystem</span>
+      <span class="toc-desc">Spring AI, Java vs Python landscape</span>
+    </div>
+  </div>
+  <div class="toc-item">
+    <span class="toc-num">07</span>
+    <div class="toc-item-content">
+      <span class="toc-chapter">Summary</span>
+      <span class="toc-desc">When LangChain4j is the right fit</span>
+    </div>
+  </div>
+</div>
+
+<div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
+
+---
 transition: fade-out
 layout: two-cols
 layoutClass: gap-8
+chapter: Introduction
 ---
 
 ## Why Now?
@@ -67,6 +128,7 @@ LangChain4j and Spring AI are the two realistic answers for the JVM today.
 transition: fade-out
 layout: two-cols
 layoutClass: gap-8
+chapter: Introduction
 ---
 
 ## What Is LangChain4j?
@@ -123,6 +185,7 @@ class: text-center
 ---
 layout: two-cols
 layoutClass: gap-8
+chapter: What Can It Do
 ---
 
 ## Core Functions
@@ -151,6 +214,7 @@ layoutClass: gap-8
 ---
 layout: two-cols
 layoutClass: gap-8
+chapter: What Can It Do
 ---
 
 ## The Most Important Idea: AI Services
@@ -191,6 +255,7 @@ Tools are just annotated Java methods. LangChain4j handles schema generation and
 ---
 layout: two-cols
 layoutClass: gap-8
+chapter: What Can It Do
 ---
 
 ## Getting Started
@@ -239,6 +304,7 @@ Use `langchain4j-bom` for consistent version management across multiple modules.
 ---
 layout: two-cols
 layoutClass: gap-8
+chapter: What Can It Do
 ---
 
 ## High-Level vs Low-Level
@@ -266,6 +332,8 @@ LangChain4j is strongest when teams understand both layers and choose deliberate
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
+chapter: RAG & MCP
+---
 
 ## How RAG Works
 
@@ -287,6 +355,8 @@ RAG quality is not just a library problem. Chunking strategy, embedding model ch
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
+---
+chapter: RAG & MCP
 ---
 
 ## What Is MCP?
@@ -321,6 +391,8 @@ LangChain4j supports MCP clients out of the box. Your AI Service can consume any
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
+chapter: Capabilities & Limits
+---
 
 ## What It Does Well
 
@@ -340,6 +412,7 @@ Its sweet spot is often: "We already run Java in production and want to add LLM 
 ---
 layout: two-cols
 layoutClass: gap-8
+chapter: Capabilities & Limits
 ---
 
 ## What It Does Not Do As Well
@@ -362,6 +435,8 @@ layoutClass: gap-8
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
+chapter: Capabilities & Limits
+---
 
 ## What It Is Not
 
@@ -380,6 +455,7 @@ layoutClass: gap-8
 ---
 layout: two-cols
 layoutClass: gap-8
+chapter: Production
 ---
 
 ## Maturity and Production Readiness
@@ -405,6 +481,7 @@ layoutClass: gap-8
 ---
 layout: two-cols
 layoutClass: gap-8 both-heads
+chapter: Production
 ---
 
 ## Production Reality Check
@@ -441,6 +518,8 @@ Assistant assistant = AiServices.builder(Assistant.class)
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
+---
+chapter: Production
 ---
 
 ## Observability
@@ -479,6 +558,7 @@ Instrument from day one. Debugging a prompt regression without traces is signifi
 ---
 layout: two-cols
 layoutClass: gap-8
+chapter: Ecosystem
 ---
 
 ## What Spring AI Can Do
@@ -506,6 +586,7 @@ layoutClass: gap-8
 ---
 layout: two-cols
 layoutClass: gap-8
+chapter: Ecosystem
 ---
 
 ## LangChain4j vs Spring AI
@@ -533,6 +614,8 @@ Short version: Spring AI is usually the more Spring-native choice. LangChain4j i
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
+chapter: Ecosystem
+---
 
 ## How To Choose
 
@@ -552,6 +635,8 @@ Neither is wrong. The decision is mostly about where AI fits in your existing ar
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
+---
+chapter: Ecosystem
 ---
 
 ## Java World vs Python World
@@ -582,6 +667,8 @@ Neither is wrong. The decision is mostly about where AI fits in your existing ar
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
+chapter: Ecosystem
+---
 
 ## Mental Map of the Ecosystems
 
@@ -608,6 +695,8 @@ Python currently has the more unified agent ecosystem. Java has strong libraries
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
 ---
+chapter: Summary
+---
 
 ## When LangChain4j Is A Good Fit
 
@@ -623,6 +712,8 @@ Teams that benefit most are those already operating Java in production who want 
 
 <div class="brand-footer"><span class="brand-dot"></span> Meierhoff Systems Lab</div>
 
+---
+chapter: Summary
 ---
 
 ## When It May Not Be The Best Fit
