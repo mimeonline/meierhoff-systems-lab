@@ -25,14 +25,14 @@ Reading guide from `WorkshopPhase`:
 
 - [`LangChain4jWorkshopAgentService.java`](../../backend/src/main/java/dev/meierhoff/agents/workshop/core/LangChain4jWorkshopAgentService.java)
 - [`WorkshopAssistants.java`](../../backend/src/main/java/dev/meierhoff/agents/workshop/core/WorkshopAssistants.java)
-- [`InspectableChatMemoryStore.java`](../../backend/src/main/java/dev/meierhoff/agents/internal/InspectableChatMemoryStore.java)
+- [`InspectableChatMemoryStore.java`](../../backend/src/main/java/dev/meierhoff/agents/internal/memory/InspectableChatMemoryStore.java)
 
 The core difference to phase 1 is this assistant definition:
 
 ```java
 this.phase2Assistant = AiServices.builder(WorkshopAssistants.SessionAssistant.class)
-        .chatModel(runtime.chatModel())
-        .chatMemoryProvider(runtime.memoryStore())
+        .chatModel(dependencies.chatModel())
+        .chatMemoryProvider(dependencies.memory())
         .systemMessageProvider(memoryId -> WorkshopPrompts.systemPrompt(WorkshopPhase.PHASE_2_MEMORY))
         .chatRequestTransformer((request, memoryId) -> capturePrompt(WorkshopPhase.PHASE_2_MEMORY, request.messages(), memoryId, request))
         .build();

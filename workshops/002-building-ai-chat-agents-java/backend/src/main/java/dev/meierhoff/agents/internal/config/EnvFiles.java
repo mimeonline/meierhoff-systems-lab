@@ -12,6 +12,12 @@ final class EnvFiles {
     private EnvFiles() {
     }
 
+    /**
+     * Loads workshop-local `.env` files.
+     *
+     * <p>The root `.env` is read first and `backend/.env` can override values
+     * for backend-only experiments.
+     */
     static Map<String, String> load(Path workshopRoot) {
         Map<String, String> values = new LinkedHashMap<>();
         mergeIfPresent(values, workshopRoot.resolve(".env"));
@@ -19,6 +25,9 @@ final class EnvFiles {
         return values;
     }
 
+    /**
+     * Parses one `.env` file into the target map if the file exists.
+     */
     private static void mergeIfPresent(Map<String, String> values, Path file) {
         if (!Files.exists(file)) {
             return;
@@ -45,6 +54,10 @@ final class EnvFiles {
         }
     }
 
+    /**
+     * Removes one pair of matching quotes so simple `.env` values can be quoted
+     * without affecting the parsed result.
+     */
     private static String stripQuotes(String value) {
         if (value.length() >= 2) {
             boolean doubleQuoted = value.startsWith("\"") && value.endsWith("\"");

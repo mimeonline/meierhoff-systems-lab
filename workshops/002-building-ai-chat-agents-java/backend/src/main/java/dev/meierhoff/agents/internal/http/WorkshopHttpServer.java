@@ -35,6 +35,9 @@ public final class WorkshopHttpServer {
         this.service = service;
     }
 
+    /**
+     * Starts the embedded HTTP server and registers the workshop endpoints.
+     */
     public void start() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(config.port()), 0);
         server.createContext("/chat", new ChatHandler());
@@ -46,6 +49,9 @@ public final class WorkshopHttpServer {
 
     private final class ChatHandler implements HttpHandler {
         @Override
+        /**
+         * Handles one `POST /chat` request from the frontend.
+         */
         public void handle(HttpExchange exchange) throws IOException {
             addCorsHeaders(exchange);
             if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -75,6 +81,9 @@ public final class WorkshopHttpServer {
 
     private final class DebugHandler implements HttpHandler {
         @Override
+        /**
+         * Handles `GET /debug` and returns the latest captured debug snapshot.
+         */
         public void handle(HttpExchange exchange) throws IOException {
             addCorsHeaders(exchange);
             if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -107,6 +116,10 @@ public final class WorkshopHttpServer {
         }
 
         @Override
+        /**
+         * Serves the built frontend files directly from the local `frontend/`
+         * directory.
+         */
         public void handle(HttpExchange exchange) throws IOException {
             if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(405, -1);
@@ -129,11 +142,17 @@ public final class WorkshopHttpServer {
             exchange.close();
         }
 
+        /**
+         * Resolves a browser path to a file below the built frontend directory.
+         */
         private Path resolvePath(String requestPath) {
             String normalized = requestPath.equals("/") ? "index.html" : requestPath.substring(1);
             return frontendDirectory.resolve(normalized).normalize();
         }
 
+        /**
+         * Minimal content-type mapping for the workshop frontend assets.
+         */
         private String contentType(Path path) {
             String name = path.getFileName().toString();
             if (name.endsWith(".html")) {
@@ -149,12 +168,18 @@ public final class WorkshopHttpServer {
         }
     }
 
+    /**
+     * Allows the locally served frontend to call the API during development.
+     */
     private void addCorsHeaders(HttpExchange exchange) {
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
     }
 
+    /**
+     * Writes a JSON response and closes the exchange.
+     */
     private void writeJson(HttpExchange exchange, int status, Object body) throws IOException {
         byte[] bytes = jsonSupport.writeBytes(body);
         exchange.getResponseHeaders().add("Content-Type", "application/json; charset=utf-8");
@@ -163,6 +188,9 @@ public final class WorkshopHttpServer {
         exchange.close();
     }
 
+    /**
+     * Writes a plain-text response and closes the exchange.
+     */
     private void writeText(HttpExchange exchange, int status, String body) throws IOException {
         byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().add("Content-Type", "text/plain; charset=utf-8");
@@ -173,6 +201,9 @@ public final class WorkshopHttpServer {
 
     private record Query(Map<String, String> values) {
 
+        /**
+         * Parses the URI query string into a simple key/value map.
+         */
         static Query parse(URI uri) {
             if (uri.getRawQuery() == null || uri.getRawQuery().isBlank()) {
                 return new Query(Map.of());
@@ -187,10 +218,16 @@ public final class WorkshopHttpServer {
             );
         }
 
+        /**
+         * Returns one query parameter value or {@code null}.
+         */
         String value(String key) {
             return values.get(key);
         }
 
+        /**
+         * URL-decodes one query-string component.
+         */
         private static String decode(String value) {
             return java.net.URLDecoder.decode(value, StandardCharsets.UTF_8);
         }

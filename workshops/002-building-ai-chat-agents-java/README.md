@@ -295,10 +295,6 @@ That lets participants observe:
 - why retrieval helps
 - how file names and snippets influence the answer
 
-## Optional Dockerfile
-
-There is a simple backend Dockerfile for container-based demos. It is intentionally small and leaves model credentials to runtime environment variables.
-
 ## Slides
 
 Slides live in [slides/slides.md](/Users/michaelmeierhoff/Code/projects/msys/meierhoff-systems-lab/workshops/002-building-ai-chat-agents-java/slides/slides.md) and can be run with Slidev from the [slides/README.md](/Users/michaelmeierhoff/Code/projects/msys/meierhoff-systems-lab/workshops/002-building-ai-chat-agents-java/slides/README.md) workflow.

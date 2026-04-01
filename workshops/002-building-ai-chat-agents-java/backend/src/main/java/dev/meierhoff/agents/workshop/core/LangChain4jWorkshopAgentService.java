@@ -38,6 +38,13 @@ public final class LangChain4jWorkshopAgentService implements WorkshopAgentServi
     private final WorkshopAssistants.SessionAssistant phase4Assistant;
     private final WorkshopAssistants.SessionAssistant phase5Assistant;
 
+    /**
+     * Builds one LangChain4j AI service per phase.
+     *
+     * <p>This constructor is intentionally verbose because the workshop should
+     * make the phase differences visible: memory is added, then tools, then MCP,
+     * then prompt augmentation for retrieval.
+     */
     public LangChain4jWorkshopAgentService(WorkshopDependencies dependencies) {
         this.dependencies = dependencies;
 
@@ -83,6 +90,12 @@ public final class LangChain4jWorkshopAgentService implements WorkshopAgentServi
     }
 
     @Override
+    /**
+     * Main entry point used by the UI.
+     *
+     * <p>It normalizes the session id, resets the debug state for the new turn,
+     * and dispatches to the phase-specific execution path.
+     */
     public ChatResponsePayload chat(WorkshopPhase phase, String sessionId, String message) {
         String effectiveSessionId = sessionId == null || sessionId.isBlank()
                 ? UUID.randomUUID().toString()
@@ -115,10 +128,17 @@ public final class LangChain4jWorkshopAgentService implements WorkshopAgentServi
     }
 
     @Override
+    /**
+     * Exposes the last captured debug view for the frontend inspector.
+     */
     public DebugSnapshot debug(WorkshopPhase phase, String sessionId) {
         return debugStateStore.snapshot(phase, sessionId);
     }
 
+    /**
+     * Phase 6 is not a separate assistant. Instead it runs several phase
+     * variants and returns their answers side by side for comparison.
+     */
     private ChatResponsePayload compare(String sessionId, String message) {
         List<ComparisonResult> comparisons = new ArrayList<>();
         comparisons.add(compareVariant(WorkshopPhase.PHASE_1_CHAT, sessionId, message));
@@ -139,6 +159,9 @@ public final class LangChain4jWorkshopAgentService implements WorkshopAgentServi
         );
     }
 
+    /**
+     * Runs one concrete phase variant for the compare view.
+     */
     private ComparisonResult compareVariant(WorkshopPhase phase, String sessionId, String message) {
         String compareSession = sessionId + "::" + phase.apiValue();
         String answer = switch (phase) {
@@ -150,12 +173,24 @@ public final class LangChain4jWorkshopAgentService implements WorkshopAgentServi
         return new ComparisonResult(phase.apiValue(), phase.title(), answer);
     }
 
+    /**
+     * Executes the plain single-turn assistant from phase 1.
+     *
+     * <p>No memory is reused, so the debug view intentionally shows an empty
+     * memory list after the call.
+     */
     private String invokeWithoutMemory(WorkshopPhase phase, String sessionId, String message) {
         String answer = InvocationScope.with(phase, sessionId, () -> phase1Assistant.chat(message));
         debugStateStore.stateFor(phase, sessionId).replaceMemory(List.of());
         return answer;
     }
 
+    /**
+     * Executes one of the memory-aware assistants from phases 2 to 4.
+     *
+     * <p>The method first selects the matching AI service and then updates the
+     * debug state with the post-call memory window.
+     */
     private String invokeSessionAssistant(WorkshopPhase phase, String sessionId, String message) {
         WorkshopAssistants.SessionAssistant assistant = switch (phase) {
             case PHASE_2_MEMORY -> phase2Assistant;
@@ -169,6 +204,14 @@ public final class LangChain4jWorkshopAgentService implements WorkshopAgentServi
         return answer;
     }
 
+    /**
+     * Implements the visible RAG flow for phase 5.
+     *
+     * <p>The sequence is:
+     * retrieve relevant chunks, record them for the debug panel, augment the
+     * user message with retrieved context, and finally call the memory-aware
+     * assistant.
+     */
     private String invokeRagAssistant(String sessionId, String message) {
         List<WorkshopKnowledgeSource.RetrievedChunk> chunks = dependencies.knowledgeSource().retrieve(message, 3);
         DebugStateStore.MutableDebugState state = debugStateStore.stateFor(WorkshopPhase.PHASE_5_RAG, sessionId);
@@ -222,6 +265,9 @@ public final class LangChain4jWorkshopAgentService implements WorkshopAgentServi
         );
     }
 
+    /**
+     * Marks a tool call as completed once LangChain4j returns the tool result.
+     */
     private void afterToolExecution(ToolExecution event) {
         InvocationScope.InvocationContext context = InvocationScope.current();
         if (context == null) {

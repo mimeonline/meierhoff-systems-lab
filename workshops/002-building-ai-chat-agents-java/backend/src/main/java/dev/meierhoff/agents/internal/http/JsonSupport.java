@@ -18,10 +18,17 @@ final class JsonSupport {
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .build();
 
+    /**
+     * Parses the JSON body of `POST /chat`.
+     */
     ChatRequestPayload readChatRequest(InputStream inputStream) throws IOException {
         return mapper.readValue(inputStream, ChatRequestPayload.class);
     }
 
+    /**
+     * Serializes a response object as pretty-printed JSON for easier manual
+     * inspection during the workshop.
+     */
     byte[] writeBytes(Object value) throws JsonProcessingException {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(value);
     }

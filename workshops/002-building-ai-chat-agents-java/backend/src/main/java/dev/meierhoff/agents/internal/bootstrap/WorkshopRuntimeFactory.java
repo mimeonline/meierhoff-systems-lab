@@ -17,6 +17,10 @@ public final class WorkshopRuntimeFactory {
     private WorkshopRuntimeFactory() {
     }
 
+    /**
+     * Assembles the hidden runtime implementations behind the visible workshop
+     * abstractions.
+     */
     public static WorkshopDependencies create(AppConfig config) {
         return new WorkshopDependencies(
                 ModelFactory.createChatModel(config),

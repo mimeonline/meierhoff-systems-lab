@@ -8,6 +8,12 @@ final class ProjectPaths {
     private ProjectPaths() {
     }
 
+    /**
+     * Walks upward from the current directory until the workshop root is found.
+     *
+     * <p>This makes it possible to start the backend either from the workshop
+     * root or from the `backend/` directory.
+     */
     static Path detectWorkshopRoot() {
         Path current = Path.of("").toAbsolutePath();
         while (current != null) {

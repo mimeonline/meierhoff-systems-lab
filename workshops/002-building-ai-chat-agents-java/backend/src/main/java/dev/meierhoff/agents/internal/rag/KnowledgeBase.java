@@ -34,6 +34,11 @@ public final class KnowledgeBase implements WorkshopKnowledgeSource {
         this.store = store;
     }
 
+    /**
+     * Loads all markdown files from the workshop knowledge directory, splits
+     * them into chunks, embeds them, and stores them in an in-memory vector
+     * store.
+     */
     public static KnowledgeBase load(Path knowledgeDirectory) {
         try {
             EmbeddingModel embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
@@ -60,6 +65,9 @@ public final class KnowledgeBase implements WorkshopKnowledgeSource {
     }
 
     @Override
+    /**
+     * Embeds the user query and returns the best matching knowledge chunks.
+     */
     public List<RetrievedChunk> retrieve(String query, int maxResults) {
         Embedding queryEmbedding = embeddingModel.embed(query).content();
         EmbeddingSearchRequest searchRequest = EmbeddingSearchRequest.builder()
@@ -72,6 +80,10 @@ public final class KnowledgeBase implements WorkshopKnowledgeSource {
                 .toList();
     }
 
+    /**
+     * Splits markdown content into paragraph-based chunks of roughly workshop-
+     * sized reading snippets.
+     */
     private static List<String> splitIntoChunks(String content) {
         String[] paragraphs = content.split("\\R\\R+");
         List<String> chunks = new ArrayList<>();
@@ -93,6 +105,9 @@ public final class KnowledgeBase implements WorkshopKnowledgeSource {
         return chunks;
     }
 
+    /**
+     * Internal representation stored next to an embedding vector.
+     */
     record KnowledgeChunk(String source, String text) {
         @Override
         public String toString() {

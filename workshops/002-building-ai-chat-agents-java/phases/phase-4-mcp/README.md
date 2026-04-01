@@ -25,17 +25,17 @@ What participants should notice:
 Reading guide from `WorkshopPhase`:
 
 - [`LangChain4jWorkshopAgentService.java`](../../backend/src/main/java/dev/meierhoff/agents/workshop/core/LangChain4jWorkshopAgentService.java)
-- [`McpSupport.java`](../../backend/src/main/java/dev/meierhoff/agents/internal/McpSupport.java)
-- [`WorkshopRuntimeFactory.java`](../../backend/src/main/java/dev/meierhoff/agents/internal/WorkshopRuntimeFactory.java)
+- [`McpSupport.java`](../../backend/src/main/java/dev/meierhoff/agents/internal/mcp/McpSupport.java)
+- [`WorkshopRuntimeFactory.java`](../../backend/src/main/java/dev/meierhoff/agents/internal/bootstrap/WorkshopRuntimeFactory.java)
 
 The visible phase code is very close to the local-tool phase:
 
 ```java
 this.phase4Assistant = AiServices.builder(WorkshopAssistants.SessionAssistant.class)
-        .chatModel(runtime.chatModel())
-        .chatMemoryProvider(runtime.memoryStore())
+        .chatModel(dependencies.chatModel())
+        .chatMemoryProvider(dependencies.memory())
         .systemMessageProvider(memoryId -> WorkshopPrompts.systemPrompt(WorkshopPhase.PHASE_4_MCP))
-        .toolProvider(runtime.mcpToolProvider())
+        .toolProvider(dependencies.mcpToolProvider())
         .beforeToolExecution(this::beforeToolExecution)
         .afterToolExecution(this::afterToolExecution)
         .build();
@@ -43,7 +43,7 @@ this.phase4Assistant = AiServices.builder(WorkshopAssistants.SessionAssistant.cl
 
 What changed compared to phase 3:
 
-- `.tools(workshopTools)` is replaced by `.toolProvider(runtime.mcpToolProvider())`
+- `.tools(workshopTools)` is replaced by `.toolProvider(dependencies.mcpToolProvider())`
 - from the workshop perspective, the model still gets tools
 - architecturally, the tool implementation now lives behind an MCP boundary
 

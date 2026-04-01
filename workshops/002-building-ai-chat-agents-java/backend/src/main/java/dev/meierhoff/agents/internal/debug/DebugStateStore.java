@@ -21,10 +21,17 @@ public final class DebugStateStore {
 
     private final Map<String, MutableDebugState> states = new ConcurrentHashMap<>();
 
+    /**
+     * Returns the mutable debug state bucket for one phase/session pair,
+     * creating it on first access.
+     */
     public MutableDebugState stateFor(WorkshopPhase phase, String sessionId) {
         return states.computeIfAbsent(key(phase, sessionId), ignored -> new MutableDebugState(sessionId, phase.apiValue()));
     }
 
+    /**
+     * Creates an immutable snapshot that is safe to return through the REST API.
+     */
     public DebugSnapshot snapshot(WorkshopPhase phase, String sessionId) {
         MutableDebugState state = stateFor(phase, sessionId);
         return new DebugSnapshot(
@@ -38,6 +45,9 @@ public final class DebugStateStore {
         );
     }
 
+    /**
+     * Combines phase and session into one stable storage key.
+     */
     private String key(WorkshopPhase phase, String sessionId) {
         return phase.apiValue() + "::" + sessionId;
     }
@@ -56,6 +66,12 @@ public final class DebugStateStore {
             this.phase = phase;
         }
 
+        /**
+         * Clears per-turn data before a new request is processed.
+         *
+         * <p>The memory list is intentionally not cleared because chat memory is
+         * conversational state, not transient turn state.
+         */
         public synchronized void startTurn() {
             prompt = "";
             toolCalls.clear();
@@ -63,19 +79,31 @@ public final class DebugStateStore {
             comparisons.clear();
         }
 
+        /**
+         * Stores the latest prompt text shown in the debug panel.
+         */
         public synchronized void updatePrompt(String prompt) {
             this.prompt = prompt;
         }
 
+        /**
+         * Replaces the visible memory snapshot after a model call completes.
+         */
         public synchronized void replaceMemory(List<String> entries) {
             memory.clear();
             memory.addAll(entries);
         }
 
+        /**
+         * Adds a newly started tool call in pending state.
+         */
         public synchronized void addToolCall(ToolCallView toolCallView) {
             toolCalls.add(toolCallView);
         }
 
+        /**
+         * Replaces the most recent pending tool call with its finished result.
+         */
         public synchronized void completeToolCall(ToolCallView toolCallView) {
             for (int index = toolCalls.size() - 1; index >= 0; index--) {
                 ToolCallView current = toolCalls.get(index);
@@ -87,10 +115,16 @@ public final class DebugStateStore {
             toolCalls.add(toolCallView);
         }
 
+        /**
+         * Appends one retrieved knowledge chunk to the debug view.
+         */
         public synchronized void addRetrieval(RetrievalView retrievalView) {
             retrievals.add(retrievalView);
         }
 
+        /**
+         * Stores the phase comparison results produced by phase 6.
+         */
         public synchronized void setComparisons(List<ComparisonResult> comparisonResults) {
             comparisons.clear();
             comparisons.addAll(comparisonResults);

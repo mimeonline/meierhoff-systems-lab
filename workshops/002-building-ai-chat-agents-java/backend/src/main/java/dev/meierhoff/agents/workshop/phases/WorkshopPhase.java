@@ -32,7 +32,7 @@ public enum WorkshopPhase {
             List.of(
                     "workshop/core/LangChain4jWorkshopAgentService",
                     "workshop/core/WorkshopAssistants",
-                    "internal/InspectableChatMemoryStore"
+                    "internal/memory/InspectableChatMemoryStore"
             )
     ),
     PHASE_3_TOOL(
@@ -57,8 +57,8 @@ public enum WorkshopPhase {
             false,
             List.of(
                     "workshop/core/LangChain4jWorkshopAgentService",
-                    "internal/McpSupport",
-                    "internal/WorkshopRuntimeFactory"
+                    "internal/mcp/McpSupport",
+                    "internal/bootstrap/WorkshopRuntimeFactory"
             )
     ),
     PHASE_5_RAG(
@@ -71,7 +71,7 @@ public enum WorkshopPhase {
             List.of(
                     "workshop/core/LangChain4jWorkshopAgentService",
                     "workshop/core/WorkshopPrompts",
-                    "internal/KnowledgeBase",
+                    "internal/rag/KnowledgeBase",
                     "workshop/debug/RetrievalView"
             )
     ),
@@ -114,42 +114,72 @@ public enum WorkshopPhase {
         this.relevantFiles = List.copyOf(relevantFiles);
     }
 
+    /**
+     * Stable value used by the frontend and REST API.
+     */
     public String apiValue() {
         return apiValue;
     }
 
+    /**
+     * Human-readable title used in the UI and workshop material.
+     */
     public String title() {
         return title;
     }
 
+    /**
+     * Whether this phase keeps conversational state across turns.
+     */
     public boolean usesMemory() {
         return usesMemory;
     }
 
+    /**
+     * Whether this phase exposes local Java methods as tools.
+     */
     public boolean usesDirectTools() {
         return usesDirectTools;
     }
 
+    /**
+     * Whether this phase reaches tools through MCP instead of direct methods.
+     */
     public boolean usesMcp() {
         return usesMcp;
     }
 
+    /**
+     * Whether this phase augments the prompt with retrieved knowledge chunks.
+     */
     public boolean usesRag() {
         return usesRag;
     }
 
+    /**
+     * Phase 6 does not run one assistant directly. It compares several setups.
+     */
     public boolean isComparisonPhase() {
         return this == PHASE_6_COMPARE;
     }
 
+    /**
+     * Returns the most useful files to read for this phase.
+     */
     public List<String> relevantFiles() {
         return relevantFiles;
     }
 
+    /**
+     * Turns the file list into one compact suggested reading path.
+     */
     public String readingGuide() {
         return String.join(" -> ", relevantFiles);
     }
 
+    /**
+     * Returns the workshop concepts that are active in this phase.
+     */
     public List<String> activeConcepts() {
         List<String> concepts = new java.util.ArrayList<>();
         concepts.add("chat");
@@ -171,6 +201,12 @@ public enum WorkshopPhase {
         return List.copyOf(concepts);
     }
 
+    /**
+     * Resolves a phase name from the REST API.
+     *
+     * <p>An empty value falls back to phase 1 so the UI can start with the
+     * simplest setup by default.
+     */
     public static WorkshopPhase fromApiValue(String value) {
         if (value == null || value.isBlank()) {
             return PHASE_1_CHAT;

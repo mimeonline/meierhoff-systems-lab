@@ -53,6 +53,10 @@ public final class AppConfig {
         this.mcpCommand = mcpCommand;
     }
 
+    /**
+     * Creates the application config by combining environment variables and
+     * workshop-local `.env` files.
+     */
     public static AppConfig fromEnvironment() {
         Path workshopRoot = ProjectPaths.detectWorkshopRoot();
         Map<String, String> envFileValues = EnvFiles.load(workshopRoot);
@@ -74,6 +78,10 @@ public final class AppConfig {
         );
     }
 
+    /**
+     * Returns the configured MCP command or a sensible default filesystem MCP
+     * server pointed at the workshop knowledge directory.
+     */
     private static List<String> defaultMcpCommand(Path workshopRoot, Map<String, String> envFileValues) {
         String configured = read(envFileValues, "WORKSHOP_MCP_COMMAND", "");
         if (!configured.isBlank()) {
@@ -87,6 +95,10 @@ public final class AppConfig {
         );
     }
 
+    /**
+     * Reads one config value with this precedence:
+     * environment variable, `.env` value, fallback.
+     */
     private static String read(Map<String, String> envFileValues, String key, String fallback) {
         String value = System.getenv(key);
         if (value == null || value.isBlank()) {
@@ -95,50 +107,86 @@ public final class AppConfig {
         return value == null || value.isBlank() ? fallback : value;
     }
 
+    /**
+     * Port used by the embedded HTTP server.
+     */
     public int port() {
         return port;
     }
 
+    /**
+     * Selected model provider such as `github`, `openai`, or `ollama`.
+     */
     public String provider() {
         return provider;
     }
 
+    /**
+     * Base URL for OpenAI-compatible model APIs.
+     */
     public String openAiBaseUrl() {
         return openAiBaseUrl;
     }
 
+    /**
+     * API key used for OpenAI-compatible providers.
+     */
     public String openAiApiKey() {
         return openAiApiKey;
     }
 
+    /**
+     * Model name for OpenAI-compatible providers.
+     */
     public String openAiModel() {
         return openAiModel;
     }
 
+    /**
+     * Base URL of the local Ollama server.
+     */
     public String ollamaBaseUrl() {
         return ollamaBaseUrl;
     }
 
+    /**
+     * Ollama model name used when the provider is `ollama`.
+     */
     public String ollamaModel() {
         return ollamaModel;
     }
 
+    /**
+     * Maximum size of the sliding chat-memory window.
+     */
     public int maxMemoryMessages() {
         return maxMemoryMessages;
     }
 
+    /**
+     * Root directory of the workshop project.
+     */
     public Path workshopRoot() {
         return workshopRoot;
     }
 
+    /**
+     * Directory that contains the local RAG source documents.
+     */
     public Path knowledgeDirectory() {
         return knowledgeDirectory;
     }
 
+    /**
+     * Directory from which the built frontend assets are served.
+     */
     public Path frontendDirectory() {
         return frontendDirectory;
     }
 
+    /**
+     * Process command used to launch the MCP server.
+     */
     public List<String> mcpCommand() {
         return mcpCommand;
     }

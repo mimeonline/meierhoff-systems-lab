@@ -30,7 +30,7 @@ The important part is the first assistant definition:
 
 ```java
 this.phase1Assistant = AiServices.builder(WorkshopAssistants.SingleTurnAssistant.class)
-        .chatModel(runtime.chatModel())
+        .chatModel(dependencies.chatModel())
         .systemMessageProvider(ignored -> WorkshopPrompts.systemPrompt(WorkshopPhase.PHASE_1_CHAT))
         .chatRequestTransformer((request, ignored) -> capturePrompt(WorkshopPhase.PHASE_1_CHAT, request.messages(), null, request))
         .build();

@@ -17,6 +17,10 @@ public final class McpSupport {
     private McpSupport() {
     }
 
+    /**
+     * Builds a LangChain4j {@link McpToolProvider} from the configured MCP
+     * command.
+     */
     public static McpToolProvider createToolProvider(AppConfig config) {
         StdioMcpTransport transport = StdioMcpTransport.builder()
                 .command(config.mcpCommand())

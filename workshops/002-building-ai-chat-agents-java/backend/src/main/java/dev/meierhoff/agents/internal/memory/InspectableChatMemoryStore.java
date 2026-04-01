@@ -25,11 +25,19 @@ public final class InspectableChatMemoryStore implements WorkshopMemory {
     }
 
     @Override
+    /**
+     * Returns the chat memory window for the given session, creating it on first
+     * use.
+     */
     public ChatMemory get(Object memoryId) {
         return memories.computeIfAbsent(memoryId, ignored ->
                 MessageWindowChatMemory.builder().maxMessages(maxMessages).build());
     }
 
+    /**
+     * Returns the current memory entries in a human-readable form for the debug
+     * panel.
+     */
     public List<String> messages(Object memoryId) {
         ChatMemory memory = memories.get(memoryId);
         if (memory == null) {
@@ -40,6 +48,9 @@ public final class InspectableChatMemoryStore implements WorkshopMemory {
                 .toList();
     }
 
+    /**
+     * Flattens a LangChain4j chat message into a short debug string.
+     */
     private String formatMessage(ChatMessage message) {
         return message.type() + ": " + message.toString();
     }

@@ -12,6 +12,12 @@ final class WorkshopPrompts {
     private WorkshopPrompts() {
     }
 
+    /**
+     * Returns the visible system prompt for one workshop phase.
+     *
+     * <p>Keeping these prompts in one place makes it easy to compare how the
+     * assistant instructions evolve as new capabilities are added.
+     */
     static String systemPrompt(WorkshopPhase phase) {
         return switch (phase) {
             case PHASE_1_CHAT -> """
@@ -47,6 +53,12 @@ final class WorkshopPrompts {
         };
     }
 
+    /**
+     * Wraps the raw user question with retrieved context for the RAG phase.
+     *
+     * <p>This is intentionally explicit instead of hidden in infrastructure so
+     * participants can see that RAG is "prompt plus retrieved context".
+     */
     static String ragAugmentation(String userMessage, String retrievalContext) {
         return """
                 Answer the user using the retrieved workshop context when it helps.

@@ -37,8 +37,8 @@ The important assistant setup is:
 
 ```java
 this.phase3Assistant = AiServices.builder(WorkshopAssistants.SessionAssistant.class)
-        .chatModel(runtime.chatModel())
-        .chatMemoryProvider(runtime.memoryStore())
+        .chatModel(dependencies.chatModel())
+        .chatMemoryProvider(dependencies.memory())
         .systemMessageProvider(memoryId -> WorkshopPrompts.systemPrompt(WorkshopPhase.PHASE_3_TOOL))
         .tools(workshopTools)
         .beforeToolExecution(this::beforeToolExecution)

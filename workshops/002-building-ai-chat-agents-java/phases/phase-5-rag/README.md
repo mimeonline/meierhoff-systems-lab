@@ -27,7 +27,7 @@ Reading guide from `WorkshopPhase`:
 
 - [`LangChain4jWorkshopAgentService.java`](../../backend/src/main/java/dev/meierhoff/agents/workshop/core/LangChain4jWorkshopAgentService.java)
 - [`WorkshopPrompts.java`](../../backend/src/main/java/dev/meierhoff/agents/workshop/core/WorkshopPrompts.java)
-- [`KnowledgeBase.java`](../../backend/src/main/java/dev/meierhoff/agents/internal/KnowledgeBase.java)
+- [`KnowledgeBase.java`](../../backend/src/main/java/dev/meierhoff/agents/internal/rag/KnowledgeBase.java)
 - [`RetrievalView.java`](../../backend/src/main/java/dev/meierhoff/agents/workshop/debug/RetrievalView.java)
 - [`knowledge/`](../../knowledge/)
 
@@ -35,7 +35,7 @@ The core RAG flow is in one method:
 
 ```java
 private String invokeRagAssistant(String sessionId, String message) {
-    List<KnowledgeBase.RetrievedChunk> chunks = runtime.knowledgeBase().retrieve(message, 3);
+    List<WorkshopKnowledgeSource.RetrievedChunk> chunks = dependencies.knowledgeSource().retrieve(message, 3);
     String retrievalContext = chunks.stream()
             .map(chunk -> "[" + chunk.source() + "] " + chunk.text())
             .reduce((left, right) -> left + System.lineSeparator() + System.lineSeparator() + right)

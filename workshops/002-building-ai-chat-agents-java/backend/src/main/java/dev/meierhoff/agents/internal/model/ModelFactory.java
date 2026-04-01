@@ -16,6 +16,12 @@ public final class ModelFactory {
     private ModelFactory() {
     }
 
+    /**
+     * Builds the configured chat model.
+     *
+     * <p>The workshop code only depends on the common {@link ChatModel}
+     * abstraction, while provider-specific details stay hidden here.
+     */
     public static ChatModel createChatModel(AppConfig config) {
         return switch (config.provider().toLowerCase()) {
             case "ollama" -> OllamaChatModel.builder()

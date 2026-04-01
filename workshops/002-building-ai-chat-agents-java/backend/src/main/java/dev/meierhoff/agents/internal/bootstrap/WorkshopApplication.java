@@ -16,6 +16,12 @@ public final class WorkshopApplication {
     private WorkshopApplication() {
     }
 
+    /**
+     * Boot sequence for the backend process.
+     *
+     * <p>It loads config, assembles hidden infrastructure dependencies, creates
+     * the visible workshop service, and finally starts the HTTP server.
+     */
     public static void main(String[] args) throws Exception {
         AppConfig config = AppConfig.fromEnvironment();
         LangChain4jWorkshopAgentService service = new LangChain4jWorkshopAgentService(WorkshopRuntimeFactory.create(config));
