@@ -482,7 +482,7 @@ graph.invoke(Command(resume=feedback), config=config)
 </div>
 </div>
 
-<div class="callout">Die Frage ist nicht, welches besser ist, sondern <strong>welche Architektur sichtbar sein muss</strong>.</div>
+<div class="callout">Entscheidend ist: Was reicht als Tool-Agent, und was braucht <strong>explizite Kontrolle im Graphen</strong>?</div>
 
 <div class="brand">Meierhoff Systems Lab</div>
 
@@ -575,7 +575,37 @@ Typische Fehler entstehen, wenn Architektur unsichtbar bleibt.
 
 <!-- .slide: class="section" -->
 
-<div class="section-num">07 — Workshop</div>
+<div class="section-num">07 — Entscheidung</div>
+
+# Wann was?
+
+<p class="section-sub">Die kleinste Architektur, die das Problem klar macht.</p>
+
+---
+
+<div class="chapter-badge green">Entscheidung</div>
+
+## Entscheidungsmodell
+
+<div class="decision">
+  <div class="q">Direkte Frage?</div>           <div class="a"><span class="accent">Single Agent</span></div>
+  <div class="q">Ablauf zusammenhalten?</div>   <div class="a"><span class="accent">Orchestrator</span></div>
+  <div class="q">Feste Reihenfolge?</div>       <div class="a"><span class="accent">Pipeline</span></div>
+  <div class="q">Nächster Pfad?</div>           <div class="a"><span class="accent">Router</span></div>
+  <div class="q">Rollenverantwortung?</div>     <div class="a"><span class="ok">Specialists</span></div>
+  <div class="q">Gemeinsamer Arbeitsstand?</div><div class="a"><span class="ok">Blackboard</span></div>
+  <div class="q">Menschlicher Eingriff?</div>   <div class="a"><span class="ok">Human-in-the-loop</span></div>
+</div>
+
+<div class="callout">Gute Agentenarchitektur beginnt mit <strong>bewusster Begrenzung</strong>.</div>
+
+<div class="brand">Meierhoff Systems Lab</div>
+
+---
+
+<!-- .slide: class="section" -->
+
+<div class="section-num">08 — Workshop</div>
 
 # Jetzt bauen wir
 
@@ -602,30 +632,19 @@ Typische Fehler entstehen, wenn Architektur unsichtbar bleibt.
 
 ---
 
-<!-- .slide: class="section" -->
+<div class="chapter-badge green">Danke</div>
 
-<div class="section-num">08 — Entscheidung</div>
+## Danke
 
-# Wann was?
+Michael Meierhoff · Meierhoff Systems Lab
 
-<p class="section-sub">Die kleinste Architektur, die das Problem klar macht.</p>
-
----
-
-<div class="chapter-badge green">Entscheidung</div>
-
-## Entscheidungsmodell
-
-<div class="decision">
-  <div class="q">Direkte Frage?</div>           <div class="a"><span class="accent">Single Agent</span></div>
-  <div class="q">Ablauf zusammenhalten?</div>   <div class="a"><span class="accent">Orchestrator</span></div>
-  <div class="q">Feste Reihenfolge?</div>       <div class="a"><span class="accent">Pipeline</span></div>
-  <div class="q">Nächster Pfad?</div>           <div class="a"><span class="accent">Router</span></div>
-  <div class="q">Rollenverantwortung?</div>     <div class="a"><span class="ok">Specialists</span></div>
-  <div class="q">Gemeinsamer Arbeitsstand?</div><div class="a"><span class="ok">Blackboard</span></div>
-  <div class="q">Menschlicher Eingriff?</div>   <div class="a"><span class="ok">Human-in-the-loop</span></div>
+<div class="cards two">
+  <div class="card"><span class="card-num">Ich</span><span class="card-title">Michael Meierhoff</span><span class="card-desc"><a href="https://github.com/mimeonline">github.com/mimeonline</a></span></div>
+  <div class="card"><span class="card-num">Repo</span><span class="card-title">Meierhoff Systems Lab</span><span class="card-desc"><a href="https://github.com/mimeonline/meierhoff-systems-lab">github.com/mimeonline/meierhoff-systems-lab</a></span></div>
+  <div class="card green"><span class="card-num">LangGraph</span><span class="card-title">Docs</span><span class="card-desc"><a href="https://langchain-ai.github.io/langgraph/">langchain-ai.github.io/langgraph</a></span></div>
+  <div class="card green"><span class="card-num">LangGraph</span><span class="card-title">GitHub</span><span class="card-desc"><a href="https://github.com/langchain-ai/langgraph">github.com/langchain-ai/langgraph</a></span></div>
+  <div class="card"><span class="card-num">Strands</span><span class="card-title">Agents SDK</span><span class="card-desc"><a href="https://strandsagents.com/">strandsagents.com</a></span></div>
+  <div class="card"><span class="card-num">UI</span><span class="card-title">Streamlit</span><span class="card-desc"><a href="https://streamlit.io/">streamlit.io</a></span></div>
 </div>
-
-<div class="callout">Gute Agentenarchitektur beginnt mit <strong>bewusster Begrenzung</strong>.</div>
 
 <div class="brand">Meierhoff Systems Lab</div>
