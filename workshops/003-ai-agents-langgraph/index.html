@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi-Agent Systems with LangGraph</title>
+    <link rel="stylesheet" href="/slides/theme.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-markdown="/slides/workshop.md"
+          data-separator="^---$"
+          data-separator-vertical="^--$"
+          data-separator-notes="^Note:"
+          data-charset="utf-8"
+        ></section>
+      </div>
+    </div>
+
+    <script type="module">
+      import "reveal.js/dist/reveal.css";
+      import "reveal.js/dist/theme/black.css";
+      import "reveal.js/plugin/highlight/monokai.css";
+      import Reveal from "reveal.js";
+      import Markdown from "reveal.js/plugin/markdown/markdown.esm.js";
+      import Highlight from "reveal.js/plugin/highlight/highlight.esm.js";
+      import Notes from "reveal.js/plugin/notes/notes.esm.js";
+
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        controls: true,
+        progress: true,
+        transition: "fade",
+        backgroundTransition: "fade",
+        width: 1280,
+        height: 720,
+        margin: 0.06,
+        plugins: [Markdown, Highlight, Notes]
+      });
+    </script>
+  </body>
+</html>

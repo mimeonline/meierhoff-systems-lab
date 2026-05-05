@@ -1,0 +1,166 @@
+:root {
+  --navy: #061b2d;
+  --navy-2: #0b2a42;
+  --ink: #f5f8fb;
+  --muted: #b8c5cf;
+  --orange: #ff8a2a;
+  --green: #38b977;
+  --line: rgba(245, 248, 251, 0.18);
+}
+
+.reveal {
+  background:
+    linear-gradient(90deg, rgba(255, 138, 42, 0.12), transparent 28%),
+    linear-gradient(180deg, var(--navy), var(--navy-2));
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 56px 72px;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  color: var(--ink);
+  font-weight: 760;
+  letter-spacing: 0;
+  line-height: 1.02;
+  text-transform: none;
+}
+
+.reveal h1 {
+  max-width: 980px;
+  font-size: 2.35em;
+}
+
+.reveal h2 {
+  max-width: 960px;
+  margin-bottom: 34px;
+  font-size: 1.7em;
+}
+
+.reveal h3 {
+  margin-top: 32px;
+  color: var(--orange);
+  font-size: 0.78em;
+}
+
+.reveal p,
+.reveal li {
+  max-width: 980px;
+  color: var(--muted);
+  font-size: 0.72em;
+  line-height: 1.45;
+}
+
+.reveal strong {
+  color: var(--ink);
+}
+
+.reveal a {
+  color: var(--orange);
+}
+
+.reveal ul,
+.reveal ol {
+  margin-left: 1em;
+}
+
+.reveal li + li {
+  margin-top: 0.35em;
+}
+
+.reveal table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-size: 0.48em;
+}
+
+.reveal th {
+  color: var(--ink);
+  font-weight: 760;
+}
+
+.reveal th,
+.reveal td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.reveal tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.reveal code {
+  color: #ffe0c2;
+  background: rgba(255, 138, 42, 0.14);
+  border-radius: 4px;
+  padding: 0.06em 0.22em;
+}
+
+.reveal pre {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.reveal pre code {
+  max-height: 460px;
+  background: #04131f;
+  border-radius: 8px;
+  color: #ecf5ff;
+  font-size: 0.72em;
+}
+
+.reveal blockquote {
+  width: auto;
+  margin: 26px 0;
+  padding: 18px 24px;
+  border-left: 5px solid var(--orange);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+  color: var(--ink);
+}
+
+.reveal .progress span {
+  background: var(--orange);
+}
+
+.reveal .slide-number {
+  color: var(--ink);
+  background: rgba(6, 27, 45, 0.78);
+}
+
+.reveal .controls button {
+  color: var(--orange);
+}
+
+.reveal .title-mark {
+  display: inline-block;
+  width: 72px;
+  height: 6px;
+  margin-bottom: 32px;
+  background: var(--orange);
+}
+
+.reveal .tagline {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 0.84em;
+}
+
+.reveal .accent {
+  color: var(--orange);
+}
+
+.reveal .ok {
+  color: var(--green);
+}
