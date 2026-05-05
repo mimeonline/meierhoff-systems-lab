@@ -20,4 +20,5 @@ class AgentState(TypedDict, total=False):
     result: str
     confidence: float
     needs_human: bool
+    human_question: str
     human_feedback: str

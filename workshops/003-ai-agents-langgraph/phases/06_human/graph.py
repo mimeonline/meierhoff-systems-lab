@@ -11,16 +11,28 @@ from phases.lib.types import AgentState
 def assess(state: AgentState) -> AgentState:
     confidence = _estimate_confidence(state["input"])
     needs_human = confidence < 0.65
+    human_question = _build_human_question(state["input"], confidence) if needs_human else ""
+    gate_note = (
+        "Stop before respond. A human must clarify the assumption below."
+        if needs_human
+        else "Continue directly to respond."
+    )
     return {
         "confidence": confidence,
         "needs_human": needs_human,
+        "human_question": human_question,
         "messages": state.get("messages", []) + [f"confidence: {confidence:.2f}"],
         "trace": state.get("trace", [])
         + [
             {
                 "actor": "assess",
-                "action": "checked confidence",
-                "content": f"Confidence {confidence:.2f}; human review needed: {needs_human}.",
+                "action": "checked confidence and control point",
+                "content": (
+                    f"Confidence: {confidence:.2f}\n"
+                    f"Human review needed: {needs_human}\n"
+                    f"Intervention point: {gate_note}\n"
+                    f"Human question: {human_question or 'none'}"
+                ),
             }
         ],
     }
@@ -43,8 +55,10 @@ def human_review(state: AgentState) -> AgentState:
     feedback = interrupt(
         {
             "reason": "Confidence is low.",
-            "question": "What clarification should the assistant use before answering?",
+            "intervention_point": "before respond",
+            "question": state["human_question"],
             "input": state["input"],
+            "confidence": state.get("confidence", 0.0),
         }
     )
     feedback_text = str(feedback)
@@ -54,8 +68,12 @@ def human_review(state: AgentState) -> AgentState:
         + [
             {
                 "actor": "human_review",
-                "action": "resumed with simulated feedback",
-                "content": feedback_text,
+                "action": "paused before respond and resumed",
+                "content": (
+                    f"Intervention point: before respond\n"
+                    f"Question to human: {state['human_question']}\n"
+                    f"Human feedback: {feedback_text}"
+                ),
             }
         ],
     }
@@ -63,11 +81,23 @@ def human_review(state: AgentState) -> AgentState:
 
 def respond(state: AgentState) -> AgentState:
     feedback = state.get("human_feedback", "No human review needed.")
+    question = state.get("human_question", "")
     answer = ask_llm(
         "You are a workshop assistant. Use human feedback when present and answer clearly.",
-        f"Request:\n{state['input']}\n\nConfidence: {state.get('confidence', 1.0):.2f}\nHuman feedback:\n{feedback}",
+        (
+            f"Request:\n{state['input']}\n\n"
+            f"Confidence: {state.get('confidence', 1.0):.2f}\n"
+            f"Human control question:\n{question or 'No human question.'}\n"
+            f"Human feedback:\n{feedback}"
+        ),
     )
-    prefix = "Human review simulated and resumed." if state.get("needs_human") else "High confidence path."
+    prefix = (
+        "Human intervention point: before respond\n"
+        f"Question: {question}\n"
+        f"Simulated human feedback: {feedback}"
+        if state.get("needs_human")
+        else "High confidence path."
+    )
     result = f"{prefix}\n\n{answer}"
     return {
         "result": result,
@@ -96,6 +126,13 @@ def _estimate_confidence(text: str) -> float:
     if len(text.split()) < 4:
         return 0.5
     return 0.82
+
+
+def _build_human_question(text: str, confidence: float) -> str:
+    return (
+        "Before the assistant answers, which assumption should be made explicit "
+        f"for this low-confidence request ({confidence:.2f})?\nRequest: {text}"
+    )
 
 
 builder = StateGraph(AgentState)
