@@ -636,23 +636,20 @@ Typische Fehler entstehen, wenn Architektur unsichtbar bleibt.
 
 # Vielen Dank
 
-<div class="thanks-layout" style="margin-top: 32px;">
+<div class="thanks-layout closing">
   <div class="thanks-copy">
     <span class="col-label">Kontakt</span>
     <span class="thanks-name">Michael Meierhoff</span>
     <span class="thanks-brand">Meierhoff Systems Lab</span>
-    
-    <div style="margin-top: 24px;">
-      <ul>
-        <li><a href="https://www.linkedin.com/in/michael-meierhoff-b5426458/">LinkedIn</a></li>
-        <li><a href="https://github.com/mimeonline/meierhoff-systems-lab">Workshop Repo</a></li>
-      </ul>
-    </div>
+    <span class="thanks-links">
+      <a href="https://www.linkedin.com/in/michael-meierhoff-b5426458/">LinkedIn</a>
+      <a href="https://github.com/mimeonline/meierhoff-systems-lab">Workshop Repo</a>
+    </span>
   </div>
 
   <div>
     <span class="col-label green">Ressourcen</span>
-    <div class="cards two" style="margin-top: 8px;">
+    <div class="cards two thanks-resource-cards">
       <div class="card green"><span class="card-num">Docs</span><span class="card-title">LangGraph</span><span class="card-desc"><a href="https://langchain-ai.github.io/langgraph/">Documentation</a></span></div>
       <div class="card green"><span class="card-num">Code</span><span class="card-title">LangGraph</span><span class="card-desc"><a href="https://github.com/langchain-ai/langgraph">GitHub Repo</a></span></div>
       <div class="card"><span class="card-num">Vergleich</span><span class="card-title">Strands Agents</span><span class="card-desc"><a href="https://strandsagents.com/">Website</a></span></div>

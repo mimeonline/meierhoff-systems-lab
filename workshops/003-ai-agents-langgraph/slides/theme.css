@@ -568,6 +568,10 @@
   margin-top: 8px;
 }
 
+.reveal .thanks-layout.closing {
+  margin-top: 32px;
+}
+
 .reveal .thanks-copy {
   padding-top: 8px;
 }
@@ -590,9 +594,21 @@
   font-size: 0.58em;
 }
 
+.reveal .thanks-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  margin-top: 24px;
+  font-size: 0.5em;
+}
+
 .reveal .link-cards {
   gap: 10px;
   margin-top: 0;
+}
+
+.reveal .thanks-resource-cards {
+  margin-top: 8px;
 }
 
 .reveal .link-cards .card {
