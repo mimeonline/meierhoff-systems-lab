@@ -23,7 +23,7 @@
 
 # Warum dieser Workshop
 
-<p class="section-sub">Architektur sichtbar machen, bevor Prompts komplex werden.</p>
+<p class="section-sub">Wenn Aufgaben komplex werden, gehört die Struktur in den Graphen, nicht nur in den Prompt.</p>
 
 ---
 
@@ -50,7 +50,7 @@ Nach dem Workshop können Teilnehmende:
 Ein Multi-Agent-System besteht aus mehreren spezialisierten Einheiten, die gemeinsam eine Aufgabe lösen.
 
 - Jeder Agent hat eine **begrenzte Rolle**
-- Kommunikation läuft über **State, Nachrichten oder Tool-Ergebnisse**
+- Kommunikation läuft über **expliziten State** und klar definierte Übergaben
 - Koordination wird **explizit** modelliert
 - Das Systemverhalten entsteht aus Rollen, Regeln und Ablauf
 
@@ -110,7 +110,7 @@ Nicht jede Aufgabe braucht mehrere Agenten.
 
 # Sechs Patterns, ein Graph
 
-<p class="section-sub">Architektur sichtbar machen statt im Prompt verstecken.</p>
+<p class="section-sub">Architektur gehört in den Graphen, nicht in versteckte Prompt-Regeln.</p>
 
 ---
 
@@ -119,12 +119,12 @@ Nicht jede Aufgabe braucht mehrere Agenten.
 ## Positive Patterns
 
 <div class="cards">
-  <div class="card"><span class="card-num">01</span><span class="card-title">Orchestrator</span><span class="card-desc">Zentrale Steuerung. Eine Quelle der Wahrheit für den Ablauf.</span></div>
-  <div class="card"><span class="card-num">02</span><span class="card-title">Router</span><span class="card-desc">Explizite Pfadauswahl an Verzweigungen.</span></div>
-  <div class="card"><span class="card-num">03</span><span class="card-title">Specialist</span><span class="card-desc">Getrennte Rollen mit klaren Grenzen.</span></div>
-  <div class="card green"><span class="card-num">04</span><span class="card-title">Blackboard</span><span class="card-desc">Geteilter Arbeitskontext für alle Nodes.</span></div>
-  <div class="card green"><span class="card-num">05</span><span class="card-title">Pipeline</span><span class="card-desc">Kontrollierter, reproduzierbarer Ablauf.</span></div>
-  <div class="card green"><span class="card-num">06</span><span class="card-title">Human</span><span class="card-desc">Entscheidungspunkt für Menschen im Loop.</span></div>
+  <div class="card"><span class="card-num">01</span><span class="card-title">Orchestrator</span><span class="card-desc">Wer hält den Ablauf zusammen?</span></div>
+  <div class="card"><span class="card-num">02</span><span class="card-title">Router</span><span class="card-desc">Welcher Pfad ist als nächstes dran?</span></div>
+  <div class="card"><span class="card-num">03</span><span class="card-title">Specialist</span><span class="card-desc">Wer bearbeitet welche Rolle?</span></div>
+  <div class="card green"><span class="card-num">04</span><span class="card-title">Blackboard</span><span class="card-desc">Wo liegt der gemeinsame Arbeitsstand?</span></div>
+  <div class="card green"><span class="card-num">05</span><span class="card-title">Pipeline</span><span class="card-desc">Welche Reihenfolge ist fest?</span></div>
+  <div class="card green"><span class="card-num">06</span><span class="card-title">Human</span><span class="card-desc">Wo muss ein Mensch eingreifen?</span></div>
 </div>
 
 <div class="brand">Meierhoff Systems Lab</div>
@@ -137,12 +137,12 @@ Nicht jede Aufgabe braucht mehrere Agenten.
 
 | Pattern | LangGraph-Konzept | Wofür? |
 |---|---|---|
-| Orchestrator | zentraler Graph | Gesamtsteuerung |
-| Router | Conditional Edges | Pfadauswahl |
-| Specialist | Nodes / Subgraphs | Rollentrennung |
-| Blackboard | Shared State | gemeinsamer Arbeitskontext |
-| Pipeline | Directed Edges | kontrollierter Ablauf |
-| Human | Interrupt / Resume | menschliche Kontrolle |
+| Orchestrator | zentraler Graph | Wer hält den Ablauf zusammen? |
+| Router | Conditional Edges | Welcher Pfad ist als nächstes dran? |
+| Specialist | Nodes / Subgraphs | Wer bearbeitet welche Rolle? |
+| Blackboard | Shared State | Wo liegt der gemeinsame Arbeitsstand? |
+| Pipeline | Directed Edges | Welche Reihenfolge ist fest? |
+| Human | Interrupt / Resume | Wo muss ein Mensch eingreifen? |
 
 <div class="brand">Meierhoff Systems Lab</div>
 
@@ -256,7 +256,7 @@ Architekturpattern werden in LangGraph konkret.
 
 ## Orchestrator
 
-Der Orchestrator ist die kleinste Baseline.
+Der Orchestrator hält den Ablauf zusammen. In Phase 1 bleibt er bewusst minimal.
 
 <div class="flow">
   <span class="flow-node">Input</span>
@@ -285,6 +285,8 @@ Der Orchestrator ist die kleinste Baseline.
 </div>
 </div>
 
+<div class="callout warn">Orchestrator ist die Gesamtsteuerung. Routing, Specialists, Blackboard und Human Review können Teil dieser Steuerung sein.</div>
+
 <div class="brand">Meierhoff Systems Lab</div>
 
 ---
@@ -293,7 +295,7 @@ Der Orchestrator ist die kleinste Baseline.
 
 ## Router
 
-Der Router trennt Eingaben nach Pfaden.
+Der Router beantwortet eine engere Frage: Welcher Pfad ist als nächstes dran?
 
 <div class="flow">
   <span class="flow-node">Input</span>
@@ -321,7 +323,7 @@ builder.add_conditional_edges("router", choose_route, {"math": "math_agent", "te
 
 ## Specialist
 
-Specialists bearbeiten klar delegierte Aufgaben.
+Specialists beantworten: Wer bearbeitet welche Rolle?
 
 <div class="flow compact">
   <span class="flow-node accent">Orchestrator</span>
@@ -353,7 +355,7 @@ state["delegation_brief"] -> specialist -> state["specialist_result"]
 
 ## Blackboard
 
-Das Blackboard ist ein geteilter Arbeitskontext.
+Das Blackboard beantwortet: Wo liegt der gemeinsame Arbeitsstand?
 
 <div class="flow compact">
   <span class="flow-node accent">analyze writes</span>
@@ -383,7 +385,7 @@ blackboard.update({"draft": answer, "specialist": "math_agent"})
 
 ## Pipeline
 
-Die Pipeline ist kein freies Agenten-Gespräch, sondern ein kontrollierter Ablauf.
+Die Pipeline beantwortet: Welche Reihenfolge ist fest?
 
 <div class="flow">
   <span class="flow-node accent">analyze</span>
@@ -418,7 +420,7 @@ Die Pipeline ist kein freies Agenten-Gespräch, sondern ein kontrollierter Ablau
 
 ## Human in the Loop
 
-Human-in-the-loop macht Unsicherheit sichtbar.
+Human-in-the-loop beantwortet: Wo muss ein Mensch eingreifen?
 
 <div class="flow compact">
   <span class="flow-node accent">assess</span>
@@ -453,7 +455,7 @@ graph.invoke(Command(resume=feedback), config=config)
 
 # Strands oder LangGraph?
 
-<p class="section-sub">Zwei Schwerpunkte, eine Frage: was muss sichtbar sein?</p>
+<p class="section-sub">Eine Frage: Was muss sichtbar sein?</p>
 
 ---
 
@@ -507,17 +509,20 @@ Strands benennt Ausführungsformen. LangGraph modelliert die Architekturbaustein
 
 <div class="chapter-badge">Vergleich</div>
 
-## Router vs Specialist vs Blackboard
+## Pattern-Fragen
 
-Diese drei Patterns sehen ähnlich aus, beantworten aber unterschiedliche Architekturfragen.
+Die Patterns sind am klarsten, wenn jedes eine andere Frage beantwortet.
 
 <div class="decision">
-  <div class="q">Router</div>      <div class="a"><span class="accent">Wer soll weiterarbeiten?</span></div>
-  <div class="q">Specialist</div>  <div class="a"><span class="ok">Mit welchem Auftrag arbeitet eine Rolle?</span></div>
-  <div class="q">Blackboard</div>  <div class="a"><span class="ok">Welcher gemeinsame Arbeitsstand wächst?</span></div>
+  <div class="q">Orchestrator</div><div class="a"><span class="accent">Wer hält den Ablauf zusammen?</span></div>
+  <div class="q">Router</div>      <div class="a"><span class="accent">Welcher Pfad ist als nächstes dran?</span></div>
+  <div class="q">Specialist</div>  <div class="a"><span class="ok">Wer bearbeitet welche Rolle?</span></div>
+  <div class="q">Blackboard</div>  <div class="a"><span class="ok">Wo liegt der gemeinsame Arbeitsstand?</span></div>
+  <div class="q">Pipeline</div>    <div class="a"><span class="ok">Welche Reihenfolge ist fest?</span></div>
+  <div class="q">Human</div>       <div class="a"><span class="ok">Wo muss ein Mensch eingreifen?</span></div>
 </div>
 
-<div class="callout warn">Wenn diese Frage nicht klar ist, sehen die Graphen im Code schnell gleich aus.</div>
+<div class="callout warn">Orchestrator ist die übergreifende Steuerung. Die anderen Patterns machen einzelne Steuerungsfragen explizit.</div>
 
 <div class="brand">Meierhoff Systems Lab</div>
 
@@ -583,12 +588,12 @@ Typische Fehler entstehen, wenn Architektur unsichtbar bleibt.
 ## Sechs Phasen
 
 <div class="cards">
-  <div class="card"><span class="card-num">01</span><span class="card-title">Orchestrator</span><span class="card-desc">Baseline mit einem Node.</span></div>
-  <div class="card"><span class="card-num">02</span><span class="card-title">Router</span><span class="card-desc">Conditional Edges.</span></div>
-  <div class="card"><span class="card-num">03</span><span class="card-title">Specialist</span><span class="card-desc">Spezialisierte Agents.</span></div>
-  <div class="card green"><span class="card-num">04</span><span class="card-title">Blackboard</span><span class="card-desc">Shared State.</span></div>
-  <div class="card green"><span class="card-num">05</span><span class="card-title">Pipeline</span><span class="card-desc">Directed Edges.</span></div>
-  <div class="card green"><span class="card-num">06</span><span class="card-title">Human</span><span class="card-desc">Interrupt &amp; Resume.</span></div>
+  <div class="card"><span class="card-num">01</span><span class="card-title">Orchestrator</span><span class="card-desc">Ablauf zusammenhalten.</span></div>
+  <div class="card"><span class="card-num">02</span><span class="card-title">Router</span><span class="card-desc">Nächsten Pfad wählen.</span></div>
+  <div class="card"><span class="card-num">03</span><span class="card-title">Specialist</span><span class="card-desc">Rolle bearbeiten.</span></div>
+  <div class="card green"><span class="card-num">04</span><span class="card-title">Blackboard</span><span class="card-desc">Arbeitsstand teilen.</span></div>
+  <div class="card green"><span class="card-num">05</span><span class="card-title">Pipeline</span><span class="card-desc">Reihenfolge festlegen.</span></div>
+  <div class="card green"><span class="card-num">06</span><span class="card-title">Human</span><span class="card-desc">Eingriffspunkt setzen.</span></div>
 </div>
 
 <div class="callout">Jede Phase ist klein genug für Live Coding und vollständig genug für Diskussion.</div>
@@ -613,11 +618,12 @@ Typische Fehler entstehen, wenn Architektur unsichtbar bleibt.
 
 <div class="decision">
   <div class="q">Direkte Frage?</div>           <div class="a"><span class="accent">Single Agent</span></div>
-  <div class="q">Fester Ablauf?</div>           <div class="a"><span class="accent">Pipeline</span></div>
-  <div class="q">Pfadauswahl?</div>             <div class="a"><span class="accent">Router</span></div>
-  <div class="q">Rollentrennung?</div>          <div class="a"><span class="ok">Specialists</span></div>
+  <div class="q">Ablauf zusammenhalten?</div>   <div class="a"><span class="accent">Orchestrator</span></div>
+  <div class="q">Feste Reihenfolge?</div>       <div class="a"><span class="accent">Pipeline</span></div>
+  <div class="q">Nächster Pfad?</div>           <div class="a"><span class="accent">Router</span></div>
+  <div class="q">Rollenverantwortung?</div>     <div class="a"><span class="ok">Specialists</span></div>
   <div class="q">Gemeinsamer Arbeitsstand?</div><div class="a"><span class="ok">Blackboard</span></div>
-  <div class="q">Niedrige Sicherheit?</div>     <div class="a"><span class="ok">Human-in-the-loop</span></div>
+  <div class="q">Menschlicher Eingriff?</div>   <div class="a"><span class="ok">Human-in-the-loop</span></div>
 </div>
 
 <div class="callout">Gute Agentenarchitektur beginnt mit <strong>bewusster Begrenzung</strong>.</div>

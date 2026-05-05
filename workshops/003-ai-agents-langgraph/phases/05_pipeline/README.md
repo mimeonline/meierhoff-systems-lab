@@ -2,6 +2,10 @@
 
 This phase uses a fixed sequence rather than dynamic delegation. It is useful when the process is known and should remain predictable.
 
+## Architecture question
+
+Which order is fixed?
+
 ## Pattern
 
 ```text

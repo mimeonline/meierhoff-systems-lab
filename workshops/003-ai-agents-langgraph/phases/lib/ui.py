@@ -10,10 +10,11 @@ PHASES = [
         "num": "01",
         "label": "Orchestrator",
         "pattern": "Baseline",
-        "description": "Ein Graph, ein Node, eine direkte Antwort als Vergleichspunkt.",
-        "goal": "Baseline verstehen, bevor mehrere Rollen ins Spiel kommen.",
+        "question": "Wer hält den Ablauf zusammen?",
+        "description": "Die zentrale Steuerung des Graphen bleibt hier bewusst minimal.",
+        "goal": "Verstehen, dass Orchestrierung den Ablauf verantwortet und nicht nur einen Pfad auswählt.",
         "langgraph": "StateGraph mit START, assistant, END",
-        "takeaway": "Nicht jede Aufgabe braucht mehrere Agenten.",
+        "takeaway": "Orchestrator ist die Ablaufverantwortung; Routing und Specialists können später Teil davon sein.",
         "request": "Erkläre in drei Sätzen, warum expliziter State in Agenten-Systemen wichtig ist.",
         "flow": ["Input", "Assistant", "Result"],
         "tone": "accent",
@@ -23,10 +24,11 @@ PHASES = [
         "num": "02",
         "label": "Router",
         "pattern": "Conditional Edges",
+        "question": "Welcher Pfad ist als nächstes dran?",
         "description": "Eine Entscheidung im State wählt den passenden Pfad.",
-        "goal": "Routing als explizite Architekturentscheidung lesen.",
+        "goal": "Routing als einzelne, sichtbare Pfadentscheidung lesen.",
         "langgraph": "Conditional Edges mit math/text Branches",
-        "takeaway": "Der Pfad ist sichtbar, nicht nur im Prompt versteckt.",
+        "takeaway": "Ein Router hält nicht den ganzen Ablauf zusammen, sondern entscheidet den nächsten Übergang.",
         "request": "Berechne 17 * 6 und erkläre kurz, warum diese Anfrage im Math-Pfad landet.",
         "flow": ["Input", "Router", "Math/Text", "Result"],
         "tone": "accent",
@@ -36,10 +38,11 @@ PHASES = [
         "num": "03",
         "label": "Specialist",
         "pattern": "Role Separation",
-        "description": "Der Orchestrator delegiert an fokussierte Specialist Nodes.",
-        "goal": "Rollen mit expliziter Delegation trennen, nicht nur Pfade benennen.",
+        "question": "Wer bearbeitet welche Rolle?",
+        "description": "Der Orchestrator delegiert einen klaren Auftrag an fokussierte Specialist Nodes.",
+        "goal": "Rollenverantwortung sichtbar machen, statt nur Pfade zu benennen.",
         "langgraph": "Orchestrator, Delegation Brief, Specialist Nodes, Review Node",
-        "takeaway": "Specialists arbeiten auf einem Auftrag, nicht nur auf einem gerouteten Prompt.",
+        "takeaway": "Specialists erledigen Arbeit innerhalb einer Rolle; der Orchestrator koordiniert sie.",
         "request": "Formuliere diesen Satz klarer und erkläre kurz, warum dafür der Text-Specialist passt: Agenten sollten ihre Rolle kennen.",
         "flow": ["Input", "Brief", "Specialist", "Review", "Result"],
         "tone": "accent",
@@ -49,6 +52,7 @@ PHASES = [
         "num": "04",
         "label": "Blackboard",
         "pattern": "Shared State",
+        "question": "Wo liegt der gemeinsame Arbeitsstand?",
         "description": "Mehrere Nodes lesen und schreiben denselben sichtbaren Arbeitskontext.",
         "goal": "Gemeinsamen State als Arbeitsfläche sichtbar und überprüfbar machen.",
         "langgraph": "Shared State mit blackboard dict und reviewer",
@@ -62,6 +66,7 @@ PHASES = [
         "num": "05",
         "label": "Pipeline",
         "pattern": "Directed Edges",
+        "question": "Welche Reihenfolge ist fest?",
         "description": "Ein fester Ablauf führt von Analyse über Verarbeitung zur Antwort.",
         "goal": "Stabile Prozesse als Alternative zu freier Agentenkoordination nutzen.",
         "langgraph": "Directed Edges: analyze -> process -> respond",
@@ -75,10 +80,11 @@ PHASES = [
         "num": "06",
         "label": "Human",
         "pattern": "Interrupt / Resume",
-        "description": "Niedrige Confidence unterbricht den Graphen und simuliert Review.",
-        "goal": "Unsicherheit als expliziten Kontrollpunkt modellieren.",
+        "question": "Wo muss ein Mensch eingreifen?",
+        "description": "Niedrige Confidence unterbricht den Graphen vor der Antwort.",
+        "goal": "Den menschlichen Eingriffspunkt als expliziten Kontrollpunkt modellieren.",
         "langgraph": "Interrupt, MemorySaver und Command(resume=...)",
-        "takeaway": "Menschliche Kontrolle wird Teil des Graphen.",
+        "takeaway": "Menschliche Kontrolle ist nicht nur Review, sondern ein definierter Punkt im Ablauf.",
         "request": "Unsicher und kritisch: Welche Annahme soll der Assistent vor der Antwort prüfen, bevor der Human-Review fortgesetzt wird?",
         "flow": ["Assess", "Interrupt", "Human", "Resume"],
         "tone": "ok",
@@ -824,6 +830,10 @@ def render_phase_details(phase: dict[str, str]) -> None:
           <h3>Pattern Map</h3>
           {_flow_html(phase)}
           <div class="insight-list">
+            <div class="insight-item">
+              <span class="insight-kicker">Leitfrage</span>
+              <div class="insight-text">{_escape_html(phase["question"])}</div>
+            </div>
             <div class="insight-item">
               <span class="insight-kicker">Ziel</span>
               <div class="insight-text">{_escape_html(phase["goal"])}</div>

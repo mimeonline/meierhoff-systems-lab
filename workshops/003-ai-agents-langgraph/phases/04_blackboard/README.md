@@ -2,6 +2,10 @@
 
 This phase uses shared state as a visible working context. Nodes read and update the same `blackboard` dictionary before the final response is produced.
 
+## Architecture question
+
+Where does the shared working state live?
+
 ## Pattern
 
 ```text

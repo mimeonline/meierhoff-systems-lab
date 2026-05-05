@@ -2,6 +2,10 @@
 
 This phase separates orchestration from specialist work. The orchestrator creates an explicit delegation brief, sends it to the right specialist, and reviews the specialist output before returning the result.
 
+## Architecture question
+
+Who handles which role?
+
 ## Pattern
 
 ```text

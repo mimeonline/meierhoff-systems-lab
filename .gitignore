@@ -58,6 +58,7 @@ coverage/
 .playwright/
 .playwright-cli/
 .playwright-mcp/
+.streamlit/
 
 # Archives and generated artifacts
 *.zip
