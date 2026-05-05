@@ -11,6 +11,14 @@ def assistant(state: AgentState) -> AgentState:
     )
     return {
         "messages": state.get("messages", []) + [f"assistant: {answer}"],
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "assistant",
+                "action": "direct response",
+                "content": answer,
+            }
+        ],
         "result": answer,
     }
 
@@ -23,5 +31,9 @@ graph = builder.compile()
 
 
 def run_graph(user_input: str) -> str:
-    state = graph.invoke({"input": user_input, "messages": []})
+    state = run_graph_with_trace(user_input)
     return state["result"]
+
+
+def run_graph_with_trace(user_input: str) -> AgentState:
+    return graph.invoke({"input": user_input, "messages": [], "trace": []})

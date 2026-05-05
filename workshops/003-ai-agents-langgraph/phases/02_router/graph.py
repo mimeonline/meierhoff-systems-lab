@@ -8,7 +8,18 @@ from phases.lib.types import AgentState
 
 def router(state: AgentState) -> AgentState:
     route = "math" if _looks_like_math(state["input"]) else "text"
-    return {"route": route, "messages": state.get("messages", []) + [f"route: {route}"]}
+    return {
+        "route": route,
+        "messages": state.get("messages", []) + [f"route: {route}"],
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "router",
+                "action": "route selected",
+                "content": f"Input classified as {route}.",
+            }
+        ],
+    }
 
 
 def math_agent(state: AgentState) -> AgentState:
@@ -16,7 +27,17 @@ def math_agent(state: AgentState) -> AgentState:
         "You are a careful math assistant. Show the important step and final result.",
         state["input"],
     )
-    return {"result": f"Route: math\n\n{answer}"}
+    return {
+        "result": f"Route: math\n\n{answer}",
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "math_agent",
+                "action": "handled routed request",
+                "content": answer,
+            }
+        ],
+    }
 
 
 def text_agent(state: AgentState) -> AgentState:
@@ -24,7 +45,17 @@ def text_agent(state: AgentState) -> AgentState:
         "You are a concise writing assistant. Explain or rewrite the request clearly.",
         state["input"],
     )
-    return {"result": f"Route: text\n\n{answer}"}
+    return {
+        "result": f"Route: text\n\n{answer}",
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "text_agent",
+                "action": "handled routed request",
+                "content": answer,
+            }
+        ],
+    }
 
 
 def choose_route(state: AgentState) -> str:
@@ -50,5 +81,9 @@ graph = builder.compile()
 
 
 def run_graph(user_input: str) -> str:
-    state = graph.invoke({"input": user_input, "messages": []})
+    state = run_graph_with_trace(user_input)
     return state["result"]
+
+
+def run_graph_with_trace(user_input: str) -> AgentState:
+    return graph.invoke({"input": user_input, "messages": [], "trace": []})

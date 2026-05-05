@@ -37,11 +37,11 @@ PHASES = [
         "label": "Specialist",
         "pattern": "Role Separation",
         "description": "Der Orchestrator delegiert an fokussierte Specialist Nodes.",
-        "goal": "Rollen trennen, ohne das System größer als nötig zu machen.",
-        "langgraph": "Orchestrator Node plus Specialist Nodes",
-        "takeaway": "Spezialisierung ist eine Grenze, kein Selbstzweck.",
+        "goal": "Rollen mit expliziter Delegation trennen, nicht nur Pfade benennen.",
+        "langgraph": "Orchestrator, Delegation Brief, Specialist Nodes, Review Node",
+        "takeaway": "Specialists arbeiten auf einem Auftrag, nicht nur auf einem gerouteten Prompt.",
         "request": "Formuliere diesen Satz klarer und erkläre kurz, warum dafür der Text-Specialist passt: Agenten sollten ihre Rolle kennen.",
-        "flow": ["Input", "Orchestrator", "Specialist", "Result"],
+        "flow": ["Input", "Brief", "Specialist", "Review", "Result"],
         "tone": "accent",
     },
     {
@@ -49,12 +49,12 @@ PHASES = [
         "num": "04",
         "label": "Blackboard",
         "pattern": "Shared State",
-        "description": "Alle Nodes lesen und schreiben einen gemeinsamen Arbeitskontext.",
-        "goal": "Zwischenergebnisse sichtbar und überprüfbar machen.",
-        "langgraph": "Shared State mit scratchpad und reviewer",
-        "takeaway": "Kontext gehört in den State, nicht unsichtbar in Prompts.",
+        "description": "Mehrere Nodes lesen und schreiben denselben sichtbaren Arbeitskontext.",
+        "goal": "Gemeinsamen State als Arbeitsfläche sichtbar und überprüfbar machen.",
+        "langgraph": "Shared State mit blackboard dict und reviewer",
+        "takeaway": "Das Blackboard ist ein gemeinsamer Speicher, kein Delegation Brief.",
         "request": "Berechne 12 + 30 und zeige, welche Blackboard-Notizen zwischen Analyse, Specialist und Review entstehen.",
-        "flow": ["Analyze", "Specialist", "Blackboard", "Review"],
+        "flow": ["Analyze writes", "Specialist updates", "Reviewer reads", "Snapshot"],
         "tone": "ok",
     },
     {
@@ -565,6 +565,100 @@ _THEME_CSS = """
     white-space: pre-wrap;
   }
 
+  /* ── Trace panel ───────────────────────────────────────────────────── */
+
+  .trace-panel {
+    margin-top: 1rem;
+    padding: 20px 22px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--orange);
+    border-radius: 10px;
+  }
+
+  .trace-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    color: var(--orange-soft);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .trace-head::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--orange);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(255, 138, 42, 0.55);
+  }
+
+  .trace-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .trace-event {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 13px 14px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .trace-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(62, 216, 137, 0.32);
+    border-radius: 50%;
+    color: var(--green);
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .trace-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .trace-actor {
+    color: var(--ink);
+    font-size: 0.88rem;
+    font-weight: 720;
+  }
+
+  .trace-action {
+    color: var(--muted);
+    font-size: 0.76rem;
+  }
+
+  .trace-content {
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+
+  .trace-empty {
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+
   /* ── Alerts ────────────────────────────────────────────────────────── */
 
   .stAlert {
@@ -627,8 +721,13 @@ _THEME_CSS = """
     }
 
     .phase-inspector,
-    .result-panel {
+    .result-panel,
+    .trace-panel {
       padding: 18px;
+    }
+
+    .trace-event {
+      grid-template-columns: 1fr;
     }
   }
 </style>
@@ -764,6 +863,7 @@ def render_input(phase: dict[str, str]) -> str:
 
 
 def render_output(result: str, phase: dict[str, str]) -> None:
+    result_html = _escape_html_lines(result)
     st.markdown(
         f"""
         <div class="result-panel">
@@ -772,9 +872,49 @@ def render_output(result: str, phase: dict[str, str]) -> None:
             <span class="result-chip">{phase["num"]} {phase["label"]}</span>
             <span class="result-chip">{phase["pattern"]}</span>
           </div>
-          <div class="result-content">{_escape_html(result)}</div>
+          <div class="result-content">{result_html}</div>
         </div>
         """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_trace(trace: list[dict[str, str]]) -> None:
+    if not trace:
+        st.markdown(
+            """
+            <div class="trace-panel">
+              <div class="trace-head">Kommunikation &amp; Zwischenergebnisse</div>
+              <div class="trace-empty">Diese Phase liefert keine Trace-Events.</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        return
+
+    events = []
+    for index, event in enumerate(trace, start=1):
+        actor = _escape_html(str(event.get("actor", "node")))
+        action = _escape_html(str(event.get("action", "step")))
+        content = _escape_html_lines(str(event.get("content", "")))
+        events.append(
+            f'<div class="trace-event">'
+            f'<div class="trace-index">{index:02d}</div>'
+            f"<div>"
+            f'<div class="trace-meta">'
+            f'<span class="trace-actor">{actor}</span>'
+            f'<span class="trace-action">{action}</span>'
+            f"</div>"
+            f'<div class="trace-content">{content}</div>'
+            f"</div>"
+            f"</div>"
+        )
+
+    st.markdown(
+        f'<div class="trace-panel">'
+        f'<div class="trace-head">Kommunikation &amp; Zwischenergebnisse</div>'
+        f'<div class="trace-list">{"".join(events)}</div>'
+        f"</div>",
         unsafe_allow_html=True,
     )
 
@@ -807,3 +947,7 @@ def _escape_html(value: str) -> str:
         .replace('"', "&quot;")
         .replace("'", "&#x27;")
     )
+
+
+def _escape_html_lines(value: str) -> str:
+    return _escape_html(value).replace("\n", "<br>")

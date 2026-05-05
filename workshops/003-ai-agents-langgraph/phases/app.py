@@ -11,12 +11,12 @@ if str(WORKSHOP_ROOT) not in sys.path:
 
 from phases.lib.ui import apply_theme, render_footer, render_header, render_input
 from phases.lib.ui import render_output, render_phase_context, render_phase_details
-from phases.lib.ui import render_phase_selector
+from phases.lib.ui import render_phase_selector, render_trace
 
 
-def load_runner(phase_id: str):
+def load_phase_module(phase_id: str):
     module = importlib.import_module(f"phases.{phase_id}.graph")
-    return module.run_graph
+    return module
 
 
 def main() -> None:
@@ -45,9 +45,16 @@ def main() -> None:
             return
 
         with st.spinner("Running LangGraph..."):
-            runner = load_runner(phase["id"])
-            result = runner(user_input.strip())
+            module = load_phase_module(phase["id"])
+            if hasattr(module, "run_graph_with_trace"):
+                state = module.run_graph_with_trace(user_input.strip())
+                result = state["result"]
+                trace = state.get("trace", [])
+            else:
+                result = module.run_graph(user_input.strip())
+                trace = []
         render_output(result, phase)
+        render_trace(trace)
 
     render_footer()
 

@@ -9,7 +9,18 @@ def analyze(state: AgentState) -> AgentState:
         "You analyze user requests for a workshop pipeline. Identify intent in one sentence.",
         state["input"],
     )
-    return {"analysis": analysis, "messages": state.get("messages", []) + [f"analysis: {analysis}"]}
+    return {
+        "analysis": analysis,
+        "messages": state.get("messages", []) + [f"analysis: {analysis}"],
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "analyze",
+                "action": "created analysis",
+                "content": analysis,
+            }
+        ],
+    }
 
 
 def process(state: AgentState) -> AgentState:
@@ -17,7 +28,18 @@ def process(state: AgentState) -> AgentState:
         "You process a request after analysis. Produce the useful core answer.",
         f"Analysis:\n{state['analysis']}\n\nRequest:\n{state['input']}",
     )
-    return {"result": draft, "messages": state.get("messages", []) + ["process: draft created"]}
+    return {
+        "result": draft,
+        "messages": state.get("messages", []) + ["process: draft created"],
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "process",
+                "action": "created draft from analysis",
+                "content": draft,
+            }
+        ],
+    }
 
 
 def respond(state: AgentState) -> AgentState:
@@ -25,7 +47,18 @@ def respond(state: AgentState) -> AgentState:
         "You polish a pipeline draft. Keep the response direct and workshop-friendly.",
         f"Original request:\n{state['input']}\n\nDraft:\n{state['result']}",
     )
-    return {"result": final, "messages": state.get("messages", []) + ["respond: final response created"]}
+    return {
+        "result": final,
+        "messages": state.get("messages", []) + ["respond: final response created"],
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "respond",
+                "action": "polished final answer",
+                "content": final,
+            }
+        ],
+    }
 
 
 builder = StateGraph(AgentState)
@@ -40,5 +73,9 @@ graph = builder.compile()
 
 
 def run_graph(user_input: str) -> str:
-    state = graph.invoke({"input": user_input, "messages": []})
+    state = run_graph_with_trace(user_input)
     return state["result"]
+
+
+def run_graph_with_trace(user_input: str) -> AgentState:
+    return graph.invoke({"input": user_input, "messages": [], "trace": []})

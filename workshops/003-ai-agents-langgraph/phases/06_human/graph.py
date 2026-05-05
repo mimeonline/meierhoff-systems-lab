@@ -10,16 +10,35 @@ from phases.lib.types import AgentState
 
 def assess(state: AgentState) -> AgentState:
     confidence = _estimate_confidence(state["input"])
+    needs_human = confidence < 0.65
     return {
         "confidence": confidence,
-        "needs_human": confidence < 0.65,
+        "needs_human": needs_human,
         "messages": state.get("messages", []) + [f"confidence: {confidence:.2f}"],
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "assess",
+                "action": "checked confidence",
+                "content": f"Confidence {confidence:.2f}; human review needed: {needs_human}.",
+            }
+        ],
     }
 
 
 def human_review(state: AgentState) -> AgentState:
     if not state.get("needs_human", False):
-        return {"human_feedback": "No human review needed."}
+        return {
+            "human_feedback": "No human review needed.",
+            "trace": state.get("trace", [])
+            + [
+                {
+                    "actor": "human_review",
+                    "action": "skipped review",
+                    "content": "Confidence was high enough to continue without interruption.",
+                }
+            ],
+        }
 
     feedback = interrupt(
         {
@@ -28,7 +47,18 @@ def human_review(state: AgentState) -> AgentState:
             "input": state["input"],
         }
     )
-    return {"human_feedback": str(feedback)}
+    feedback_text = str(feedback)
+    return {
+        "human_feedback": feedback_text,
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "human_review",
+                "action": "resumed with simulated feedback",
+                "content": feedback_text,
+            }
+        ],
+    }
 
 
 def respond(state: AgentState) -> AgentState:
@@ -38,7 +68,18 @@ def respond(state: AgentState) -> AgentState:
         f"Request:\n{state['input']}\n\nConfidence: {state.get('confidence', 1.0):.2f}\nHuman feedback:\n{feedback}",
     )
     prefix = "Human review simulated and resumed." if state.get("needs_human") else "High confidence path."
-    return {"result": f"{prefix}\n\n{answer}"}
+    result = f"{prefix}\n\n{answer}"
+    return {
+        "result": result,
+        "trace": state.get("trace", [])
+        + [
+            {
+                "actor": "respond",
+                "action": "answered after control point",
+                "content": result,
+            }
+        ],
+    }
 
 
 def route_after_assessment(state: AgentState) -> str:
@@ -69,16 +110,20 @@ graph = builder.compile(checkpointer=MemorySaver())
 
 
 def run_graph(user_input: str) -> str:
+    state = run_graph_with_trace(user_input)
+    return state["result"]
+
+
+def run_graph_with_trace(user_input: str) -> AgentState:
     config = {"configurable": {"thread_id": str(uuid4())}}
-    initial_state = {"input": user_input, "messages": []}
+    initial_state = {"input": user_input, "messages": [], "trace": []}
     first = graph.invoke(initial_state, config=config)
 
     if "__interrupt__" not in first:
-        return first["result"]
+        return first
 
     feedback = (
         "Simulated human feedback: answer with a clear assumption, state uncertainty, "
         "and keep the recommendation reversible."
     )
-    resumed = graph.invoke(Command(resume=feedback), config=config)
-    return resumed["result"]
+    return graph.invoke(Command(resume=feedback), config=config)
