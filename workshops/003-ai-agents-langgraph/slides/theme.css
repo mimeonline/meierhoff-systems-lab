@@ -32,10 +32,12 @@
   text-align: left;
 }
 
-.reveal .slides section {
-  padding: 52px 80px 64px;
+.reveal .slides > section {
+  padding: 52px 80px 28px;
   height: 100%;
   box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column;
 }
 
 /* ── Typography ────────────────────────────────────────────────────────── */
@@ -60,7 +62,7 @@
 
 .reveal h2 {
   max-width: 980px;
-  margin-bottom: 30px;
+  margin-bottom: 22px;
   font-size: 1.55em;
 }
 
@@ -154,7 +156,18 @@
 }
 
 .reveal li + li {
-  margin-top: 0.45em;
+  margin-top: 0.32em;
+}
+
+.reveal .cols-2 li,
+.reveal .cols-2 p,
+.reveal .cards .card-desc {
+  font-size: 0.62em;
+  line-height: 1.45;
+}
+
+.reveal .cols-2 li + li {
+  margin-top: 0.22em;
 }
 
 /* ── Tables ────────────────────────────────────────────────────────────── */
@@ -356,21 +369,19 @@
 }
 
 .reveal .brand {
-  position: absolute;
-  bottom: 22px;
-  left: 80px;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 0;
-  padding: 0;
+  margin-top: auto;
+  padding-top: 18px;
   color: var(--muted-2);
   font-size: 0.5em;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-.reveal .cover .brand {
+.reveal .cover .brand,
+.reveal .section .brand {
   display: none;
 }
 
@@ -536,8 +547,8 @@
 .reveal .cols-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 36px;
-  margin-top: 16px;
+  gap: 32px;
+  margin-top: 12px;
 }
 
 .reveal .col-label {

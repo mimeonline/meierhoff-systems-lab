@@ -501,7 +501,7 @@ Typische Fehler entstehen, wenn Architektur unsichtbar bleibt.
 </div>
 
 <div class="callout">Jede Phase ist klein genug für Live Coding und vollständig genug für Diskussion.</div>
-![1777991773022](image/workshop/1777991773022.png)![1777991777174](image/workshop/1777991777174.png)
+
 <div class="brand">Meierhoff Systems Lab</div>
 
 ---
