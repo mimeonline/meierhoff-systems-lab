@@ -560,6 +560,64 @@
 .reveal .card.green .card-num { color: var(--green); }
 .reveal .card.green:hover { border-color: rgba(62, 216, 137, 0.4); }
 
+.reveal .thanks-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.78fr) 1.22fr;
+  gap: 34px;
+  align-items: start;
+  margin-top: 8px;
+}
+
+.reveal .thanks-copy {
+  padding-top: 8px;
+}
+
+.reveal .thanks-name,
+.reveal .thanks-brand {
+  display: block;
+}
+
+.reveal .thanks-name {
+  color: var(--ink);
+  font-size: 0.95em;
+  font-weight: 720;
+  line-height: 1.16;
+}
+
+.reveal .thanks-brand {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.58em;
+}
+
+.reveal .link-cards {
+  gap: 10px;
+  margin-top: 0;
+}
+
+.reveal .link-cards .card {
+  padding: 10px 13px;
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(255, 255, 255, 0.075);
+  border-radius: 8px;
+}
+
+.reveal .link-cards .card .card-num {
+  font-size: 0.36em;
+  letter-spacing: 0.14em;
+  margin-bottom: 5px;
+}
+
+.reveal .link-cards .card .card-title {
+  font-size: 0.56em;
+  margin-bottom: 3px;
+}
+
+.reveal .link-cards .card .card-desc {
+  font-size: 0.42em;
+  line-height: 1.35;
+}
+
 /* ── Two-column layout ─────────────────────────────────────────────────── */
 
 .reveal .cols-2 {

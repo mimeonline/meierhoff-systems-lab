@@ -632,19 +632,33 @@ Typische Fehler entstehen, wenn Architektur unsichtbar bleibt.
 
 ---
 
-<div class="chapter-badge green">Danke</div>
+<div class="chapter-badge green">Ende</div>
 
-## Danke
+# Vielen Dank
 
-Michael Meierhoff · Meierhoff Systems Lab
+<div class="thanks-layout" style="margin-top: 32px;">
+  <div class="thanks-copy">
+    <span class="col-label">Kontakt</span>
+    <span class="thanks-name">Michael Meierhoff</span>
+    <span class="thanks-brand">Meierhoff Systems Lab</span>
+    
+    <div style="margin-top: 24px;">
+      <ul>
+        <li><a href="https://www.linkedin.com/in/michael-meierhoff-b5426458/">LinkedIn</a></li>
+        <li><a href="https://github.com/mimeonline/meierhoff-systems-lab">Workshop Repo</a></li>
+      </ul>
+    </div>
+  </div>
 
-<div class="cards two">
-  <div class="card"><span class="card-num">Ich</span><span class="card-title">Michael Meierhoff</span><span class="card-desc"><a href="https://github.com/mimeonline">github.com/mimeonline</a></span></div>
-  <div class="card"><span class="card-num">Repo</span><span class="card-title">Meierhoff Systems Lab</span><span class="card-desc"><a href="https://github.com/mimeonline/meierhoff-systems-lab">github.com/mimeonline/meierhoff-systems-lab</a></span></div>
-  <div class="card green"><span class="card-num">LangGraph</span><span class="card-title">Docs</span><span class="card-desc"><a href="https://langchain-ai.github.io/langgraph/">langchain-ai.github.io/langgraph</a></span></div>
-  <div class="card green"><span class="card-num">LangGraph</span><span class="card-title">GitHub</span><span class="card-desc"><a href="https://github.com/langchain-ai/langgraph">github.com/langchain-ai/langgraph</a></span></div>
-  <div class="card"><span class="card-num">Strands</span><span class="card-title">Agents SDK</span><span class="card-desc"><a href="https://strandsagents.com/">strandsagents.com</a></span></div>
-  <div class="card"><span class="card-num">UI</span><span class="card-title">Streamlit</span><span class="card-desc"><a href="https://streamlit.io/">streamlit.io</a></span></div>
+  <div>
+    <span class="col-label green">Ressourcen</span>
+    <div class="cards two" style="margin-top: 8px;">
+      <div class="card green"><span class="card-num">Docs</span><span class="card-title">LangGraph</span><span class="card-desc"><a href="https://langchain-ai.github.io/langgraph/">Documentation</a></span></div>
+      <div class="card green"><span class="card-num">Code</span><span class="card-title">LangGraph</span><span class="card-desc"><a href="https://github.com/langchain-ai/langgraph">GitHub Repo</a></span></div>
+      <div class="card"><span class="card-num">Vergleich</span><span class="card-title">Strands Agents</span><span class="card-desc"><a href="https://strandsagents.com/">Website</a></span></div>
+      <div class="card"><span class="card-num">UI</span><span class="card-title">Streamlit</span><span class="card-desc"><a href="https://streamlit.io/">Website</a></span></div>
+    </div>
+  </div>
 </div>
 
 <div class="brand">Meierhoff Systems Lab</div>
