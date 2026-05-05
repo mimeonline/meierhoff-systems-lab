@@ -1,17 +1,29 @@
+/* ── Design tokens ─────────────────────────────────────────────────────── */
+
 :root {
   --navy: #061b2d;
-  --navy-2: #0b2a42;
+  --navy-2: #0a2540;
+  --navy-3: #0e3252;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.07);
   --ink: #f5f8fb;
-  --muted: #b8c5cf;
+  --muted: #9fb1c2;
+  --muted-2: #6c8198;
   --orange: #ff8a2a;
-  --green: #38b977;
-  --line: rgba(245, 248, 251, 0.18);
+  --orange-soft: #ffb479;
+  --green: #3ed889;
+  --green-soft: #7ee8b1;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.18);
 }
+
+/* ── Global canvas ─────────────────────────────────────────────────────── */
 
 .reveal {
   background:
-    linear-gradient(90deg, rgba(255, 138, 42, 0.12), transparent 28%),
-    linear-gradient(180deg, var(--navy), var(--navy-2));
+    radial-gradient(ellipse at 85% 0%, rgba(56, 139, 210, 0.1), transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(62, 216, 137, 0.05), transparent 55%),
+    linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -21,50 +33,74 @@
 }
 
 .reveal .slides section {
-  padding: 56px 72px;
+  padding: 52px 80px 64px;
+  height: 100%;
+  box-sizing: border-box;
 }
+
+/* ── Typography ────────────────────────────────────────────────────────── */
 
 .reveal h1,
 .reveal h2,
-.reveal h3 {
+.reveal h3,
+.reveal h4 {
   color: var(--ink);
-  font-weight: 760;
-  letter-spacing: 0;
-  line-height: 1.02;
-  text-transform: none;
+  font-weight: 720;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  text-transform: none !important;
 }
 
 .reveal h1 {
-  max-width: 980px;
-  font-size: 2.35em;
+  max-width: 1000px;
+  font-size: 2.4em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 .reveal h2 {
-  max-width: 960px;
-  margin-bottom: 34px;
-  font-size: 1.7em;
+  max-width: 980px;
+  margin-bottom: 30px;
+  font-size: 1.55em;
 }
 
 .reveal h3 {
-  margin-top: 32px;
+  margin-top: 28px;
+  margin-bottom: 8px;
   color: var(--orange);
-  font-size: 0.78em;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .reveal p,
 .reveal li {
   max-width: 980px;
   color: var(--muted);
-  font-size: 0.72em;
-  line-height: 1.45;
+  font-size: 0.7em;
+  line-height: 1.55;
 }
 
 .reveal strong {
   color: var(--ink);
+  font-weight: 700;
+}
+
+.reveal em {
+  color: var(--orange-soft);
+  font-style: normal;
 }
 
 .reveal a {
   color: var(--orange);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 138, 42, 0.4);
+  transition: border-color 200ms ease;
+}
+
+.reveal a:hover {
+  border-bottom-color: var(--orange);
 }
 
 .reveal ul,
@@ -72,95 +108,552 @@
   margin-left: 1em;
 }
 
-.reveal li + li {
-  margin-top: 0.35em;
+.reveal ul {
+  list-style: none;
+  padding-left: 0;
 }
+
+.reveal ul li {
+  position: relative;
+  padding-left: 22px;
+}
+
+.reveal ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  opacity: 0.85;
+}
+
+.reveal ol {
+  counter-reset: ol-counter;
+  list-style: none;
+  padding-left: 0;
+}
+
+.reveal ol > li {
+  counter-increment: ol-counter;
+  position: relative;
+  padding-left: 32px;
+}
+
+.reveal ol > li::before {
+  content: counter(ol-counter, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--orange);
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+}
+
+.reveal li + li {
+  margin-top: 0.45em;
+}
+
+/* ── Tables ────────────────────────────────────────────────────────────── */
 
 .reveal table {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 24px;
   border-collapse: collapse;
-  font-size: 0.48em;
+  font-size: 0.5em;
+  background: var(--surface);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.reveal thead {
+  background: rgba(255, 138, 42, 0.08);
 }
 
 .reveal th {
-  color: var(--ink);
-  font-weight: 760;
+  color: var(--orange);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.95em;
 }
 
 .reveal th,
 .reveal td {
-  padding: 14px 16px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.reveal td {
+  color: var(--muted);
+}
+
+.reveal td:first-child {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.reveal tr:last-child td {
+  border-bottom: none;
 }
 
 .reveal tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.025);
 }
 
+/* ── Inline code & blocks ──────────────────────────────────────────────── */
+
 .reveal code {
-  color: #ffe0c2;
-  background: rgba(255, 138, 42, 0.14);
-  border-radius: 4px;
-  padding: 0.06em 0.22em;
+  color: var(--orange-soft);
+  background: rgba(255, 138, 42, 0.1);
+  border: 1px solid rgba(255, 138, 42, 0.2);
+  border-radius: 5px;
+  padding: 0.06em 0.32em;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.92em;
 }
 
 .reveal pre {
   width: 100%;
+  margin-top: 16px;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: none;
+  border-left: 3px solid var(--orange);
+  border-radius: 10px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+  background: #04131f;
 }
 
 .reveal pre code {
-  max-height: 460px;
-  background: #04131f;
-  border-radius: 8px;
+  display: block;
+  max-height: 380px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 14px 20px;
   color: #ecf5ff;
-  font-size: 0.72em;
+  font-size: 0.55em;
+  line-height: 1.5;
 }
+
+/* ── Blockquotes ───────────────────────────────────────────────────────── */
 
 .reveal blockquote {
   width: auto;
-  margin: 26px 0;
-  padding: 18px 24px;
-  border-left: 5px solid var(--orange);
-  background: rgba(255, 255, 255, 0.05);
+  max-width: 900px;
+  margin: 28px 0;
+  padding: 20px 28px;
+  border: none;
+  border-left: 3px solid var(--green);
+  background: rgba(62, 216, 137, 0.06);
+  border-radius: 0 10px 10px 0;
   box-shadow: none;
   color: var(--ink);
+  font-style: normal;
+  font-size: 0.78em;
 }
 
-.reveal .progress span {
-  background: var(--orange);
-}
-
-.reveal .slide-number {
+.reveal blockquote p {
   color: var(--ink);
-  background: rgba(6, 27, 45, 0.78);
+  font-size: 1em;
+  margin: 0;
 }
 
-.reveal .controls button {
+/* ── Reveal chrome ─────────────────────────────────────────────────────── */
+
+.reveal .progress {
+  height: 3px;
   color: var(--orange);
 }
 
+.reveal .progress span {
+  background: linear-gradient(90deg, var(--orange) 0%, var(--green) 100%);
+}
+
+.reveal .slide-number {
+  color: var(--muted);
+  background: transparent;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.7em;
+  letter-spacing: 0.08em;
+  right: 28px;
+  bottom: 16px;
+}
+
+.reveal .controls button {
+  color: var(--muted);
+}
+
+.reveal .controls button:hover {
+  color: var(--orange);
+}
+
+/* ── Utility colors ────────────────────────────────────────────────────── */
+
+.reveal .accent { color: var(--orange); }
+.reveal .ok { color: var(--green); }
+.reveal .ink { color: var(--ink); }
+.reveal .muted { color: var(--muted); }
+
+/* ── Title bar / kicker ────────────────────────────────────────────────── */
+
 .reveal .title-mark {
   display: inline-block;
-  width: 72px;
-  height: 6px;
-  margin-bottom: 32px;
-  background: var(--orange);
+  width: 60px;
+  height: 4px;
+  margin-bottom: 28px;
+  background: linear-gradient(90deg, var(--orange), var(--green));
+  border-radius: 2px;
+}
+
+.reveal .kicker {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--orange);
+  font-size: 0.55em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .reveal .tagline {
   max-width: 760px;
   color: var(--muted);
-  font-size: 0.84em;
+  font-size: 0.78em;
+  line-height: 1.5;
 }
 
-.reveal .accent {
+/* ── Cover slide ───────────────────────────────────────────────────────── */
+
+.reveal .cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.reveal .cover h1 {
+  font-size: 2.1em;
+  line-height: 1.05;
+  background: linear-gradient(135deg, var(--ink) 0%, var(--orange-soft) 60%, var(--orange) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reveal .cover-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.reveal .cover-meta .pill {
+  font-size: 0.6em;
+}
+
+.reveal .brand {
+  position: absolute;
+  bottom: 22px;
+  left: 80px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  color: var(--muted-2);
+  font-size: 0.5em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reveal .cover .brand {
+  display: none;
+}
+
+.reveal .brand::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+}
+
+/* ── Section divider slide ─────────────────────────────────────────────── */
+
+.reveal .section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.reveal .section .section-num {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
   color: var(--orange);
+  font-size: 0.7em;
+  letter-spacing: 0.2em;
+  margin-bottom: 18px;
 }
 
-.reveal .ok {
-  color: var(--green);
+.reveal .section h1 {
+  font-size: 2.6em;
+  max-width: 1000px;
 }
+
+.reveal .section .section-sub {
+  margin-top: 18px;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 0.85em;
+}
+
+/* ── Chapter badge (top right) ─────────────────────────────────────────── */
+
+.reveal .chapter-badge {
+  position: absolute;
+  top: 28px;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.5em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.reveal .chapter-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+}
+
+.reveal .chapter-badge.green::before {
+  background: var(--green);
+}
+
+/* ── Pills ─────────────────────────────────────────────────────────────── */
+
+.reveal .pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.reveal .pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 0.65em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.reveal .pill.accent {
+  border-color: rgba(255, 138, 42, 0.4);
+  color: var(--orange);
+  background: rgba(255, 138, 42, 0.06);
+}
+
+.reveal .pill.ok {
+  border-color: rgba(62, 216, 137, 0.4);
+  color: var(--green);
+  background: rgba(62, 216, 137, 0.06);
+}
+
+/* ── Cards grid ────────────────────────────────────────────────────────── */
+
+.reveal .cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.reveal .cards.two { grid-template-columns: repeat(2, 1fr); }
+.reveal .cards.four { grid-template-columns: repeat(4, 1fr); }
+.reveal .cards.six { grid-template-columns: repeat(3, 1fr); }
+
+.reveal .card {
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.reveal .card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+
+.reveal .card .card-num {
+  display: block;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  color: var(--orange);
+  font-size: 0.55em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 10px;
+}
+
+.reveal .card .card-title {
+  display: block;
+  color: var(--ink);
+  font-size: 0.78em;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.reveal .card .card-desc {
+  display: block;
+  color: var(--muted);
+  font-size: 0.6em;
+  line-height: 1.5;
+}
+
+.reveal .card.green .card-num { color: var(--green); }
+.reveal .card.green:hover { border-color: rgba(62, 216, 137, 0.4); }
+
+/* ── Two-column layout ─────────────────────────────────────────────────── */
+
+.reveal .cols-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-top: 16px;
+}
+
+.reveal .col-label {
+  display: block;
+  color: var(--orange);
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.reveal .col-label.green { color: var(--green); }
+
+/* ── Flow diagram ──────────────────────────────────────────────────────── */
+
+.reveal .flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 28px;
+}
+
+.reveal .flow-node {
+  padding: 10px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 0.65em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.reveal .flow-node.accent {
+  border-color: rgba(255, 138, 42, 0.5);
+  color: var(--orange);
+  background: rgba(255, 138, 42, 0.06);
+}
+
+.reveal .flow-node.ok {
+  border-color: rgba(62, 216, 137, 0.5);
+  color: var(--green);
+  background: rgba(62, 216, 137, 0.06);
+}
+
+.reveal .flow-arrow {
+  color: var(--muted-2);
+  font-size: 0.7em;
+  padding: 0 6px;
+}
+
+/* ── Callout / highlight box ───────────────────────────────────────────── */
+
+.reveal .callout {
+  margin-top: 20px;
+  padding: 14px 22px;
+  background: rgba(62, 216, 137, 0.06);
+  border: 1px solid rgba(62, 216, 137, 0.2);
+  border-left: 3px solid var(--green);
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 0.72em;
+  line-height: 1.5;
+  max-width: 900px;
+}
+
+.reveal .callout.warn {
+  background: rgba(255, 138, 42, 0.06);
+  border-color: rgba(255, 138, 42, 0.25);
+  border-left-color: var(--orange);
+}
+
+/* ── Key/value definitions ─────────────────────────────────────────────── */
+
+.reveal .defs {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 10px 28px;
+  margin-top: 16px;
+  max-width: 980px;
+}
+
+.reveal .defs dt {
+  color: var(--orange);
+  font-size: 0.66em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.reveal .defs dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.66em;
+  line-height: 1.5;
+}
+
+/* ── Decision list ─────────────────────────────────────────────────────── */
+
+.reveal .decision {
+  display: grid;
+  grid-template-columns: minmax(180px, auto) 1fr;
+  gap: 12px 24px;
+  margin-top: 24px;
+  font-size: 0.72em;
+}
+
+.reveal .decision .q {
+  color: var(--muted);
+}
+
+.reveal .decision .a {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.reveal .decision .a .accent { color: var(--orange); }
+.reveal .decision .a .ok { color: var(--green); }
