@@ -186,6 +186,27 @@ graph = builder.compile()
 
 <div class="chapter-badge">LangGraph</div>
 
+## Maturity & Einsetzbarkeit
+
+LangGraph ist kein Randexperiment mehr, aber trotzdem Infrastruktur, die bewusst betrieben werden muss.
+
+<div class="cards four">
+  <div class="card"><span class="card-num">GitHub</span><span class="card-title">31k+ Stars</span><span class="card-desc">5k+ Forks, viele Releases, aktive Community.</span></div>
+  <div class="card"><span class="card-num">PyPI</span><span class="card-title">45M+ Downloads / Monat</span><span class="card-desc">Breite Nutzung im Python-Ökosystem.</span></div>
+  <div class="card green"><span class="card-num">Status</span><span class="card-title">Production / Stable</span><span class="card-desc">PyPI classifier, Python 3.10 bis 3.13.</span></div>
+  <div class="card green"><span class="card-num">Industrie</span><span class="card-title">Klarna, Replit, Elastic</span><span class="card-desc">Offiziell genannte Nutzungssignale.</span></div>
+</div>
+
+<div class="callout warn">Einsetzbar für Produktion, wenn Observability, Version Pinning, Security Updates und klare State-Grenzen mitgedacht werden.</div>
+
+<p class="source-note">Stand: Mai 2026 · Quellen: GitHub, PyPI Stats, PyPI Project Metadata</p>
+
+<div class="brand">Meierhoff Systems Lab</div>
+
+---
+
+<div class="chapter-badge">LangGraph</div>
+
 ## Mapping
 
 Architekturpattern werden in LangGraph konkret.
@@ -288,6 +309,10 @@ Der Router trennt Eingaben nach Pfaden.
 - **Conditional Edges** wählen den nächsten Node
 - Die Logik kann **heuristisch** oder **LLM-basiert** sein
 
+```python
+builder.add_conditional_edges("router", choose_route, {"math": "math_agent", "text": "text_agent"})
+```
+
 <div class="brand">Meierhoff Systems Lab</div>
 
 ---
@@ -296,21 +321,29 @@ Der Router trennt Eingaben nach Pfaden.
 
 ## Specialist
 
-Specialists bearbeiten klar getrennte Aufgaben.
+Specialists bearbeiten klar delegierte Aufgaben.
 
-<div class="flow">
+<div class="flow compact">
   <span class="flow-node accent">Orchestrator</span>
   <span class="flow-arrow">&rarr;</span>
-  <span class="flow-node">Math Agent</span>
+  <span class="flow-node">Brief</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node">Math</span>
   <span class="flow-arrow">/</span>
-  <span class="flow-node ok">Text Agent</span>
+  <span class="flow-node ok">Text</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node accent">Review</span>
 </div>
 
-- **Orchestrator** entscheidet
-- **Math Agent** löst Rechenfragen
-- **Text Agent** formuliert oder erklärt
+- **Orchestrator** erstellt einen Auftrag
+- Specialist arbeitet auf `delegation_brief`
+- Review baut das finale Ergebnis zusammen
 
-<div class="callout warn">Der Nutzen liegt in <strong>begrenzten Rollen</strong> &mdash; nicht jeder Agent kann alles.</div>
+```python
+state["delegation_brief"] -> specialist -> state["specialist_result"]
+```
+
+<div class="callout warn">Der Unterschied zum Router: Nicht nur der Pfad ist explizit, sondern auch der Auftrag an die Rolle.</div>
 
 <div class="brand">Meierhoff Systems Lab</div>
 
@@ -322,11 +355,25 @@ Specialists bearbeiten klar getrennte Aufgaben.
 
 Das Blackboard ist ein geteilter Arbeitskontext.
 
-- Alle Nodes lesen denselben **State**
-- Jeder Node schreibt **sichtbare Zwischenergebnisse**
-- Review wird leichter, weil Kontext **explizit** bleibt
+<div class="flow compact">
+  <span class="flow-node accent">analyze writes</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node ok">blackboard</span>
+  <span class="flow-arrow">&larr;</span>
+  <span class="flow-node">specialist updates</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node accent">reviewer reads</span>
+</div>
 
-<div class="callout">Gut für Aufgaben, bei denen mehrere Rollen denselben Arbeitsstand verbessern.</div>
+- `blackboard` ist ein gemeinsames **State-Dict**
+- jeder Node liest und schreibt denselben Arbeitsstand
+- das Ergebnis enthält einen sichtbaren **Snapshot**
+
+```python
+blackboard.update({"draft": answer, "specialist": "math_agent"})
+```
+
+<div class="callout">Der Unterschied zum Specialist: Nicht ein Auftrag wird übergeben, sondern ein gemeinsamer Arbeitsstand wächst.</div>
 
 <div class="brand">Meierhoff Systems Lab</div>
 
@@ -373,21 +420,28 @@ Die Pipeline ist kein freies Agenten-Gespräch, sondern ein kontrollierter Ablau
 
 Human-in-the-loop macht Unsicherheit sichtbar.
 
-<div class="flow">
-  <span class="flow-node accent">Agent</span>
+<div class="flow compact">
+  <span class="flow-node accent">assess</span>
   <span class="flow-arrow">&rarr;</span>
-  <span class="flow-node">Confidence?</span>
+  <span class="flow-node">low confidence?</span>
   <span class="flow-arrow">&rarr;</span>
-  <span class="flow-node ok">Human Review</span>
+  <span class="flow-node ok">interrupt</span>
   <span class="flow-arrow">&rarr;</span>
-  <span class="flow-node">Resume</span>
+  <span class="flow-node">resume</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-node accent">respond</span>
 </div>
 
 - Das System schätzt **Confidence**
-- Bei niedriger Confidence wird **unterbrochen**
+- bei niedriger Confidence stoppt der Graph **vor der Antwort**
 - Menschliches Feedback wird als **State** wieder aufgenommen
 
-<div class="callout">Das Pattern verhindert, dass riskante Entscheidungen nur im Prompt versteckt sind.</div>
+```python
+feedback = interrupt({"intervention_point": "before respond", "question": human_question})
+graph.invoke(Command(resume=feedback), config=config)
+```
+
+<div class="callout">Der wichtige Punkt ist nicht nur Review, sondern <strong>wo</strong> der Mensch eingreifen muss.</div>
 
 <div class="brand">Meierhoff Systems Lab</div>
 
@@ -432,6 +486,43 @@ Human-in-the-loop macht Unsicherheit sichtbar.
 
 ---
 
+<div class="chapter-badge">Vergleich</div>
+
+## Pattern Mapping
+
+Strands benennt Ausführungsformen. LangGraph modelliert die Architekturbausteine darunter.
+
+| Strands Pattern | Kontrollidee | LangGraph-Pattern im Workshop |
+|---|---|---|
+| Agent-as-Tool | Orchestrator LLM wählt Sub-Agent | Orchestrator + Specialist |
+| Workflow | Developer-defined DAG | Pipeline |
+| Graph | Developer Edges + LLM Routing | Router + Conditional Edges |
+| Swarm | Agenten übergeben autonom | Human / Blackboard nur mit klaren Grenzen |
+
+<div class="callout">In LangGraph entscheiden wir bewusst, welche Kontrolle explizit im Graphen liegt: Route, Rolle, State, Ablauf oder Review.</div>
+
+<div class="brand">Meierhoff Systems Lab</div>
+
+---
+
+<div class="chapter-badge">Vergleich</div>
+
+## Router vs Specialist vs Blackboard
+
+Diese drei Patterns sehen ähnlich aus, beantworten aber unterschiedliche Architekturfragen.
+
+<div class="decision">
+  <div class="q">Router</div>      <div class="a"><span class="accent">Wer soll weiterarbeiten?</span></div>
+  <div class="q">Specialist</div>  <div class="a"><span class="ok">Mit welchem Auftrag arbeitet eine Rolle?</span></div>
+  <div class="q">Blackboard</div>  <div class="a"><span class="ok">Welcher gemeinsame Arbeitsstand wächst?</span></div>
+</div>
+
+<div class="callout warn">Wenn diese Frage nicht klar ist, sehen die Graphen im Code schnell gleich aus.</div>
+
+<div class="brand">Meierhoff Systems Lab</div>
+
+---
+
 <!-- .slide: class="section" -->
 
 <div class="section-num">06 — Fallen</div>
@@ -463,15 +554,15 @@ Typische Fehler entstehen, wenn Architektur unsichtbar bleibt.
 
 ## Anti-Patterns
 
-| Anti-Pattern | Symptom | Gegenmittel |
+| Anti-Pattern | Symptom | Gegenmittel in LangGraph |
 |---|---|---|
 | Over-Agentification | mehrere Agenten für einfache Aufgabe | erst Single-Agent / Pipeline prüfen |
 | Hidden State | Kontext liegt unsichtbar in Prompts | expliziter Shared State |
 | Unbounded Loop | Agenten laufen endlos weiter | Recursion Limit / Exit Criteria |
 | Tool Explosion | jeder Agent kann alles | Tools pro Rolle begrenzen |
-| God Orchestrator | zentrale Steuerung wird zu komplex | Subgraphs / klare Zuständigkeit |
-| Hallucinated Routing | falscher Pfad wird gewählt | explizite Router-Regeln |
-| Prompt-Coupled Architecture | Architektur steckt nur im Prompt | Graphstruktur explizit |
+| God Orchestrator | zentrale Steuerung wird zu komplex | Subgraphs / klarere Zuständigkeiten |
+| Hallucinated Routing | falscher Pfad wird gewählt | explizite Router-Regeln + Validierung |
+| Prompt-Coupled Architecture | Architektur steckt nur im Prompt | Graphstruktur explizit modellieren |
 
 <div class="brand">Meierhoff Systems Lab</div>
 

@@ -176,7 +176,7 @@
   width: 100%;
   margin-top: 24px;
   border-collapse: collapse;
-  font-size: 0.5em;
+  font-size: 0.56em;
   background: var(--surface);
   border-radius: 10px;
   overflow: hidden;
@@ -196,7 +196,7 @@
 
 .reveal th,
 .reveal td {
-  padding: 14px 18px;
+  padding: 15px 16px;
   border-bottom: 1px solid var(--line);
   text-align: left;
 }
@@ -250,6 +250,17 @@
   color: #ecf5ff;
   font-size: 0.55em;
   line-height: 1.5;
+}
+
+.reveal .flow + pre,
+.reveal ul + pre {
+  margin-top: 14px;
+}
+
+.reveal .flow + pre code,
+.reveal ul + pre code {
+  font-size: 0.5em;
+  line-height: 1.42;
 }
 
 /* ── Blockquotes ───────────────────────────────────────────────────────── */
@@ -337,6 +348,13 @@
   color: var(--muted);
   font-size: 0.78em;
   line-height: 1.5;
+}
+
+.reveal .source-note {
+  margin-top: 14px;
+  color: var(--muted-2);
+  font-size: 0.46em;
+  letter-spacing: 0.04em;
 }
 
 /* ── Cover slide ───────────────────────────────────────────────────────── */
@@ -571,6 +589,12 @@
   flex-wrap: wrap;
   gap: 4px;
   margin-top: 28px;
+  margin-bottom: 22px;
+}
+
+.reveal .flow.compact {
+  flex-wrap: nowrap;
+  gap: 2px;
 }
 
 .reveal .flow-node {
@@ -582,6 +606,11 @@
   font-size: 0.65em;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.reveal .flow.compact .flow-node {
+  padding: 7px 10px;
+  font-size: 0.5em;
 }
 
 .reveal .flow-node.accent {
@@ -600,6 +629,11 @@
   color: var(--muted-2);
   font-size: 0.7em;
   padding: 0 6px;
+}
+
+.reveal .flow.compact .flow-arrow {
+  font-size: 0.54em;
+  padding: 0 2px;
 }
 
 /* ── Callout / highlight box ───────────────────────────────────────────── */
